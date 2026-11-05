@@ -3,21 +3,28 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-  <!-- ANTI-CACHÉ PARA ACTUALIZACIÓN INMEDIATA -->
+  <!-- ANTI-CACHÉ -->
   <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
   <meta http-equiv="Pragma" content="no-cache">
   <meta http-equiv="Expires" content="0">
+  
+  <!-- DESACTIVAR SUBRAYADO AUTOMÁTICO DE FECHAS EN CELULARES -->
+  <meta name="format-detection" content="telephone=no, date=no, address=no, email=no">
+  
   <title>Toros Negros • Capsule OS</title>
+
+  <!-- PWA MANIFEST -->
   <link rel="manifest" href="manifest.json">
   <meta name="theme-color" content="#07090e">
   <meta name="mobile-web-app-capable" content="yes">
+
   <!-- Fuentes -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
 
   <style>
-    /* CSS NATIVO ULTRA-RÁPIDO A 120 FPS (CERO FRAMEWORKS QUE CONGELEN LA PANTALLA) */
+    /* CSS NATIVO ULTRA-RÁPIDO (CERO FRAMEWORKS QUE CONGELEN LA PANTALLA) */
     :root {
       --bg: #07090e;
       --card: #0d121f;
@@ -30,7 +37,13 @@
       --blue: #0ea5e9;
     }
 
-    * { box-sizing: border-box; margin: 0; padding: 0; }
+    * { 
+      box-sizing: border-box; 
+      margin: 0; 
+      padding: 0; 
+      text-decoration: none !important;
+    }
+    
     ::-webkit-scrollbar { display: none; }
 
     body {
@@ -38,7 +51,7 @@
       color: var(--text);
       font-family: 'Plus Jakarta Sans', sans-serif;
       padding-top: env(safe-area-inset-top);
-      /* Subimos el margen inferior para que nada quede tapado */
+      /* Espacio inferior aumentado para que la barra flotante no tape contenido */
       padding-bottom: calc(env(safe-area-inset-bottom) + 115px);
       -webkit-tap-highlight-color: transparent;
     }
@@ -97,6 +110,7 @@
       outline: none;
       font-family: 'Chakra Petch', monospace;
       font-weight: 700;
+      text-decoration: none !important;
       transition: transform 0.05s ease;
     }
     button:active { transform: scale(0.97); }
@@ -148,7 +162,7 @@
     .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
     .grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 6px; }
 
-    /* NAVEGACIÓN INFERIOR (5 PESTAÑAS - TEXTO PURO) */
+    /* NAVEGACIÓN INFERIOR ELEVADA (CÓMODA PARA EL S24 ULTRA) */
     nav {
       position: fixed;
       bottom: 0;
@@ -157,7 +171,7 @@
       z-index: 40;
       background: rgba(7, 9, 14, 0.98);
       border-top: 1px solid var(--border);
-      /* Agregamos 22px extra abajo para despegar los botones del borde */
+      /* 22px extra abajo para despegarlo de la barra de gestos */
       padding: 10px 6px calc(env(safe-area-inset-bottom) + 22px) 6px;
     }
     .nav-inner {
@@ -176,13 +190,14 @@
       text-transform: uppercase;
       font-weight: 700;
       text-align: center;
-    
+      text-decoration: none !important;
+    }
     .nav-btn.active {
       color: var(--primary);
       background: rgba(245, 158, 11, 0.1);
     }
 
-    /* DÍAS CÁPSULAS */
+    /* DÍAS CÁPSULAS SIN SUBRAYADOS */
     .capsules-bar {
       display: flex;
       gap: 6px;
@@ -197,6 +212,8 @@
       border-radius: 10px;
       font-size: 11px;
       white-space: nowrap;
+      text-decoration: none !important;
+      outline: none !important;
     }
     .capsule-btn.active {
       background: var(--primary);
@@ -247,7 +264,7 @@
 </head>
 <body>
 
-  <!-- AVISO TOAST -->
+  <!-- TOAST FLOTANTE -->
   <div id="app-toast" class="font-mono">Aviso</div>
 
   <!-- ENCABEZADO -->
@@ -255,7 +272,7 @@
     <div class="header-inner">
       <div style="display: flex; align-items: center; gap: 10px;">
         <div class="logo-box">
-          <img id="app-logo" src="logo.png?v=20" 
+          <img id="app-logo" src="logo.png?v=25" 
                onerror="this.onerror=null; this.src='https://assets.stickpng.com/images/628c85c2bbec114743bed4bd.png'" 
                alt="Toros Negros">
         </div>
@@ -490,7 +507,7 @@
 
   </main>
 
-  <!-- NAVEGACIÓN INFERIOR (TEXTO PURO) -->
+  <!-- NAVEGACIÓN INFERIOR (5 PESTAÑAS ELEVADAS) -->
   <nav>
     <div class="nav-inner font-mono">
       <button type="button" onclick="switchTab('tasks')" id="nav-tasks" class="nav-btn active">TAREAS</button>
@@ -1507,8 +1524,8 @@
     refreshAllUI();
     updateSyncModalUI();
     pullFromCloudDirect(true);
-    
-  // Registro para instalar la app
+
+    // REGISTRO DE SERVICE WORKER PARA INSTALAR LA APP (PWA)
     if ('serviceWorker' in navigator) {
       navigator.serviceWorker.register('sw.js');
     }
