@@ -3,280 +3,276 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>CyberCore OS • Asistente Personal</title>
+  <title>TOROS NEGROS • CAPSULE OS</title>
   <!-- Tailwind CSS -->
   <script src="https://cdn.tailwindcss.com"></script>
   <!-- Lucide Icons -->
   <script src="https://unpkg.com/lucide@latest"></script>
+  <!-- GunDB para sincronización instantánea Teléfono <-> PC sin servidores de pago -->
+  <script src="https://cdn.jsdelivr.net/npm/gun/gun.js"></script>
+  
   <script>
     tailwind.config = {
       darkMode: 'class',
       theme: {
         extend: {
           colors: {
-            cyber: {
-              black: '#07090e',
-              card: 'rgba(15, 23, 42, 0.75)',
-              border: 'rgba(56, 189, 248, 0.15)',
-              neonBlue: '#38bdf8',
-              neonPurple: '#a855f7',
-              neonGreen: '#10b981',
-              neonPink: '#f43f5e',
-              neonAmber: '#f59e0b'
+            saiyan: {
+              gold: '#fbbf24',
+              kiBlue: '#38bdf8',
+              kiRed: '#ef4444',
+              antiMagic: '#dc2626',
+              bullGold: '#f59e0b',
+              darkAura: '#080a0f',
+              panel: 'rgba(12, 16, 26, 0.88)'
             }
           }
         }
       }
     }
   </script>
+
   <style>
     ::-webkit-scrollbar { display: none; }
     body { -webkit-tap-highlight-color: transparent; }
-    .glass-panel {
-      background: rgba(13, 19, 33, 0.82);
-      backdrop-filter: blur(16px);
-      -webkit-backdrop-filter: blur(16px);
-      border: 1px solid rgba(255, 255, 255, 0.08);
+    .grimoire-border {
+      border: 1px solid rgba(245, 158, 11, 0.25);
+      box-shadow: 0 0 15px -3px rgba(245, 158, 11, 0.15);
     }
-    .neon-glow-blue {
-      box-shadow: 0 0 20px -5px rgba(56, 189, 248, 0.25);
+    .scouter-glow {
+      box-shadow: 0 0 20px -3px rgba(56, 189, 248, 0.3);
     }
-    .neon-glow-purple {
-      box-shadow: 0 0 20px -5px rgba(168, 85, 247, 0.25);
+    .ki-meter-pulse {
+      animation: kiPulse 3s infinite alternate;
     }
-    .water-bubble {
-      transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+    @keyframes kiPulse {
+      0% { box-shadow: 0 0 10px rgba(56, 189, 248, 0.2); }
+      100% { box-shadow: 0 0 25px rgba(220, 38, 38, 0.35); }
     }
   </style>
 </head>
-<body class="bg-cyber-black text-slate-100 font-sans pb-28 antialiased min-h-screen selection:bg-cyan-500 selection:text-black">
+<body class="bg-saiyan-darkAura text-slate-100 font-sans pb-28 antialiased min-h-screen selection:bg-amber-500 selection:text-black">
 
-  <!-- HUD SUPERIOR TECNOLÓGICO -->
-  <header class="sticky top-0 z-40 bg-cyber-black/90 backdrop-blur-xl border-b border-white/[0.07] px-4 py-3">
+  <!-- HUD SUPERIOR ANIME-TECH: CAPSULE CORP & BLACK BULLS -->
+  <header class="sticky top-0 z-40 bg-slate-950/95 backdrop-blur-xl border-b border-amber-500/30 px-4 py-2.5">
     <div class="max-w-md mx-auto flex items-center justify-between">
+      <!-- Escudo Toros Negros & Scouter -->
       <div class="flex items-center gap-2">
-        <div class="relative flex h-2.5 w-2.5">
-          <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-cyan-400 opacity-75"></span>
-          <span class="relative inline-flex rounded-full h-2.5 w-2.5 bg-cyan-500"></span>
+        <div class="w-8 h-8 rounded-lg bg-gradient-to-br from-amber-500 to-rose-600 flex items-center justify-center font-black text-black text-xs font-mono shadow-md shadow-amber-500/20 border border-amber-300">
+          🐂
         </div>
         <div>
-          <span class="text-[9px] tracking-[0.25em] uppercase text-cyan-400 font-mono font-bold block leading-none">SYSTEM ONLINE</span>
-          <h1 id="header-title" class="text-sm font-black text-white tracking-wide uppercase mt-0.5">MÓDULO: TAREAS</h1>
+          <div class="flex items-center gap-1.5">
+            <span class="text-[9px] font-mono font-black uppercase tracking-wider text-amber-400">TOROS NEGROS • CORP</span>
+            <span class="text-[9px] px-1 py-0.2 bg-red-950 text-red-400 border border-red-800 rounded font-mono font-bold">KI: OVER 9000</span>
+          </div>
+          <h1 id="header-title" class="text-xs font-black text-white tracking-wider uppercase">GRIMORIO: TAREAS</h1>
         </div>
       </div>
-      <div class="flex items-center gap-2 font-mono text-[11px] text-slate-400 bg-slate-900/90 px-2.5 py-1 rounded-lg border border-white/[0.05]">
-        <i data-lucide="cpu" class="w-3.5 h-3.5 text-cyan-400"></i>
-        <span id="current-clock">00:00</span>
+
+      <!-- Reloj DD/MM/AA y Botón de Sincronización en la nube -->
+      <div class="flex items-center gap-2">
+        <button onclick="toggleSyncModal()" class="flex items-center gap-1 bg-amber-500/10 hover:bg-amber-500/20 border border-amber-500/40 text-amber-300 text-[10px] font-mono font-bold px-2 py-1 rounded-lg transition">
+          <i data-lucide="cloud" class="w-3 h-3 text-cyan-400"></i>
+          <span id="sync-status-badge">SYNC PIN</span>
+        </button>
+        <div class="font-mono text-[10px] text-slate-400 bg-slate-900 px-2 py-1 rounded-lg border border-slate-800 text-right">
+          <span id="current-date-dmy" class="text-amber-400 font-bold block leading-none">--/--/--</span>
+          <span id="current-clock" class="text-[9px] text-slate-500">00:00</span>
+        </div>
       </div>
+    </div>
+
+    <!-- Frase emblemática de Yami Sukehiro -->
+    <div class="max-w-md mx-auto mt-1 flex justify-between items-center text-[9px] font-mono text-slate-500 border-t border-white/5 pt-1">
+      <span class="text-amber-500/80 font-bold tracking-tight">"¡SUPERA TUS LÍMITES AQUÍ Y AHORA!"</span>
+      <span class="text-cyan-400">CAPSULE_SYS v3.0</span>
     </div>
   </header>
 
-  <!-- CONTENEDOR CENTRAL -->
+  <!-- CONTENEDOR PRINCIPAL -->
   <main class="max-w-md mx-auto px-4 pt-4">
 
     <!-- ========================================== -->
-    <!-- 1. PESTAÑA: TAREAS ESCOLARES (HUD TAREAS)  -->
+    <!-- 1. PESTAÑA: TAREAS (RASTREADOR DE MISIONES)-->
     <!-- ========================================== -->
     <section id="tab-tasks" class="space-y-4">
-      <!-- Estadísticas rápidas -->
-      <div class="grid grid-cols-3 gap-2">
-        <div class="glass-panel p-2.5 rounded-xl border-l-2 border-l-cyan-400">
-          <span class="text-[10px] text-slate-400 uppercase font-mono block">Pendientes</span>
-          <span id="stat-pending-tasks" class="text-lg font-black text-white font-mono">0</span>
+      <!-- Medidor de Ki Escolar -->
+      <div class="bg-saiyan-panel grimoire-border p-3.5 rounded-2xl ki-meter-pulse space-y-2">
+        <div class="flex justify-between items-center text-xs font-mono font-bold">
+          <span class="text-amber-400 flex items-center gap-1.5">
+            <i data-lucide="zap" class="w-3.5 h-3.5 text-amber-400"></i> NIVEL DE PODER (KI)
+          </span>
+          <span id="stat-ki-power" class="text-cyan-400">0 / 0 EXP</span>
         </div>
-        <div class="glass-panel p-2.5 rounded-xl border-l-2 border-l-emerald-400">
-          <span class="text-[10px] text-slate-400 uppercase font-mono block">Hechas</span>
-          <span id="stat-done-tasks" class="text-lg font-black text-emerald-400 font-mono">0</span>
+        <div class="w-full bg-slate-900 h-2 rounded-full overflow-hidden border border-amber-500/20">
+          <div id="ki-progress-bar" class="bg-gradient-to-r from-amber-400 via-rose-500 to-cyan-400 h-full w-0 transition-all duration-500"></div>
         </div>
-        <div class="glass-panel p-2.5 rounded-xl border-l-2 border-l-purple-400">
-          <span class="text-[10px] text-slate-400 uppercase font-mono block">Eficacia</span>
-          <span id="stat-ratio-tasks" class="text-lg font-black text-purple-400 font-mono">100%</span>
+        <div class="flex justify-between text-[10px] font-mono text-slate-400 pt-0.5">
+          <span>Pendientes: <b id="stat-pending" class="text-rose-400">0</b></span>
+          <span>Cumplidas: <b id="stat-done" class="text-emerald-400">0</b></span>
+          <span>Rango: <b id="stat-rank" class="text-amber-400">Novato</b></span>
         </div>
       </div>
 
-      <!-- Formulario para agregar tarea -->
-      <form id="task-form" class="glass-panel p-4 rounded-2xl space-y-3 neon-glow-blue">
-        <div class="flex justify-between items-center">
-          <h2 class="text-xs font-bold uppercase tracking-wider text-cyan-400 font-mono flex items-center gap-1.5">
-            <i data-lucide="plus-circle" class="w-3.5 h-3.5"></i> Asignar Tarea
-          </h2>
-          <span class="text-[10px] text-slate-500 font-mono">TASK_ID_AUTO</span>
-        </div>
-        <input type="text" id="task-title" placeholder="Nombre de la actividad o entregable" required
-          class="w-full bg-slate-900/80 border border-slate-700/60 rounded-xl px-3.5 py-2.5 text-sm text-white placeholder-slate-500 focus:outline-none focus:border-cyan-400 transition">
+      <!-- Formulario Misión / Tarea -->
+      <form id="task-form" class="bg-saiyan-panel border border-slate-800 p-4 rounded-2xl space-y-3">
+        <h2 class="text-xs font-bold uppercase tracking-wider text-amber-400 font-mono flex items-center gap-1.5">
+          <i data-lucide="scroll" class="w-3.5 h-3.5"></i> Registrar Nueva Misión
+        </h2>
+        <input type="text" id="task-title" placeholder="Objetivo de la misión (ej: Examen de Álgebra)" required
+          class="w-full bg-slate-900 border border-slate-800 rounded-xl px-3.5 py-2.5 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-amber-400">
         
         <div class="grid grid-cols-2 gap-2">
-          <input type="text" id="task-subject" placeholder="Materia (ej: Cálculo)" required
-            class="bg-slate-900/80 border border-slate-700/60 rounded-xl px-3 py-2 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-cyan-400">
+          <input type="text" id="task-subject" placeholder="Materia / Escuadrón" required
+            class="bg-slate-900 border border-slate-800 rounded-xl px-3 py-2 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-amber-400">
+          <!-- Entrada fecha -->
           <input type="date" id="task-date" required
-            class="bg-slate-900/80 border border-slate-700/60 rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-cyan-400">
+            class="bg-slate-900 border border-slate-800 rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-amber-400">
         </div>
 
-        <div class="flex gap-2 items-center">
-          <select id="task-priority" class="bg-slate-900/80 border border-slate-700/60 rounded-xl px-3 py-2 text-xs text-slate-300 focus:outline-none flex-1">
-            <option value="normal">⚡ Prioridad Media</option>
-            <option value="high">🚨 Alta / Urgente</option>
-            <option value="low">☕ Baja / Rutinaria</option>
+        <div class="flex gap-2">
+          <select id="task-priority" class="bg-slate-900 border border-slate-800 rounded-xl px-3 py-2 text-xs text-slate-300 focus:outline-none flex-1">
+            <option value="normal">⚡ Nivel de Amenaza: Medio</option>
+            <option value="high">🔥 Nivel: Rango Capitán (Urgente)</option>
+            <option value="low">🌱 Misión Secundaria (Baja)</option>
           </select>
-          <button type="submit" class="bg-cyan-500 hover:bg-cyan-400 text-slate-950 font-bold px-4 py-2 rounded-xl text-xs uppercase tracking-wider transition font-mono flex items-center gap-1 shadow-md shadow-cyan-500/20">
+          <button type="submit" class="bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-400 hover:to-amber-500 text-slate-950 font-black px-4 py-2 rounded-xl text-xs uppercase font-mono transition shadow-md shadow-amber-500/20">
             Añadir
           </button>
         </div>
       </form>
 
-      <!-- Lista de Tareas -->
+      <!-- Lista de Misiones -->
       <div id="tasks-list" class="space-y-2"></div>
     </section>
 
     <!-- ========================================== -->
-    <!-- 2. PESTAÑA: DIETA & BIO-HACKING            -->
+    <!-- 2. PESTAÑA: DIETA (SENZU & BIO-KI)        -->
     <!-- ========================================== -->
     <section id="tab-diet" class="hidden space-y-4">
-      <!-- Selector de días en cápsulas horizontales -->
-      <div class="flex gap-1.5 overflow-x-auto pb-1" id="diet-day-capsules">
-        <!-- Generado por JS -->
-      </div>
+      <!-- Selector de días estilo cápsula -->
+      <div class="flex gap-1.5 overflow-x-auto pb-1" id="diet-day-capsules"></div>
 
-      <!-- Tracker de Agua & Hidratación -->
-      <div class="glass-panel p-4 rounded-2xl border border-cyan-500/20 space-y-2">
-        <div class="flex justify-between items-center">
-          <span class="text-xs font-bold text-cyan-300 font-mono uppercase flex items-center gap-1.5">
-            <i data-lucide="droplet" class="w-3.5 h-3.5 text-cyan-400"></i> Hidratación Diaria
+      <!-- Hidratación / Tanque de Recuperación Saiyan -->
+      <div class="bg-saiyan-panel border border-cyan-500/30 p-4 rounded-2xl scouter-glow space-y-2">
+        <div class="flex justify-between items-center font-mono">
+          <span class="text-xs font-bold text-cyan-400 uppercase flex items-center gap-1.5">
+            <i data-lucide="droplet" class="w-3.5 h-3.5"></i> Hidratación Celular
           </span>
-          <span id="water-count-text" class="text-xs font-mono font-bold text-cyan-400">0 / 8 Vasos (2.0L)</span>
+          <span id="water-count-text" class="text-xs font-bold text-cyan-300">0 / 8 Vasos (2.0L)</span>
         </div>
-        <!-- Barra de progreso de agua -->
-        <div class="w-full bg-slate-900 rounded-full h-2.5 overflow-hidden border border-white/5">
+        <div class="w-full bg-slate-900 h-2.5 rounded-full overflow-hidden border border-cyan-500/20">
           <div id="water-progress-bar" class="bg-gradient-to-r from-cyan-500 to-blue-500 h-full w-0 transition-all duration-300"></div>
         </div>
         <div class="flex items-center justify-between pt-1">
-          <div class="flex gap-1.5" id="water-icons-container">
-            <!-- Vasos renderizados por JS -->
-          </div>
+          <div class="flex gap-1.5" id="water-icons-container"></div>
           <div class="flex gap-1">
-            <button onclick="changeWater(-1)" class="w-7 h-7 bg-slate-800 hover:bg-slate-700 text-cyan-300 rounded-lg text-xs font-mono">-1</button>
-            <button onclick="changeWater(1)" class="w-7 h-7 bg-cyan-500 hover:bg-cyan-400 text-slate-950 font-bold rounded-lg text-xs font-mono">+1</button>
+            <button onclick="changeWater(-1)" class="w-7 h-7 bg-slate-800 hover:bg-slate-700 text-cyan-300 rounded-lg text-xs font-mono font-bold">-1</button>
+            <button onclick="changeWater(1)" class="w-7 h-7 bg-cyan-500 hover:bg-cyan-400 text-slate-950 font-black rounded-lg text-xs font-mono">+1</button>
           </div>
         </div>
       </div>
 
-      <!-- Macros rápidos del día -->
-      <div class="glass-panel p-3 rounded-2xl grid grid-cols-3 gap-2 text-center">
+      <!-- Macros / Energía Ki -->
+      <div class="bg-saiyan-panel border border-slate-800 p-3 rounded-2xl grid grid-cols-3 gap-2 text-center font-mono">
         <div>
-          <span class="text-[9px] uppercase font-mono text-slate-400 block">Kcal Meta</span>
-          <input type="number" id="macro-calories" placeholder="2000" onchange="saveMacros()"
-            class="w-full bg-slate-900/60 text-center font-mono text-xs font-bold text-amber-400 rounded-lg py-1 border border-slate-800 focus:outline-none focus:border-amber-400">
+          <span class="text-[9px] text-amber-400 font-bold block">KCAL (PODER)</span>
+          <input type="number" id="macro-calories" placeholder="2200" onchange="saveMacros()"
+            class="w-full bg-slate-900 text-center text-xs font-bold text-white rounded-lg py-1 border border-slate-700 focus:outline-none focus:border-amber-400">
         </div>
         <div>
-          <span class="text-[9px] uppercase font-mono text-slate-400 block">Proteína (g)</span>
-          <input type="number" id="macro-protein" placeholder="140" onchange="saveMacros()"
-            class="w-full bg-slate-900/60 text-center font-mono text-xs font-bold text-emerald-400 rounded-lg py-1 border border-slate-800 focus:outline-none focus:border-emerald-400">
+          <span class="text-[9px] text-rose-400 font-bold block">PROTEÍNA (g)</span>
+          <input type="number" id="macro-protein" placeholder="150" onchange="saveMacros()"
+            class="w-full bg-slate-900 text-center text-xs font-bold text-white rounded-lg py-1 border border-slate-700 focus:outline-none focus:border-rose-400">
         </div>
         <div>
-          <span class="text-[9px] uppercase font-mono text-slate-400 block">Carbs (g)</span>
-          <input type="number" id="macro-carbs" placeholder="220" onchange="saveMacros()"
-            class="w-full bg-slate-900/60 text-center font-mono text-xs font-bold text-cyan-400 rounded-lg py-1 border border-slate-800 focus:outline-none focus:border-cyan-400">
+          <span class="text-[9px] text-cyan-400 font-bold block">CARBS (g)</span>
+          <input type="number" id="macro-carbs" placeholder="250" onchange="saveMacros()"
+            class="w-full bg-slate-900 text-center text-xs font-bold text-white rounded-lg py-1 border border-slate-700 focus:outline-none focus:border-cyan-400">
         </div>
       </div>
 
-      <!-- Las 5 Comidas Estructuradas (Con 2 Colaciones) -->
+      <!-- Las 5 Comidas Estructuradas -->
       <div class="space-y-2.5">
-        <!-- 1. Desayuno -->
-        <div class="glass-panel p-3.5 rounded-2xl border-l-4 border-l-amber-400 space-y-1.5">
-          <div class="flex justify-between items-center">
-            <h3 class="text-xs font-bold text-amber-400 font-mono uppercase flex items-center gap-1.5">
-              <span>🍳</span> 01 • Desayuno
-            </h3>
-            <span class="text-[10px] text-slate-500 font-mono">Mañana</span>
+        <div class="bg-saiyan-panel border-l-4 border-l-amber-500 p-3 rounded-2xl border border-slate-800 space-y-1">
+          <div class="flex justify-between items-center font-mono">
+            <h3 class="text-xs font-bold text-amber-400 uppercase">🍳 01 • Desayuno Saiyan</h3>
+            <span class="text-[9px] text-slate-500">Energía inicial</span>
           </div>
-          <textarea id="diet-desayuno" rows="2" placeholder="Huevos, avena con fruta, café..."
-            class="w-full bg-slate-900/70 border border-slate-800 rounded-xl p-2.5 text-xs text-white focus:outline-none focus:border-amber-400"></textarea>
+          <textarea id="diet-desayuno" rows="2" placeholder="Comida del amanecer..."
+            class="w-full bg-slate-900 border border-slate-800 rounded-xl p-2 text-xs text-white focus:outline-none focus:border-amber-400"></textarea>
         </div>
 
-        <!-- 2. Colación 1 -->
-        <div class="glass-panel p-3.5 rounded-2xl border-l-4 border-l-emerald-400 space-y-1.5">
-          <div class="flex justify-between items-center">
-            <h3 class="text-xs font-bold text-emerald-400 font-mono uppercase flex items-center gap-1.5">
-              <span>🍏</span> 02 • Colación Matutina (Snack 1)
-            </h3>
-            <span class="text-[10px] text-slate-500 font-mono">11:00 AM</span>
+        <div class="bg-saiyan-panel border-l-4 border-l-emerald-500 p-3 rounded-2xl border border-slate-800 space-y-1">
+          <div class="flex justify-between items-center font-mono">
+            <h3 class="text-xs font-bold text-emerald-400 uppercase">🍏 02 • Colación Matutina (Snack 1)</h3>
+            <span class="text-[9px] text-slate-500">Media Mañana</span>
           </div>
-          <textarea id="diet-colacion1" rows="2" placeholder="Yogurt griego con nueces, manzana o batido..."
-            class="w-full bg-slate-900/70 border border-slate-800 rounded-xl p-2.5 text-xs text-white focus:outline-none focus:border-emerald-400"></textarea>
+          <textarea id="diet-colacion1" rows="2" placeholder="Frutos secos, batido, semillas del ermitaño..."
+            class="w-full bg-slate-900 border border-slate-800 rounded-xl p-2 text-xs text-white focus:outline-none focus:border-emerald-400"></textarea>
         </div>
 
-        <!-- 3. Comida Principal -->
-        <div class="glass-panel p-3.5 rounded-2xl border-l-4 border-l-cyan-400 space-y-1.5">
-          <div class="flex justify-between items-center">
-            <h3 class="text-xs font-bold text-cyan-400 font-mono uppercase flex items-center gap-1.5">
-              <span>🍲</span> 03 • Almuerzo / Comida
-            </h3>
-            <span class="text-[10px] text-slate-500 font-mono">Tarde</span>
+        <div class="bg-saiyan-panel border-l-4 border-l-cyan-500 p-3 rounded-2xl border border-slate-800 space-y-1">
+          <div class="flex justify-between items-center font-mono">
+            <h3 class="text-xs font-bold text-cyan-400 uppercase">🍲 03 • Almuerzo / Banquete</h3>
+            <span class="text-[9px] text-slate-500">Carga máxima</span>
           </div>
-          <textarea id="diet-comida" rows="2" placeholder="Pechuga de pollo, arroz integral, verduras y ensalada..."
-            class="w-full bg-slate-900/70 border border-slate-800 rounded-xl p-2.5 text-xs text-white focus:outline-none focus:border-cyan-400"></textarea>
+          <textarea id="diet-comida" rows="2" placeholder="Carne, arroz, verduras para recuperación de Ki..."
+            class="w-full bg-slate-900 border border-slate-800 rounded-xl p-2 text-xs text-white focus:outline-none focus:border-cyan-400"></textarea>
         </div>
 
-        <!-- 4. Colación 2 -->
-        <div class="glass-panel p-3.5 rounded-2xl border-l-4 border-l-purple-400 space-y-1.5">
-          <div class="flex justify-between items-center">
-            <h3 class="text-xs font-bold text-purple-400 font-mono uppercase flex items-center gap-1.5">
-              <span>🫐</span> 04 • Colación Vespertina (Snack 2)
-            </h3>
-            <span class="text-[10px] text-slate-500 font-mono">5:00 PM</span>
+        <div class="bg-saiyan-panel border-l-4 border-l-purple-500 p-3 rounded-2xl border border-slate-800 space-y-1">
+          <div class="flex justify-between items-center font-mono">
+            <h3 class="text-xs font-bold text-purple-400 uppercase">🫐 04 • Colación Vespertina (Snack 2)</h3>
+            <span class="text-[9px] text-slate-500">Media Tarde</span>
           </div>
-          <textarea id="diet-colacion2" rows="2" placeholder="Almendras, barrita de proteína, té verde..."
-            class="w-full bg-slate-900/70 border border-slate-800 rounded-xl p-2.5 text-xs text-white focus:outline-none focus:border-purple-400"></textarea>
+          <textarea id="diet-colacion2" rows="2" placeholder="Snack proteico o fruta..."
+            class="w-full bg-slate-900 border border-slate-800 rounded-xl p-2 text-xs text-white focus:outline-none focus:border-purple-400"></textarea>
         </div>
 
-        <!-- 5. Cena -->
-        <div class="glass-panel p-3.5 rounded-2xl border-l-4 border-l-pink-400 space-y-1.5">
-          <div class="flex justify-between items-center">
-            <h3 class="text-xs font-bold text-pink-400 font-mono uppercase flex items-center gap-1.5">
-              <span>🥗</span> 05 • Cena Ligera
-            </h3>
-            <span class="text-[10px] text-slate-500 font-mono">Noche</span>
+        <div class="bg-saiyan-panel border-l-4 border-l-rose-500 p-3 rounded-2xl border border-slate-800 space-y-1">
+          <div class="flex justify-between items-center font-mono">
+            <h3 class="text-xs font-bold text-rose-400 uppercase">🥗 05 • Cena de Descanso</h3>
+            <span class="text-[9px] text-slate-500">Regeneración nocturna</span>
           </div>
-          <textarea id="diet-cena" rows="2" placeholder="Atún con aguacate, ensalada verde, infusión..."
-            class="w-full bg-slate-900/70 border border-slate-800 rounded-xl p-2.5 text-xs text-white focus:outline-none focus:border-pink-400"></textarea>
+          <textarea id="diet-cena" rows="2" placeholder="Cena balanceada y ligera..."
+            class="w-full bg-slate-900 border border-slate-800 rounded-xl p-2 text-xs text-white focus:outline-none focus:border-rose-400"></textarea>
         </div>
 
-        <button onclick="saveDiet()" class="w-full bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold py-3 rounded-2xl text-xs uppercase tracking-wider font-mono transition shadow-lg shadow-emerald-500/20 flex items-center justify-center gap-2">
-          <i data-lucide="save" class="w-4 h-4"></i> Guardar Dieta del Día
+        <button onclick="saveDiet()" class="w-full bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-400 hover:to-amber-500 text-slate-950 font-black py-2.5 rounded-xl text-xs uppercase font-mono tracking-wider transition shadow-lg shadow-amber-500/20">
+          Guardar Dieta del Día
         </button>
       </div>
     </section>
 
     <!-- ========================================== -->
-    <!-- 3. PESTAÑA: NOTAS & AVISOS (ESTILO GOOGLE KEEP) -->
+    <!-- 3. PESTAÑA: NOTAS KEEP (PERGAMINOS MÁGICOS)-->
     <!-- ========================================== -->
     <section id="tab-reminders" class="hidden space-y-4">
-      <!-- Creador de notas estilo Google Keep -->
-      <div class="glass-panel p-4 rounded-2xl border border-white/10 space-y-3 shadow-lg">
-        <input type="text" id="note-title" placeholder="Título..." 
-          class="w-full bg-transparent text-sm font-bold text-white placeholder-slate-500 focus:outline-none">
-        <textarea id="note-body" rows="2" placeholder="Añade una nota o recordatorio..." 
+      <div class="bg-saiyan-panel grimoire-border p-4 rounded-2xl space-y-3">
+        <input type="text" id="note-title" placeholder="Título del hechizo o nota..." 
+          class="w-full bg-transparent text-sm font-bold text-amber-300 placeholder-slate-500 focus:outline-none">
+        <textarea id="note-body" rows="2" placeholder="Escribe aquí tu apunte o secreto de grimorio..." 
           class="w-full bg-transparent text-xs text-slate-200 placeholder-slate-500 focus:outline-none resize-none"></textarea>
         
-        <!-- Fecha de recordatorio opcional -->
         <div class="flex items-center gap-2 pt-1 border-t border-white/5">
           <i data-lucide="bell" class="w-3.5 h-3.5 text-amber-400"></i>
           <input type="datetime-local" id="note-alert" 
-            class="bg-slate-900/80 text-[10px] text-slate-300 px-2 py-1 rounded-lg border border-slate-700 focus:outline-none">
+            class="bg-slate-900 text-[10px] text-slate-300 px-2 py-1 rounded-lg border border-slate-800 focus:outline-none">
         </div>
 
-        <!-- Paleta de colores Keep y botón de guardar -->
         <div class="flex justify-between items-center pt-2">
+          <!-- Colores inspirados en auras de Ki y Grimorios -->
           <div class="flex items-center gap-1.5" id="color-picker">
-            <button type="button" onclick="selectNoteColor('dark')" class="w-5 h-5 rounded-full bg-slate-800 border-2 border-cyan-400 scale-110 color-dot" data-color="dark"></button>
-            <button type="button" onclick="selectNoteColor('amber')" class="w-5 h-5 rounded-full bg-amber-900/80 border border-amber-600 color-dot" data-color="amber"></button>
-            <button type="button" onclick="selectNoteColor('emerald')" class="w-5 h-5 rounded-full bg-emerald-900/80 border border-emerald-600 color-dot" data-color="emerald"></button>
-            <button type="button" onclick="selectNoteColor('purple')" class="w-5 h-5 rounded-full bg-purple-900/80 border border-purple-600 color-dot" data-color="purple"></button>
-            <button type="button" onclick="selectNoteColor('rose')" class="w-5 h-5 rounded-full bg-rose-900/80 border border-rose-600 color-dot" data-color="rose"></button>
-            <button type="button" onclick="selectNoteColor('blue')" class="w-5 h-5 rounded-full bg-cyan-950 border border-cyan-500 color-dot" data-color="blue"></button>
+            <button type="button" onclick="selectNoteColor('dark')" class="w-5 h-5 rounded-full bg-slate-900 border-2 border-amber-400 scale-110 color-dot" data-color="dark"></button>
+            <button type="button" onclick="selectNoteColor('gold')" class="w-5 h-5 rounded-full bg-amber-900/90 border border-amber-500 color-dot" data-color="gold"></button>
+            <button type="button" onclick="selectNoteColor('crimson')" class="w-5 h-5 rounded-full bg-rose-950 border border-rose-500 color-dot" data-color="crimson"></button>
+            <button type="button" onclick="selectNoteColor('kiBlue')" class="w-5 h-5 rounded-full bg-cyan-950 border border-cyan-400 color-dot" data-color="kiBlue"></button>
+            <button type="button" onclick="selectNoteColor('purple')" class="w-5 h-5 rounded-full bg-purple-950 border border-purple-500 color-dot" data-color="purple"></button>
           </div>
-          <button onclick="createKeepNote()" class="bg-amber-400 hover:bg-amber-300 text-slate-950 font-bold px-3 py-1.5 rounded-xl text-xs font-mono transition">
-            Guardar
+          <button onclick="createKeepNote()" class="bg-amber-400 hover:bg-amber-300 text-slate-950 font-black px-3.5 py-1.5 rounded-xl text-xs font-mono transition">
+            Grabar
           </button>
         </div>
       </div>
@@ -286,227 +282,339 @@
     </section>
 
     <!-- ========================================== -->
-    <!-- 4. PESTAÑA: TARJETAS & CYBER FINANZAS      -->
+    <!-- 4. PESTAÑA: BÓVEDA FINANCIERA (CAPSULE CORP)-->
     <!-- ========================================== -->
     <section id="tab-finances" class="hidden space-y-4">
-      <!-- Balance general rápido -->
-      <div class="glass-panel p-4 rounded-2xl border border-white/10 space-y-3 neon-glow-purple">
-        <div class="flex justify-between items-center text-xs font-mono">
-          <span class="text-slate-400">PASIVOS TOTALES (DEUDA TDC)</span>
-          <span id="total-debt-metric" class="text-rose-400 font-bold">$0.00</span>
+      <div class="bg-saiyan-panel border border-amber-500/30 p-4 rounded-2xl scouter-glow space-y-3 font-mono">
+        <div class="flex justify-between items-center text-xs">
+          <span class="text-slate-400">DEUDA TOTAL EN TDC:</span>
+          <span id="total-debt-metric" class="text-rose-400 font-bold text-sm">$0.00</span>
         </div>
-        <div class="flex justify-between items-center text-xs font-mono">
-          <span class="text-slate-400">LIQUIDEZ TOTAL (DÉBITO TDD)</span>
-          <span id="total-liquidity-metric" class="text-emerald-400 font-bold">$0.00</span>
-        </div>
-        <div class="w-full bg-slate-900 h-1.5 rounded-full overflow-hidden">
-          <div id="liquidity-ratio-bar" class="bg-gradient-to-r from-rose-500 to-emerald-500 h-full w-1/2"></div>
+        <div class="flex justify-between items-center text-xs">
+          <span class="text-slate-400">LIQUIDEZ EN DÉBITO (TDD):</span>
+          <span id="total-liquidity-metric" class="text-emerald-400 font-bold text-sm">$0.00</span>
         </div>
       </div>
 
-      <!-- Sección de Tarjetas Físico-Virtuales -->
       <div>
-        <div class="flex justify-between items-center mb-2 px-1">
-          <span class="text-[11px] font-mono font-bold text-cyan-400 uppercase tracking-wider flex items-center gap-1">
-            <i data-lucide="wallet" class="w-3.5 h-3.5"></i> Módulos de Pago
+        <div class="flex justify-between items-center mb-2 px-1 font-mono">
+          <span class="text-[11px] font-bold text-amber-400 uppercase tracking-wider flex items-center gap-1">
+            <span>💳</span> TARJETAS TDC Y TDD
           </span>
-          <button onclick="toggleCardModal()" class="text-xs text-cyan-400 hover:text-cyan-300 font-mono font-bold">
-            + NUEVA TARJETA
+          <button onclick="toggleCardModal()" class="text-xs text-cyan-400 hover:text-cyan-300 font-bold">
+            + VINCULAR TARJETA
           </button>
         </div>
         <div id="cards-container" class="space-y-3"></div>
       </div>
 
-      <!-- Registrar Movimiento / Terminal de Gasto -->
-      <form id="expense-form" class="glass-panel p-4 rounded-2xl border border-white/10 space-y-3">
+      <!-- Formulario de Gastos -->
+      <form id="expense-form" class="bg-saiyan-panel border border-slate-800 p-4 rounded-2xl space-y-3">
         <h3 class="text-xs font-bold uppercase tracking-wider text-rose-400 font-mono flex items-center gap-1.5">
-          <i data-lucide="arrow-down-right" class="w-3.5 h-3.5"></i> Terminal de Salida (Registrar Gasto)
+          <i data-lucide="arrow-down-right" class="w-3.5 h-3.5"></i> Registrar Consumo / Gasto
         </h3>
-        <select id="expense-card" required class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-xs text-white focus:outline-none"></select>
+        <select id="expense-card" required class="w-full bg-slate-900 border border-slate-800 rounded-xl px-3 py-2 text-xs text-white focus:outline-none"></select>
         
-        <div class="grid grid-cols-2 gap-2">
-          <input type="text" id="expense-concept" placeholder="Concepto (ej: Súper, Gasolina)" required
-            class="bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-xs text-white focus:outline-none">
-          <div class="relative">
-            <span class="absolute left-3 top-2 text-slate-500 text-xs font-mono">$</span>
-            <input type="number" step="0.01" id="expense-amount" placeholder="0.00" required
-              class="w-full bg-slate-900 border border-slate-700 rounded-xl pl-6 pr-3 py-2 text-xs text-white font-mono focus:outline-none">
-          </div>
+        <div class="grid grid-cols-2 gap-2 font-mono">
+          <input type="text" id="expense-concept" placeholder="Concepto (ej: Súper)" required
+            class="bg-slate-900 border border-slate-800 rounded-xl px-3 py-2 text-xs text-white focus:outline-none">
+          <input type="number" step="0.01" id="expense-amount" placeholder="Monto $" required
+            class="bg-slate-900 border border-slate-800 rounded-xl px-3 py-2 text-xs text-white focus:outline-none">
         </div>
         
-        <button type="submit" class="w-full bg-rose-500 hover:bg-rose-400 text-slate-950 font-bold py-2.5 rounded-xl text-xs uppercase tracking-wider font-mono transition shadow-lg shadow-rose-500/20">
-          Ejecutar Transacción
+        <button type="submit" class="w-full bg-rose-600 hover:bg-rose-500 text-white font-black py-2.5 rounded-xl text-xs uppercase font-mono tracking-wider transition shadow-lg shadow-rose-600/20">
+          Ejecutar Gasto
         </button>
       </form>
 
-      <!-- Log de Actividad -->
       <div>
-        <span class="text-[10px] font-mono uppercase text-slate-500 px-1 block mb-2">Historial de Registro Local</span>
-        <div id="expenses-list" class="space-y-2"></div>
+        <span class="text-[10px] font-mono uppercase text-slate-500 px-1 block mb-2">Movimientos Recientes</span>
+        <div id="expenses-list" class="space-y-2 font-mono"></div>
       </div>
     </section>
 
   </main>
 
-  <!-- MODAL PARA AGREGAR TARJETA -->
-  <div id="card-modal" class="hidden fixed inset-0 z-50 bg-black/80 backdrop-blur-md flex items-center justify-center p-4">
-    <div class="glass-panel border border-cyan-500/30 rounded-3xl p-5 w-full max-w-sm space-y-4 shadow-2xl">
-      <div class="flex justify-between items-center border-b border-white/10 pb-2">
-        <h3 class="text-sm font-bold text-white font-mono uppercase">Vincular Instrumento</h3>
-        <button onclick="toggleCardModal()" class="text-slate-400 hover:text-white">✕</button>
+  <!-- MODAL: SINCRONIZACIÓN NUBE (GUN.JS) -->
+  <div id="sync-modal" class="hidden fixed inset-0 z-50 bg-black/85 backdrop-blur-md flex items-center justify-center p-4">
+    <div class="bg-slate-950 border border-amber-500/50 rounded-3xl p-5 w-full max-w-sm space-y-4 shadow-2xl font-mono">
+      <div class="flex justify-between items-center border-b border-amber-500/20 pb-2">
+        <h3 class="text-xs font-black text-amber-400 uppercase flex items-center gap-1.5">
+          <i data-lucide="radio" class="w-4 h-4 text-cyan-400"></i> ENLACE NUBE MULTIDISPOSITIVO
+        </h3>
+        <button onclick="toggleSyncModal()" class="text-slate-400 hover:text-white">✕</button>
       </div>
 
-      <input type="text" id="card-name" placeholder="Emisor / Banco (ej: Nu, BBVA Oro, Santander)" 
-        class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-xs text-white">
+      <p class="text-[11px] text-slate-300 leading-relaxed">
+        Escribe un <b>PIN personal</b> (ej: <code class="text-amber-400">MI-TORO-77</code>). Si escribes exactamente este mismo PIN en tu <b>computadora</b> y en tu <b>celular</b>, todos tus datos se sincronizarán al instante.
+      </p>
 
-      <select id="card-type" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-xs text-white" onchange="toggleCardInputs()">
-        <option value="TDC">Tarjeta de Crédito (TDC)</option>
-        <option value="TDD">Tarjeta de Débito (TDD)</option>
-      </select>
+      <input type="text" id="sync-pin-input" placeholder="Ingresa tu PIN secreto..." 
+        class="w-full bg-slate-900 border border-amber-500/40 rounded-xl px-3.5 py-2.5 text-xs text-amber-300 uppercase font-black tracking-wider focus:outline-none">
 
-      <div id="tdc-fields" class="space-y-2.5">
-        <input type="number" step="0.01" id="card-limit" placeholder="Límite autorizado $" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-xs text-white font-mono">
-        <div class="grid grid-cols-2 gap-2">
-          <input type="number" id="card-cutoff" placeholder="Día de corte (1-31)" class="bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-xs text-white font-mono">
-          <input type="number" id="card-payday" placeholder="Día de pago (1-31)" class="bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-xs text-white font-mono">
-        </div>
-      </div>
-
-      <div id="tdd-fields" class="hidden">
-        <input type="number" step="0.01" id="card-balance" placeholder="Saldo actual disponible $" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-xs text-white font-mono">
-      </div>
-
-      <div class="flex gap-2 pt-2">
-        <button onclick="toggleCardModal()" class="flex-1 bg-slate-800 text-slate-300 py-2.5 rounded-xl text-xs font-mono">Cancelar</button>
-        <button onclick="addCard()" class="flex-1 bg-cyan-500 hover:bg-cyan-400 text-slate-950 font-bold py-2.5 rounded-xl text-xs font-mono">Crear</button>
+      <div class="flex gap-2 pt-1">
+        <button onclick="toggleSyncModal()" class="flex-1 bg-slate-900 text-slate-400 py-2.5 rounded-xl text-xs">Cerrar</button>
+        <button onclick="saveSyncPin()" class="flex-1 bg-amber-500 hover:bg-amber-400 text-slate-950 font-black py-2.5 rounded-xl text-xs">Conectar PIN</button>
       </div>
     </div>
   </div>
 
-  <!-- NAVEGACIÓN INFERIOR HUD -->
-  <nav class="fixed bottom-0 left-0 right-0 z-40 bg-cyber-black/95 backdrop-blur-2xl border-t border-white/[0.08] px-4 py-2">
+  <!-- MODAL: VINCULAR TARJETA -->
+  <div id="card-modal" class="hidden fixed inset-0 z-50 bg-black/85 backdrop-blur-md flex items-center justify-center p-4">
+    <div class="bg-slate-950 border border-amber-500/40 rounded-3xl p-5 w-full max-w-sm space-y-3 font-mono">
+      <div class="flex justify-between items-center border-b border-white/10 pb-2">
+        <h3 class="text-xs font-black text-amber-400 uppercase">Vincular Módulo de Pago</h3>
+        <button onclick="toggleCardModal()" class="text-slate-400 hover:text-white">✕</button>
+      </div>
+
+      <input type="text" id="card-name" placeholder="Banco (ej: Nu, BBVA, Santander)" 
+        class="w-full bg-slate-900 border border-slate-800 rounded-xl px-3 py-2 text-xs text-white">
+
+      <select id="card-type" class="w-full bg-slate-900 border border-slate-800 rounded-xl px-3 py-2 text-xs text-white" onchange="toggleCardInputs()">
+        <option value="TDC">Tarjeta de Crédito (TDC)</option>
+        <option value="TDD">Tarjeta de Débito (TDD)</option>
+      </select>
+
+      <div id="tdc-fields" class="space-y-2">
+        <input type="number" step="0.01" id="card-limit" placeholder="Límite autorizado $" class="w-full bg-slate-900 border border-slate-800 rounded-xl px-3 py-2 text-xs text-white">
+        <div class="grid grid-cols-2 gap-2">
+          <input type="number" id="card-cutoff" placeholder="Día de corte (1-31)" class="bg-slate-900 border border-slate-800 rounded-xl px-3 py-2 text-xs text-white">
+          <input type="number" id="card-payday" placeholder="Día de pago (1-31)" class="bg-slate-900 border border-slate-800 rounded-xl px-3 py-2 text-xs text-white">
+        </div>
+      </div>
+
+      <div id="tdd-fields" class="hidden">
+        <input type="number" step="0.01" id="card-balance" placeholder="Saldo inicial disponible $" class="w-full bg-slate-900 border border-slate-800 rounded-xl px-3 py-2 text-xs text-white">
+      </div>
+
+      <div class="flex gap-2 pt-2">
+        <button onclick="toggleCardModal()" class="flex-1 bg-slate-900 text-slate-400 py-2.5 rounded-xl text-xs">Cancelar</button>
+        <button onclick="addCard()" class="flex-1 bg-amber-500 hover:bg-amber-400 text-slate-950 font-black py-2.5 rounded-xl text-xs">Guardar</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- NAVEGACIÓN INFERIOR ESTILO CAPSULE CORP -->
+  <nav class="fixed bottom-0 left-0 right-0 z-40 bg-slate-950/95 backdrop-blur-2xl border-t border-amber-500/20 px-3 py-2">
     <div class="max-w-md mx-auto grid grid-cols-4 gap-1">
-      <button onclick="switchTab('tasks')" id="nav-tasks" class="flex flex-col items-center py-1.5 text-cyan-400 transition">
-        <i data-lucide="check-square" class="w-4 h-4 mb-1"></i>
-        <span class="text-[9px] font-mono tracking-tighter uppercase font-bold">Tareas</span>
+      <button onclick="switchTab('tasks')" id="nav-tasks" class="flex flex-col items-center py-1 text-amber-400">
+        <i data-lucide="swords" class="w-4 h-4 mb-1"></i>
+        <span class="text-[9px] font-mono uppercase font-black">Misiones</span>
       </button>
-      <button onclick="switchTab('diet')" id="nav-diet" class="flex flex-col items-center py-1.5 text-slate-500 hover:text-slate-300 transition">
-        <i data-lucide="activity" class="w-4 h-4 mb-1"></i>
-        <span class="text-[9px] font-mono tracking-tighter uppercase font-bold">Dieta</span>
+      <button onclick="switchTab('diet')" id="nav-diet" class="flex flex-col items-center py-1 text-slate-500 hover:text-slate-300">
+        <i data-lucide="flame" class="w-4 h-4 mb-1"></i>
+        <span class="text-[9px] font-mono uppercase font-black">Bio-Ki</span>
       </button>
-      <button onclick="switchTab('reminders')" id="nav-reminders" class="flex flex-col items-center py-1.5 text-slate-500 hover:text-slate-300 transition">
-        <i data-lucide="sticky-note" class="w-4 h-4 mb-1"></i>
-        <span class="text-[9px] font-mono tracking-tighter uppercase font-bold">Keep</span>
+      <button onclick="switchTab('reminders')" id="nav-reminders" class="flex flex-col items-center py-1 text-slate-500 hover:text-slate-300">
+        <i data-lucide="book-marked" class="w-4 h-4 mb-1"></i>
+        <span class="text-[9px] font-mono uppercase font-black">Grimorio</span>
       </button>
-      <button onclick="switchTab('finances')" id="nav-finances" class="flex flex-col items-center py-1.5 text-slate-500 hover:text-slate-300 transition">
-        <i data-lucide="credit-card" class="w-4 h-4 mb-1"></i>
-        <span class="text-[9px] font-mono tracking-tighter uppercase font-bold">Tarjetas</span>
+      <button onclick="switchTab('finances')" id="nav-finances" class="flex flex-col items-center py-1 text-slate-500 hover:text-slate-300">
+        <i data-lucide="shield-check" class="w-4 h-4 mb-1"></i>
+        <span class="text-[9px] font-mono uppercase font-black">Bóveda</span>
       </button>
     </div>
   </nav>
 
-  <!-- LÓGICA JAVASCRIPT -->
+  <!-- JAVASCRIPT: LÓGICA, SINCRONIZACIÓN Y FECHAS DD/MM/AA -->
   <script>
     lucide.createIcons();
 
-    // Reloj digital en vivo
-    setInterval(() => {
-      const now = new Date();
-      document.getElementById('current-clock').textContent = now.toTimeString().substring(0, 5);
-    }, 1000);
-    document.getElementById('current-clock').textContent = new Date().toTimeString().substring(0, 5);
+    /* ==================================================== */
+    /* HELPER: FORMATEO ESTRICTO DE FECHAS EN FORMATO DD/MM/AA */
+    /* ==================================================== */
+    function formatToDDMMAA(dateInput) {
+      if (!dateInput) return '--/--/--';
+      
+      // Si viene como string 'YYYY-MM-DD'
+      if (typeof dateInput === 'string' && dateInput.includes('-')) {
+        const parts = dateInput.split('T')[0].split('-');
+        if (parts.length === 3) {
+          const dd = parts[2].padStart(2, '0');
+          const mm = parts[1].padStart(2, '0');
+          const aa = parts[0].slice(-2);
+          return `${dd}/${mm}/${aa}`;
+        }
+      }
 
-    // Estado principal
-    let tasks = JSON.parse(localStorage.getItem('cc_tasks')) || [];
-    let diet = JSON.parse(localStorage.getItem('cc_diet')) || {};
-    let keepNotes = JSON.parse(localStorage.getItem('cc_keep_notes')) || [];
-    let cards = JSON.parse(localStorage.getItem('cc_cards')) || [];
-    let expenses = JSON.parse(localStorage.getItem('cc_expenses')) || [];
+      const d = new Date(dateInput);
+      if (isNaN(d.getTime())) return dateInput;
+      const dd = String(d.getDate()).padStart(2, '0');
+      const mm = String(d.getMonth() + 1).padStart(2, '0');
+      const aa = String(d.getFullYear()).slice(-2);
+      return `${dd}/${mm}/${aa}`;
+    }
+
+    // Actualizar reloj y fecha en vivo
+    function updateClockHUD() {
+      const now = new Date();
+      document.getElementById('current-date-dmy').textContent = formatToDDMMAA(now);
+      document.getElementById('current-clock').textContent = now.toTimeString().substring(0, 5);
+    }
+    setInterval(updateClockHUD, 1000);
+    updateClockHUD();
+
+    /* ==================================================== */
+    /* MOTOR DE SINCRONIZACIÓN EN LA NUBE (GUN.JS)          */
+    /* ==================================================== */
+    const gun = Gun(['https://gun-manhattan.herokuapp.com/gun', 'https://relay.peer.ooo/gun']);
+    let syncPin = localStorage.getItem('cc_sync_pin') || '';
+
+    // Estado local reactivo
+    let appState = {
+      tasks: JSON.parse(localStorage.getItem('cc_tasks')) || [],
+      diet: JSON.parse(localStorage.getItem('cc_diet')) || {},
+      keepNotes: JSON.parse(localStorage.getItem('cc_keep_notes')) || [],
+      cards: JSON.parse(localStorage.getItem('cc_cards')) || [],
+      expenses: JSON.parse(localStorage.getItem('cc_expenses')) || []
+    };
+
     let selectedColor = 'dark';
     let currentDietDay = 'Lunes';
+
+    // Iniciar escucha Gun si hay un PIN configurado
+    if (syncPin) {
+      document.getElementById('sync-status-badge').textContent = `SYNC: ${syncPin.slice(0, 6)}...`;
+      initGunSync(syncPin);
+    }
+
+    function initGunSync(pin) {
+      gun.get('toros_negros_vault_' + pin).on((data) => {
+        if (!data || !data.payload) return;
+        try {
+          const cloudState = JSON.parse(data.payload);
+          appState = cloudState;
+          saveLocalSilently();
+          refreshAllUI();
+        } catch(e) { console.error("Error al sincronizar nube", e); }
+      });
+    }
+
+    function pushToCloud() {
+      saveLocalSilently();
+      if (syncPin) {
+        gun.get('toros_negros_vault_' + syncPin).put({
+          payload: JSON.stringify(appState),
+          updatedAt: Date.now()
+        });
+      }
+    }
+
+    function saveLocalSilently() {
+      localStorage.setItem('cc_tasks', JSON.stringify(appState.tasks));
+      localStorage.setItem('cc_diet', JSON.stringify(appState.diet));
+      localStorage.setItem('cc_keep_notes', JSON.stringify(appState.keepNotes));
+      localStorage.setItem('cc_cards', JSON.stringify(appState.cards));
+      localStorage.setItem('cc_expenses', JSON.stringify(appState.expenses));
+    }
+
+    function toggleSyncModal() {
+      document.getElementById('sync-modal').classList.toggle('hidden');
+      if (syncPin) document.getElementById('sync-pin-input').value = syncPin;
+    }
+
+    function saveSyncPin() {
+      const pin = document.getElementById('sync-pin-input').value.trim().toUpperCase();
+      if (!pin) return;
+      syncPin = pin;
+      localStorage.setItem('cc_sync_pin', syncPin);
+      document.getElementById('sync-status-badge').textContent = `SYNC: ${syncPin.slice(0, 6)}...`;
+      toggleSyncModal();
+      initGunSync(syncPin);
+      pushToCloud();
+      alert(`[ENLACE CONECTADO] PIN "${syncPin}" activado. Úsalo en tus otros dispositivos.`);
+    }
 
     // NAVEGACIÓN
     function switchTab(tabId) {
       const tabs = ['tasks', 'diet', 'reminders', 'finances'];
       const titles = {
-        tasks: 'MÓDULO: TAREAS',
-        diet: 'BIO-HACKING & DIETA',
-        reminders: 'NOTAS • GOOGLE KEEP',
-        finances: 'CYBER WALLET (TDC/TDD)'
+        tasks: 'GRIMORIO: MISIONES',
+        diet: 'BIO-KI & NUTRICIÓN',
+        reminders: 'PERGAMINOS (KEEP)',
+        finances: 'BÓVEDA CAPSULE CORP'
       };
 
       tabs.forEach(t => {
         document.getElementById(`tab-${t}`).classList.toggle('hidden', t !== tabId);
         const nav = document.getElementById(`nav-${t}`);
         if(t === tabId) {
-          nav.className = "flex flex-col items-center py-1.5 text-cyan-400";
+          nav.className = "flex flex-col items-center py-1 text-amber-400";
         } else {
-          nav.className = "flex flex-col items-center py-1.5 text-slate-500 hover:text-slate-300";
+          nav.className = "flex flex-col items-center py-1 text-slate-500 hover:text-slate-300";
         }
       });
       document.getElementById('header-title').textContent = titles[tabId];
     }
 
-    /* ========================================= */
-    /* 1. MÓDULO TAREAS                          */
-    /* ========================================= */
+    /* ==================================================== */
+    /* 1. MISIONES / TAREAS                                 */
+    /* ==================================================== */
     document.getElementById('task-form').addEventListener('submit', (e) => {
       e.preventDefault();
-      const title = document.getElementById('task-title').value;
-      const subject = document.getElementById('task-subject').value;
+      const title = document.getElementById('task-title').value.trim();
+      const subject = document.getElementById('task-subject').value.trim();
       const date = document.getElementById('task-date').value;
       const priority = document.getElementById('task-priority').value;
 
-      tasks.unshift({ id: Date.now(), title, subject, date, priority, completed: false });
-      localStorage.setItem('cc_tasks', JSON.stringify(tasks));
+      appState.tasks.unshift({ id: Date.now(), title, subject, date, priority, completed: false });
+      pushToCloud();
       e.target.reset();
       renderTasks();
     });
 
     function toggleTask(id) {
-      tasks = tasks.map(t => t.id === id ? { ...t, completed: !t.completed } : t);
-      localStorage.setItem('cc_tasks', JSON.stringify(tasks));
+      appState.tasks = appState.tasks.map(t => t.id === id ? { ...t, completed: !t.completed } : t);
+      pushToCloud();
       renderTasks();
     }
 
     function deleteTask(id) {
-      tasks = tasks.filter(t => t.id !== id);
-      localStorage.setItem('cc_tasks', JSON.stringify(tasks));
+      appState.tasks = appState.tasks.filter(t => t.id !== id);
+      pushToCloud();
       renderTasks();
     }
 
     function renderTasks() {
       const list = document.getElementById('tasks-list');
-      const pending = tasks.filter(t => !t.completed).length;
-      const done = tasks.filter(t => t.completed).length;
-      document.getElementById('stat-pending-tasks').textContent = pending;
-      document.getElementById('stat-done-tasks').textContent = done;
-      const total = tasks.length;
-      document.getElementById('stat-ratio-tasks').textContent = total > 0 ? Math.round((done/total)*100) + '%' : '100%';
+      const pending = appState.tasks.filter(t => !t.completed).length;
+      const done = appState.tasks.filter(t => t.completed).length;
+      const total = appState.tasks.length;
 
-      if (tasks.length === 0) {
-        list.innerHTML = `<p class="text-xs text-slate-600 font-mono text-center py-8">NO_ACTIVE_TASKS // BANDEJA LIMPIA</p>`;
+      document.getElementById('stat-pending').textContent = pending;
+      document.getElementById('stat-done').textContent = done;
+      document.getElementById('stat-ki-power').textContent = `${done * 100} / ${Math.max(1, total) * 100} KI`;
+
+      const pct = total > 0 ? (done / total) * 100 : 0;
+      document.getElementById('ki-progress-bar').style.width = `${pct}%`;
+
+      // Rango de Caballero Mágico
+      const rank = done >= 15 ? "Capitán de Orden" : done >= 8 ? "Caballero Senior" : done >= 3 ? "Intermedio" : "Novato";
+      document.getElementById('stat-rank').textContent = rank;
+
+      if (appState.tasks.length === 0) {
+        list.innerHTML = `<p class="text-xs text-slate-600 font-mono text-center py-8">SIN_MISIONES_ACTIVAS // PAZ TEMPORAL</p>`;
         return;
       }
 
-      list.innerHTML = tasks.map(t => {
+      list.innerHTML = appState.tasks.map(t => {
         const priorityColors = {
           high: 'border-l-rose-500 text-rose-400 bg-rose-500/10',
-          normal: 'border-l-cyan-400 text-cyan-400 bg-cyan-400/10',
-          low: 'border-l-slate-500 text-slate-400 bg-slate-500/10'
+          normal: 'border-l-amber-500 text-amber-400 bg-amber-500/10',
+          low: 'border-l-slate-600 text-slate-400 bg-slate-600/10'
         };
 
         return `
-          <div class="glass-panel p-3 rounded-xl flex items-center justify-between border-l-4 ${priorityColors[t.priority] || 'border-l-cyan-400'} ${t.completed ? 'opacity-35' : ''}">
+          <div class="bg-saiyan-panel border border-slate-800 p-3 rounded-xl flex items-center justify-between border-l-4 ${priorityColors[t.priority] || 'border-l-amber-500'} ${t.completed ? 'opacity-35' : ''}">
             <div class="flex items-center gap-3">
               <input type="checkbox" ${t.completed ? 'checked' : ''} onchange="toggleTask(${t.id})" 
-                class="w-4 h-4 rounded bg-slate-900 border-slate-700 text-cyan-500 focus:ring-0 cursor-pointer">
+                class="w-4 h-4 rounded bg-slate-900 border-slate-700 text-amber-500 focus:ring-0 cursor-pointer">
               <div>
-                <p class="text-xs font-semibold ${t.completed ? 'line-through text-slate-500' : 'text-slate-100'}">${t.title}</p>
-                <div class="flex items-center gap-2 mt-0.5">
-                  <span class="text-[10px] font-mono text-cyan-300">${t.subject}</span>
+                <p class="text-xs font-bold ${t.completed ? 'line-through text-slate-500' : 'text-slate-100'}">${t.title}</p>
+                <div class="flex items-center gap-2 mt-0.5 font-mono">
+                  <span class="text-[10px] text-amber-400">${t.subject}</span>
                   <span class="text-[10px] text-slate-600">•</span>
-                  <span class="text-[10px] font-mono text-slate-400">📅 ${t.date}</span>
+                  <span class="text-[10px] text-cyan-400">📅 ${formatToDDMMAA(t.date)}</span>
                 </div>
               </div>
             </div>
@@ -516,15 +624,15 @@
       }).join('');
     }
 
-    /* ========================================= */
-    /* 2. MÓDULO DIETA Y BIO-HACKING            */
-    /* ========================================= */
+    /* ==================================================== */
+    /* 2. DIETA & BIO-KI (CON 2 COLACIONES Y AGUA)          */
+    /* ==================================================== */
     const days = ['Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado', 'Domingo'];
 
     function renderDayCapsules() {
       const container = document.getElementById('diet-day-capsules');
       container.innerHTML = days.map(d => `
-        <button onclick="selectDietDay('${d}')" class="px-3 py-1.5 rounded-xl text-xs font-mono font-bold transition whitespace-nowrap ${currentDietDay === d ? 'bg-cyan-500 text-slate-950 shadow-md shadow-cyan-500/30' : 'bg-slate-900 text-slate-400 border border-white/5'}">
+        <button onclick="selectDietDay('${d}')" class="px-3 py-1.5 rounded-xl text-xs font-mono font-bold transition whitespace-nowrap ${currentDietDay === d ? 'bg-amber-500 text-slate-950 font-black shadow-md shadow-amber-500/30' : 'bg-slate-900 text-slate-400 border border-slate-800'}">
           ${d}
         </button>
       `).join('');
@@ -537,7 +645,7 @@
     }
 
     function loadDietData() {
-      const data = diet[currentDietDay] || { desayuno: '', colacion1: '', comida: '', colacion2: '', cena: '', water: 0, calories: '', protein: '', carbs: '' };
+      const data = appState.diet[currentDietDay] || { desayuno: '', colacion1: '', comida: '', colacion2: '', cena: '', water: 0, calories: '', protein: '', carbs: '' };
       document.getElementById('diet-desayuno').value = data.desayuno || '';
       document.getElementById('diet-colacion1').value = data.colacion1 || '';
       document.getElementById('diet-comida').value = data.comida || '';
@@ -550,33 +658,33 @@
     }
 
     function saveDiet() {
-      diet[currentDietDay] = {
-        ...(diet[currentDietDay] || {}),
+      appState.diet[currentDietDay] = {
+        ...(appState.diet[currentDietDay] || {}),
         desayuno: document.getElementById('diet-desayuno').value,
         colacion1: document.getElementById('diet-colacion1').value,
         comida: document.getElementById('diet-comida').value,
         colacion2: document.getElementById('diet-colacion2').value,
         cena: document.getElementById('diet-cena').value,
       };
-      localStorage.setItem('cc_diet', JSON.stringify(diet));
-      alert(`[DATA SAVED] Menú de ${currentDietDay} actualizado.`);
+      pushToCloud();
+      alert(`[KI CARGADO] Menú de ${currentDietDay} guardado.`);
     }
 
     function saveMacros() {
-      diet[currentDietDay] = {
-        ...(diet[currentDietDay] || {}),
+      appState.diet[currentDietDay] = {
+        ...(appState.diet[currentDietDay] || {}),
         calories: document.getElementById('macro-calories').value,
         protein: document.getElementById('macro-protein').value,
         carbs: document.getElementById('macro-carbs').value
       };
-      localStorage.setItem('cc_diet', JSON.stringify(diet));
+      pushToCloud();
     }
 
     function changeWater(delta) {
-      const current = (diet[currentDietDay]?.water || 0) + delta;
+      const current = (appState.diet[currentDietDay]?.water || 0) + delta;
       const finalWater = Math.max(0, Math.min(12, current));
-      diet[currentDietDay] = { ...(diet[currentDietDay] || {}), water: finalWater };
-      localStorage.setItem('cc_diet', JSON.stringify(diet));
+      appState.diet[currentDietDay] = { ...(appState.diet[currentDietDay] || {}), water: finalWater };
+      pushToCloud();
       renderWaterUI(finalWater);
     }
 
@@ -588,18 +696,18 @@
       const iconsCont = document.getElementById('water-icons-container');
       let dots = '';
       for(let i = 0; i < 8; i++) {
-        dots += `<div class="w-3.5 h-3.5 rounded-full border border-cyan-400/50 ${i < count ? 'bg-cyan-400 shadow-sm shadow-cyan-400' : 'bg-transparent'}"></div>`;
+        dots += `<div class="w-3 h-3 rounded-full border border-cyan-400/50 ${i < count ? 'bg-cyan-400 shadow-sm shadow-cyan-400' : 'bg-transparent'}"></div>`;
       }
       iconsCont.innerHTML = dots;
     }
 
-    /* ========================================= */
-    /* 3. MÓDULO NOTAS (ESTILO GOOGLE KEEP)     */
-    /* ========================================= */
+    /* ==================================================== */
+    /* 3. NOTAS (PERGAMINOS KEEP CON FECHA DD/MM/AA)        */
+    /* ==================================================== */
     function selectNoteColor(color) {
       selectedColor = color;
       document.querySelectorAll('.color-dot').forEach(dot => {
-        dot.classList.toggle('border-cyan-400', dot.dataset.color === color);
+        dot.classList.toggle('border-amber-400', dot.dataset.color === color);
         dot.classList.toggle('scale-110', dot.dataset.color === color);
       });
     }
@@ -611,7 +719,7 @@
 
       if(!title && !body) return;
 
-      keepNotes.unshift({
+      appState.keepNotes.unshift({
         id: Date.now(),
         title,
         body,
@@ -620,7 +728,7 @@
         pinned: false
       });
 
-      localStorage.setItem('cc_keep_notes', JSON.stringify(keepNotes));
+      pushToCloud();
       document.getElementById('note-title').value = '';
       document.getElementById('note-body').value = '';
       document.getElementById('note-alert').value = '';
@@ -628,40 +736,38 @@
     }
 
     function togglePinNote(id) {
-      keepNotes = keepNotes.map(n => n.id === id ? { ...n, pinned: !n.pinned } : n);
-      // Pinned van primero
-      keepNotes.sort((a,b) => (b.pinned === a.pinned) ? 0 : b.pinned ? 1 : -1);
-      localStorage.setItem('cc_keep_notes', JSON.stringify(keepNotes));
+      appState.keepNotes = appState.keepNotes.map(n => n.id === id ? { ...n, pinned: !n.pinned } : n);
+      appState.keepNotes.sort((a,b) => (b.pinned === a.pinned) ? 0 : b.pinned ? 1 : -1);
+      pushToCloud();
       renderKeepNotes();
     }
 
     function deleteKeepNote(id) {
-      keepNotes = keepNotes.filter(n => n.id !== id);
-      localStorage.setItem('cc_keep_notes', JSON.stringify(keepNotes));
+      appState.keepNotes = appState.keepNotes.filter(n => n.id !== id);
+      pushToCloud();
       renderKeepNotes();
     }
 
     function renderKeepNotes() {
       const grid = document.getElementById('keep-notes-grid');
-      if (keepNotes.length === 0) {
-        grid.innerHTML = `<div class="col-span-2 text-center py-10 text-slate-600 font-mono text-xs">NO_NOTES_IN_DATABASE</div>`;
+      if (appState.keepNotes.length === 0) {
+        grid.innerHTML = `<div class="col-span-2 text-center py-10 text-slate-600 font-mono text-xs">GRIMORIO_VACÍO</div>`;
         return;
       }
 
       const colorThemes = {
-        dark: 'bg-slate-900/90 border-slate-700/60 text-slate-200',
-        amber: 'bg-amber-950/60 border-amber-500/40 text-amber-200',
-        emerald: 'bg-emerald-950/60 border-emerald-500/40 text-emerald-200',
-        purple: 'bg-purple-950/60 border-purple-500/40 text-purple-200',
-        rose: 'bg-rose-950/60 border-rose-500/40 text-rose-200',
-        blue: 'bg-cyan-950/60 border-cyan-500/40 text-cyan-200'
+        dark: 'bg-slate-900 border-slate-800 text-slate-200',
+        gold: 'bg-amber-950/70 border-amber-500/40 text-amber-200',
+        crimson: 'bg-rose-950/70 border-rose-500/40 text-rose-200',
+        kiBlue: 'bg-cyan-950/70 border-cyan-500/40 text-cyan-200',
+        purple: 'bg-purple-950/70 border-purple-500/40 text-purple-200'
       };
 
-      grid.innerHTML = keepNotes.map(n => `
-        <div class="rounded-2xl p-3 border ${colorThemes[n.color] || colorThemes.dark} flex flex-col justify-between relative shadow-md transition hover:scale-[1.01]">
+      grid.innerHTML = appState.keepNotes.map(n => `
+        <div class="rounded-2xl p-3 border ${colorThemes[n.color] || colorThemes.dark} flex flex-col justify-between relative shadow-md">
           <div>
             <div class="flex justify-between items-start mb-1.5">
-              ${n.title ? `<h4 class="text-xs font-bold leading-tight line-clamp-2">${n.title}</h4>` : '<span></span>'}
+              ${n.title ? `<h4 class="text-xs font-black leading-tight line-clamp-2">${n.title}</h4>` : '<span></span>'}
               <button onclick="togglePinNote(${n.id})" class="text-xs p-0.5 ml-1 ${n.pinned ? 'text-amber-400' : 'text-slate-500 hover:text-white'}">
                 📌
               </button>
@@ -669,17 +775,17 @@
             ${n.body ? `<p class="text-[11px] leading-relaxed opacity-90 whitespace-pre-wrap">${n.body}</p>` : ''}
           </div>
 
-          <div class="mt-3 pt-2 border-t border-white/5 flex items-center justify-between text-[10px]">
-            ${n.alertTime ? `<span class="font-mono text-amber-400 flex items-center gap-1">⏰ ${new Date(n.alertTime).toLocaleDateString([], {month:'numeric', day:'numeric', hour:'2-digit', minute:'2-digit'})}</span>` : '<span></span>'}
+          <div class="mt-3 pt-2 border-t border-white/5 flex items-center justify-between text-[9px] font-mono">
+            ${n.alertTime ? `<span class="text-amber-400">⏰ ${formatToDDMMAA(n.alertTime)}</span>` : '<span></span>'}
             <button onclick="deleteKeepNote(${n.id})" class="text-slate-500 hover:text-rose-400 text-xs">✕</button>
           </div>
         </div>
       `).join('');
     }
 
-    /* ========================================= */
-    /* 4. MÓDULO TARJETAS Y FINANZAS (CYBER)     */
-    /* ========================================= */
+    /* ==================================================== */
+    /* 4. TARJETAS Y FINANZAS (CON FECHAS DD/MM/AA)         */
+    /* ==================================================== */
     function toggleCardModal() {
       document.getElementById('card-modal').classList.toggle('hidden');
     }
@@ -694,43 +800,43 @@
       const name = document.getElementById('card-name').value.trim();
       const type = document.getElementById('card-type').value;
 
-      if(!name) return alert('Ingresa el banco o nombre de la tarjeta');
+      if(!name) return alert('Ingresa el nombre del banco o tarjeta');
 
       if (type === 'TDC') {
         const limit = parseFloat(document.getElementById('card-limit').value) || 0;
         const cutoff = document.getElementById('card-cutoff').value || '1';
         const payday = document.getElementById('card-payday').value || '20';
-        cards.push({ id: Date.now(), name, type, limit, debt: 0, cutoff, payday });
+        appState.cards.push({ id: Date.now(), name, type, limit, debt: 0, cutoff, payday });
       } else {
         const balance = parseFloat(document.getElementById('card-balance').value) || 0;
-        cards.push({ id: Date.now(), name, type, balance });
+        appState.cards.push({ id: Date.now(), name, type, balance });
       }
 
-      localStorage.setItem('cc_cards', JSON.stringify(cards));
+      pushToCloud();
       toggleCardModal();
       renderCards();
       populateCardSelect();
     }
 
     function deleteCard(id) {
-      if(confirm('¿Eliminar esta tarjeta del sistema?')) {
-        cards = cards.filter(c => c.id !== id);
-        localStorage.setItem('cc_cards', JSON.stringify(cards));
+      if(confirm('¿Desvincular esta tarjeta?')) {
+        appState.cards = appState.cards.filter(c => c.id !== id);
+        pushToCloud();
         renderCards();
         populateCardSelect();
       }
     }
 
     function payCreditCard(id) {
-      const amount = prompt("¿Monto a liquidar/abonar a la deuda de esta tarjeta?");
+      const amount = prompt("¿Monto a abonar para liquidar deuda?");
       if(amount && !isNaN(amount)) {
-        cards = cards.map(c => {
+        appState.cards = appState.cards.map(c => {
           if(c.id === id) {
             c.debt = Math.max(0, c.debt - parseFloat(amount));
           }
           return c;
         });
-        localStorage.setItem('cc_cards', JSON.stringify(cards));
+        pushToCloud();
         renderCards();
       }
     }
@@ -740,7 +846,7 @@
       let totalDebt = 0;
       let totalLiquidity = 0;
 
-      cards.forEach(c => {
+      appState.cards.forEach(c => {
         if(c.type === 'TDC') totalDebt += c.debt;
         if(c.type === 'TDD') totalLiquidity += c.balance;
       });
@@ -748,54 +854,53 @@
       document.getElementById('total-debt-metric').textContent = `$${totalDebt.toFixed(2)}`;
       document.getElementById('total-liquidity-metric').textContent = `$${totalLiquidity.toFixed(2)}`;
 
-      if (cards.length === 0) {
-        container.innerHTML = `<div class="glass-panel p-6 rounded-2xl text-center text-xs text-slate-500 font-mono">SIN_TARJETAS_VINCULADAS</div>`;
+      if (appState.cards.length === 0) {
+        container.innerHTML = `<div class="bg-saiyan-panel p-6 rounded-2xl text-center text-xs text-slate-500 font-mono">SIN_TARJETAS_REGISTRADAS</div>`;
         return;
       }
 
-      container.innerHTML = cards.map(c => {
+      container.innerHTML = appState.cards.map(c => {
         if (c.type === 'TDC') {
           const available = Math.max(0, c.limit - c.debt);
-          const usedPercent = Math.min(100, Math.round((c.debt / (c.limit || 1)) * 100));
+          const usedPct = Math.min(100, Math.round((c.debt / (c.limit || 1)) * 100));
           return `
-            <div class="relative overflow-hidden rounded-2xl bg-gradient-to-br from-slate-900 via-indigo-950/80 to-purple-950/50 p-4 border border-purple-500/30 shadow-xl">
-              <div class="flex justify-between items-center mb-2">
-                <span class="text-[9px] font-mono uppercase px-2 py-0.5 rounded-full bg-purple-500/20 text-purple-300 border border-purple-500/30 font-bold tracking-wider">TDC CRÉDITO</span>
+            <div class="relative rounded-2xl bg-gradient-to-br from-slate-950 via-slate-900 to-amber-950/40 p-4 border border-amber-500/30 shadow-xl font-mono">
+              <div class="flex justify-between items-center mb-1">
+                <span class="text-[9px] uppercase px-2 py-0.5 rounded-full bg-amber-500/20 text-amber-300 border border-amber-500/40 font-black">TDC CRÉDITO • CAPSULE</span>
                 <button onclick="deleteCard(${c.id})" class="text-slate-500 hover:text-rose-400 text-xs">✕</button>
               </div>
-              <div class="flex justify-between items-baseline">
-                <h4 class="text-sm font-black text-white uppercase tracking-wider">${c.name}</h4>
-                <span class="text-[10px] font-mono text-slate-400">Límite: $${c.limit.toFixed(2)}</span>
+              <div class="flex justify-between items-baseline mt-2">
+                <h4 class="text-sm font-black text-white uppercase">${c.name}</h4>
+                <span class="text-[10px] text-slate-400">Límite: $${c.limit.toFixed(2)}</span>
               </div>
               
-              <!-- Barra de crédito usado -->
               <div class="my-2.5">
-                <div class="flex justify-between text-[10px] font-mono mb-1">
+                <div class="flex justify-between text-[10px] mb-1">
                   <span class="text-rose-400 font-bold">Deuda: $${c.debt.toFixed(2)}</span>
                   <span class="text-emerald-400 font-bold">Disponible: $${available.toFixed(2)}</span>
                 </div>
                 <div class="w-full bg-slate-900 h-2 rounded-full overflow-hidden border border-white/5">
-                  <div class="bg-gradient-to-r from-emerald-400 via-amber-400 to-rose-500 h-full transition-all duration-300" style="width: ${usedPercent}%"></div>
+                  <div class="bg-gradient-to-r from-emerald-400 via-amber-400 to-rose-500 h-full transition-all" style="width: ${usedPct}%"></div>
                 </div>
               </div>
 
-              <div class="flex justify-between items-center text-[10px] font-mono text-slate-400 border-t border-white/5 pt-2 mt-2">
+              <div class="flex justify-between items-center text-[10px] text-slate-400 border-t border-white/5 pt-2">
                 <span>Corte: día ${c.cutoff} • Pago: día ${c.payday}</span>
-                <button onclick="payCreditCard(${c.id})" class="text-cyan-300 font-bold hover:underline">Abonar Deuda</button>
+                <button onclick="payCreditCard(${c.id})" class="text-amber-400 font-black hover:underline">Abonar Deuda</button>
               </div>
             </div>
           `;
         } else {
           return `
-            <div class="relative overflow-hidden rounded-2xl bg-gradient-to-br from-slate-900 via-emerald-950/80 to-cyan-950/50 p-4 border border-emerald-500/30 shadow-xl">
-              <div class="flex justify-between items-center mb-2">
-                <span class="text-[9px] font-mono uppercase px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 font-bold tracking-wider">TDD DÉBITO</span>
+            <div class="relative rounded-2xl bg-gradient-to-br from-slate-950 via-slate-900 to-emerald-950/40 p-4 border border-emerald-500/30 shadow-xl font-mono">
+              <div class="flex justify-between items-center mb-1">
+                <span class="text-[9px] uppercase px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 border border-emerald-500/40 font-black">TDD DÉBITO</span>
                 <button onclick="deleteCard(${c.id})" class="text-slate-500 hover:text-rose-400 text-xs">✕</button>
               </div>
-              <h4 class="text-sm font-black text-white uppercase tracking-wider">${c.name}</h4>
-              <div class="my-2">
-                <span class="text-[10px] font-mono text-slate-400 uppercase">Fondos Disponibles</span>
-                <p class="text-lg font-mono font-bold text-emerald-400">$${c.balance.toFixed(2)}</p>
+              <h4 class="text-sm font-black text-white uppercase mt-2">${c.name}</h4>
+              <div class="my-1.5">
+                <span class="text-[9px] text-slate-400 uppercase">Fondos Disponibles</span>
+                <p class="text-base font-bold text-emerald-400">$${c.balance.toFixed(2)}</p>
               </div>
             </div>
           `;
@@ -805,24 +910,24 @@
 
     function populateCardSelect() {
       const select = document.getElementById('expense-card');
-      if (cards.length === 0) {
-        select.innerHTML = '<option value="">Primero vincula una tarjeta</option>';
+      if (appState.cards.length === 0) {
+        select.innerHTML = '<option value="">Primero vincula una tarjeta arriba</option>';
         return;
       }
-      select.innerHTML = cards.map(c => `
-        <option value="${c.id}">${c.name} [${c.type}]</option>
+      select.innerHTML = appState.cards.map(c => `
+        <option value="${c.id}">${c.name} (${c.type})</option>
       `).join('');
     }
 
     document.getElementById('expense-form').addEventListener('submit', (e) => {
       e.preventDefault();
       const cardId = parseInt(document.getElementById('expense-card').value);
-      const concept = document.getElementById('expense-concept').value;
+      const concept = document.getElementById('expense-concept').value.trim();
       const amount = parseFloat(document.getElementById('expense-amount').value);
 
       if(!cardId || isNaN(amount)) return;
 
-      cards = cards.map(c => {
+      appState.cards = appState.cards.map(c => {
         if(c.id === cardId) {
           if(c.type === 'TDC') c.debt += amount;
           if(c.type === 'TDD') c.balance -= amount;
@@ -830,16 +935,16 @@
         return c;
       });
 
-      expenses.unshift({
+      // Registro con fecha DD/MM/AA
+      appState.expenses.unshift({
         id: Date.now(),
         cardId,
         concept,
         amount,
-        date: new Date().toLocaleDateString('es-MX', { month:'short', day:'numeric', hour:'2-digit', minute:'2-digit' })
+        dateFormatted: formatToDDMMAA(new Date())
       });
 
-      localStorage.setItem('cc_cards', JSON.stringify(cards));
-      localStorage.setItem('cc_expenses', JSON.stringify(expenses));
+      pushToCloud();
       e.target.reset();
       renderCards();
       populateCardSelect();
@@ -848,33 +953,38 @@
 
     function renderExpenses() {
       const list = document.getElementById('expenses-list');
-      if (expenses.length === 0) {
-        list.innerHTML = `<p class="text-xs text-slate-600 font-mono text-center py-2">NO_TRANSACTION_RECORDS</p>`;
+      if (appState.expenses.length === 0) {
+        list.innerHTML = `<p class="text-xs text-slate-600 text-center py-2">SIN_REGISTROS</p>`;
         return;
       }
-      list.innerHTML = expenses.slice(0, 10).map(exp => {
-        const card = cards.find(c => c.id === exp.cardId);
+      list.innerHTML = appState.expenses.slice(0, 10).map(exp => {
+        const card = appState.cards.find(c => c.id === exp.cardId);
         const cardLabel = card ? `${card.name} [${card.type}]` : 'Desconocida';
         return `
-          <div class="glass-panel p-2.5 rounded-xl flex justify-between items-center text-xs">
+          <div class="bg-saiyan-panel border border-slate-800 p-2.5 rounded-xl flex justify-between items-center text-xs">
             <div>
               <p class="font-bold text-slate-200">${exp.concept}</p>
-              <p class="text-[10px] font-mono text-slate-500">${cardLabel} • ${exp.date}</p>
+              <p class="text-[10px] text-slate-500">${cardLabel} • ${exp.dateFormatted}</p>
             </div>
-            <span class="font-mono font-bold text-rose-400">-$${exp.amount.toFixed(2)}</span>
+            <span class="font-bold text-rose-400">-$${exp.amount.toFixed(2)}</span>
           </div>
         `;
       }).join('');
     }
 
+    // REFRESCO TOTAL DE INTERFAZ
+    function refreshAllUI() {
+      renderTasks();
+      renderDayCapsules();
+      loadDietData();
+      renderKeepNotes();
+      renderCards();
+      populateCardSelect();
+      renderExpenses();
+    }
+
     // ARRANQUE
-    renderTasks();
-    renderDayCapsules();
-    loadDietData();
-    renderKeepNotes();
-    renderCards();
-    populateCardSelect();
-    renderExpenses();
+    refreshAllUI();
   </script>
 </body>
 </html>
