@@ -32,7 +32,6 @@
       letter-spacing: 0.02em;
     }
 
-    /* TEMAS */
     :root {
       --bg-main: #07090e;
       --card-bg: rgba(13, 17, 28, 0.90);
@@ -84,10 +83,10 @@
   <header class="sticky top-0 z-40 bg-[var(--bg-main)]/95 backdrop-blur-xl border-b border-[var(--primary-border)] px-4 py-2.5 transition-colors">
     <div class="max-w-[430px] mx-auto flex items-center justify-between">
       
-      <!-- Insignia Toros Negros CON FONDO CLARO DE ALTO CONTRASTE -->
+      <!-- Insignia Toros Negros CON FONDO BLANCO / PLATA DE ALTO CONTRASTE -->
       <div class="flex items-center gap-2.5">
         <div class="w-9 h-9 rounded-xl bg-gradient-to-b from-white via-slate-100 to-slate-200 border-2 border-[var(--primary)] p-0.5 flex items-center justify-center shadow-lg shadow-[var(--primary)]/20">
-          <img id="app-logo" src="logo.png?v=5" 
+          <img id="app-logo" src="logo.png?v=6" 
                onerror="this.onerror=null; this.src='https://assets.stickpng.com/images/628c85c2bbec114743bed4bd.png'" 
                alt="Toros Negros" class="w-full h-full object-contain filter drop-shadow-sm">
         </div>
@@ -170,10 +169,21 @@
     </section>
 
     <!-- ========================================== -->
-    <!-- 2. PESTAÑA: DIETA & AGUA (4.5 LITROS)      -->
+    <!-- 2. PESTAÑA: DIETA & IMPORTADOR DE GEMINI   -->
     <!-- ========================================== -->
     <section id="tab-diet" style="display: none;" class="space-y-4">
       <div class="flex gap-1.5 overflow-x-auto pb-1" id="diet-day-capsules"></div>
+
+      <!-- BOTÓN VINCULADOR GEMINI / KEEP -->
+      <div class="themed-card p-3 rounded-2xl flex items-center justify-between">
+        <div>
+          <span class="text-xs font-bold text-white block font-mono">Importar de Keep / Gemini</span>
+          <span class="text-[10px] text-slate-400">Pega el texto copiado de tu asistente</span>
+        </div>
+        <button onclick="openModal('gemini-import-modal')" class="bg-gradient-to-r from-sky-500 to-indigo-600 hover:opacity-90 text-white font-bold px-3 py-1.5 rounded-xl text-xs font-mono flex items-center gap-1.5 shadow-md">
+          <i data-lucide="sparkles" class="w-3.5 h-3.5"></i> Pegar Dieta
+        </button>
+      </div>
 
       <!-- Hidratación Táctica 4.5 Litros -->
       <div class="themed-card p-3.5 rounded-2xl space-y-2.5">
@@ -263,13 +273,11 @@
     </section>
 
     <!-- ========================================== -->
-    <!-- 3. NUEVA PESTAÑA: RUTINAS DE GYM           -->
+    <!-- 3. PESTAÑA: RUTINAS DE GYM                 -->
     <!-- ========================================== -->
     <section id="tab-gym" style="display: none;" class="space-y-4">
-      <!-- Selector de Días Gym -->
       <div class="flex gap-1.5 overflow-x-auto pb-1" id="gym-day-capsules"></div>
 
-      <!-- Enfoque Muscular del Día -->
       <div class="themed-card p-3 rounded-2xl space-y-1.5">
         <label class="text-[10px] font-mono uppercase text-slate-400 font-bold flex items-center justify-between">
           <span>🎯 Enfoque del Día</span>
@@ -279,7 +287,6 @@
           class="w-full bg-slate-900 border border-slate-800 rounded-xl px-3 py-2 text-xs text-white font-bold font-mono focus:outline-none focus:border-[var(--primary)]">
       </div>
 
-      <!-- Formulario para agregar ejercicio -->
       <form id="gym-exercise-form" class="themed-card p-4 rounded-2xl space-y-3 font-mono">
         <div class="flex justify-between items-center text-xs font-bold text-[var(--primary)]">
           <span>+ AGREGAR EJERCICIO</span>
@@ -314,7 +321,6 @@
         </button>
       </form>
 
-      <!-- Lista de Ejercicios del Día -->
       <div id="gym-exercises-list" class="space-y-2"></div>
     </section>
 
@@ -409,6 +415,70 @@
   <!-- MODALES DE CONTROL                         -->
   <!-- ========================================== -->
 
+  <!-- MODAL NUEVO: IMPORTAR DIETA DESDE GEMINI / KEEP -->
+  <div id="gemini-import-modal" style="display: none;" class="fixed inset-0 z-50 bg-black/85 backdrop-blur-md items-center justify-center p-4">
+    <div class="themed-card rounded-3xl p-5 w-full max-w-sm space-y-3 font-mono shadow-2xl">
+      <div class="flex justify-between items-center border-b border-white/10 pb-2">
+        <h3 class="text-xs font-black text-sky-400 uppercase flex items-center gap-1.5">
+          <i data-lucide="sparkles" class="w-4 h-4"></i> Pegar Dieta de Gemini
+        </h3>
+        <button onclick="closeModal('gemini-import-modal')" class="text-slate-400 hover:text-white p-1">✕</button>
+      </div>
+
+      <p class="text-[11px] text-slate-300 font-sans leading-relaxed">
+        Pega el texto de tu dieta (de Gemini o Keep) y se asignará automáticamente a las 5 comidas de <b><span id="import-current-day-label">Lunes</span></b>:
+      </p>
+
+      <textarea id="gemini-paste-area" rows="6" placeholder="Pega aquí el texto, por ejemplo:&#10;Desayuno: 3 huevos con espinaca&#10;Colación 1: Manzana con nueces&#10;Comida: Pechuga con arroz..."
+        class="w-full bg-slate-900 border border-slate-700 rounded-xl p-2.5 text-xs text-white focus:outline-none focus:border-sky-400 font-sans"></textarea>
+
+      <div class="flex gap-2 pt-1">
+        <button type="button" onclick="closeModal('gemini-import-modal')" class="flex-1 bg-slate-900 text-slate-400 py-2.5 rounded-xl text-xs">Cancelar</button>
+        <button type="button" onclick="parseGeminiDiet()" class="flex-1 bg-sky-500 hover:bg-sky-400 text-slate-950 font-black py-2.5 rounded-xl text-xs shadow-md">Procesar y Rellenar</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL: SINCRONIZACIÓN NUBE REPARADA (JSONBLOB) -->
+  <div id="sync-modal" style="display: none;" class="fixed inset-0 z-50 bg-black/85 backdrop-blur-md items-center justify-center p-4">
+    <div class="themed-card rounded-3xl p-5 w-full max-w-sm space-y-4 font-mono shadow-2xl">
+      <div class="flex justify-between items-center border-b border-white/10 pb-2">
+        <h3 class="text-xs font-black text-[var(--primary)] uppercase flex items-center gap-1.5">
+          <i data-lucide="refresh-cw" class="w-4 h-4"></i> Sincronizar PC & Celular
+        </h3>
+        <button onclick="closeModal('sync-modal')" class="text-slate-400 hover:text-white p-1">✕</button>
+      </div>
+
+      <p class="text-[11px] text-slate-300 leading-relaxed font-sans">
+        1. En el dispositivo con tus datos, presiona <b>"Subir y Crear Código"</b>.<br>
+        2. En el otro dispositivo, escribe ese código y presiona <b>"Descargar Datos"</b>.
+      </p>
+
+      <div class="space-y-1.5">
+        <label class="text-[10px] text-slate-400 uppercase">Código de Nube Compartido:</label>
+        <div class="flex gap-1.5">
+          <input type="text" id="sync-code-input" placeholder="Ej: 1234abcd..." 
+            class="flex-1 bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-xs text-[var(--primary)] font-bold focus:outline-none">
+          <button type="button" onclick="saveSyncCode()" class="bg-slate-800 text-slate-200 px-3 py-2 rounded-xl text-xs font-bold">Fijar</button>
+        </div>
+      </div>
+
+      <div class="grid grid-cols-2 gap-2 pt-2 border-t border-white/10">
+        <button type="button" onclick="uploadToCloud()" class="bg-emerald-600 hover:bg-emerald-500 text-white p-2.5 rounded-xl text-[11px] font-bold shadow-md">
+          ⬆️ Subir y Guardar
+        </button>
+        <button type="button" onclick="downloadFromCloud()" class="bg-sky-600 hover:bg-sky-500 text-white p-2.5 rounded-xl text-[11px] font-bold shadow-md">
+          ⬇️ Descargar Datos
+        </button>
+      </div>
+
+      <div class="pt-2 border-t border-white/5 flex justify-between items-center text-[10px]">
+        <button type="button" onclick="exportDataString()" class="text-slate-400 hover:text-white underline">Copiar Respaldo Manual</button>
+        <button type="button" onclick="importDataString()" class="text-slate-400 hover:text-white underline">Pegar Respaldo</button>
+      </div>
+    </div>
+  </div>
+
   <!-- MODAL: ABONO A TARJETA -->
   <div id="payment-modal" style="display: none;" class="fixed inset-0 z-50 bg-black/85 backdrop-blur-md items-center justify-center p-4">
     <div class="themed-card rounded-3xl p-5 w-full max-w-sm space-y-4 font-mono shadow-2xl">
@@ -472,45 +542,6 @@
     </div>
   </div>
 
-  <!-- MODAL: SINCRONIZACIÓN NUBE -->
-  <div id="sync-modal" style="display: none;" class="fixed inset-0 z-50 bg-black/85 backdrop-blur-md items-center justify-center p-4">
-    <div class="themed-card rounded-3xl p-5 w-full max-w-sm space-y-4 font-mono shadow-2xl">
-      <div class="flex justify-between items-center border-b border-white/10 pb-2">
-        <h3 class="text-xs font-black text-[var(--primary)] uppercase flex items-center gap-1.5">
-          <i data-lucide="refresh-cw" class="w-4 h-4"></i> Sincronizar PC & Celular
-        </h3>
-        <button onclick="closeModal('sync-modal')" class="text-slate-400 hover:text-white p-1">✕</button>
-      </div>
-
-      <p class="text-[11px] text-slate-300 leading-relaxed font-sans">
-        Usa tu <b>Código de Nube</b> en ambos dispositivos para compartir todos tus datos:
-      </p>
-
-      <div class="space-y-2">
-        <label class="text-[10px] text-slate-400 uppercase">Tu Código de Sincronización:</label>
-        <div class="flex gap-1.5">
-          <input type="text" id="sync-code-input" placeholder="Ej: TORO-12345" 
-            class="flex-1 bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-xs text-[var(--primary)] font-bold focus:outline-none">
-          <button type="button" onclick="saveSyncCode()" class="bg-[var(--primary)] text-slate-950 px-3 py-2 rounded-xl text-xs font-black">Conectar</button>
-        </div>
-      </div>
-
-      <div class="grid grid-cols-2 gap-2 pt-2 border-t border-white/10">
-        <button type="button" onclick="uploadToCloud()" class="bg-slate-900 border border-emerald-500/40 text-emerald-400 p-2 rounded-xl text-[11px] font-bold hover:bg-emerald-950/40">
-          ⬆️ Subir a Nube
-        </button>
-        <button type="button" onclick="downloadFromCloud()" class="bg-slate-900 border border-sky-500/40 text-sky-400 p-2 rounded-xl text-[11px] font-bold hover:bg-sky-950/40">
-          ⬇️ Descargar
-        </button>
-      </div>
-
-      <div class="pt-2 border-t border-white/5 flex justify-between items-center text-[10px]">
-        <button type="button" onclick="exportDataString()" class="text-slate-400 hover:text-white underline">Copiar Respaldo</button>
-        <button type="button" onclick="importDataString()" class="text-slate-400 hover:text-white underline">Pegar Respaldo</button>
-      </div>
-    </div>
-  </div>
-
   <!-- MODAL: AGREGAR TARJETA -->
   <div id="card-modal" style="display: none;" class="fixed inset-0 z-50 bg-black/85 backdrop-blur-md items-center justify-center p-4">
     <div class="themed-card rounded-3xl p-5 w-full max-w-sm space-y-3 font-mono shadow-2xl">
@@ -546,7 +577,7 @@
     </div>
   </div>
 
-  <!-- NAVEGACIÓN INFERIOR DE 5 PESTAÑAS (OPTIMIZADA S24 ULTRA) -->
+  <!-- NAVEGACIÓN INFERIOR (5 PESTAÑAS) -->
   <nav class="fixed bottom-0 left-0 right-0 z-40 bg-[var(--bg-main)]/95 backdrop-blur-2xl border-t border-[var(--primary-border)] px-2 py-2">
     <div class="max-w-[430px] mx-auto grid grid-cols-5 gap-1">
       <button onclick="switchTab('tasks')" id="nav-tasks" class="flex flex-col items-center py-1 text-[var(--primary)]">
@@ -577,6 +608,9 @@
     function openModal(id) {
       const el = document.getElementById(id);
       if (el) el.style.display = 'flex';
+      if (id === 'gemini-import-modal') {
+        document.getElementById('import-current-day-label').textContent = currentDietDay;
+      }
     }
     function closeModal(id) {
       const el = document.getElementById(id);
@@ -633,7 +667,7 @@
     let appState = {
       tasks: safeJSON('cc_tasks', []),
       diet: safeJSON('cc_diet', {}),
-      gym: safeJSON('cc_gym', {}), // Rutinas de Gym
+      gym: safeJSON('cc_gym', {}),
       keepNotes: safeJSON('cc_keep_notes', []),
       cards: safeJSON('cc_cards', []),
       expenses: safeJSON('cc_expenses', [])
@@ -739,7 +773,7 @@
       `).join('');
     }
 
-    // DIETA & AGUA 4.5L
+    // DIETA & PARSER DE GEMINI/KEEP
     const days = ['Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado', 'Domingo'];
 
     function renderDayCapsules() {
@@ -781,6 +815,57 @@
       };
       saveLocal();
       alert(`Menú de ${currentDietDay} guardado.`);
+    }
+
+    // PARSER INTELIGENTE DE TEXTO DESDE GEMINI / KEEP
+    function parseGeminiDiet() {
+      const raw = document.getElementById('gemini-paste-area').value;
+      if (!raw.trim()) return alert('Pega el texto de tu dieta primero.');
+
+      const lines = raw.split('\n');
+      let currentSection = '';
+      let parsed = { desayuno: '', colacion1: '', comida: '', colacion2: '', cena: '' };
+      let colacionCount = 0;
+
+      lines.forEach(line => {
+        const lower = line.toLowerCase();
+        if (lower.includes('desayuno')) {
+          currentSection = 'desayuno';
+          parsed.desayuno += line.replace(/desayuno:?/i, '').trim() + ' ';
+        } else if (lower.includes('colaci') || lower.includes('snack') || lower.includes('merienda')) {
+          colacionCount++;
+          currentSection = colacionCount === 1 ? 'colacion1' : 'colacion2';
+          parsed[currentSection] += line.replace(/(colaci[oó]n|snack|merienda)(\s*\d)?:?/i, '').trim() + ' ';
+        } else if (lower.includes('comida') || lower.includes('almuerzo')) {
+          currentSection = 'comida';
+          parsed.comida += line.replace(/(comida|almuerzo):?/i, '').trim() + ' ';
+        } else if (lower.includes('cena')) {
+          currentSection = 'cena';
+          parsed.cena += line.replace(/cena:?/i, '').trim() + ' ';
+        } else if (currentSection && line.trim()) {
+          parsed[currentSection] += line.trim() + ' ';
+        }
+      });
+
+      // Si no detectó encabezados, distribuye las líneas
+      if (!parsed.desayuno && !parsed.comida && lines.length >= 3) {
+        parsed.desayuno = lines[0] || '';
+        parsed.colacion1 = lines[1] || '';
+        parsed.comida = lines[2] || '';
+        parsed.colacion2 = lines[3] || '';
+        parsed.cena = lines[4] || '';
+      }
+
+      document.getElementById('diet-desayuno').value = parsed.desayuno.trim();
+      document.getElementById('diet-colacion1').value = parsed.colacion1.trim();
+      document.getElementById('diet-comida').value = parsed.comida.trim();
+      document.getElementById('diet-colacion2').value = parsed.colacion2.trim();
+      document.getElementById('diet-cena').value = parsed.cena.trim();
+
+      saveDiet();
+      closeModal('gemini-import-modal');
+      document.getElementById('gemini-paste-area').value = '';
+      alert(`¡Dieta de Gemini vinculada y guardada para el ${currentDietDay}!`);
     }
 
     function saveMacros() {
@@ -825,9 +910,7 @@
       iconsCont.innerHTML = capsules;
     }
 
-    // ==========================================
-    // 3. RUTINAS DE GYM
-    // ==========================================
+    // RUTINAS DE GYM
     function renderGymDayCapsules() {
       const container = document.getElementById('gym-day-capsules');
       container.innerHTML = days.map(d => `
@@ -911,7 +994,7 @@
       const exercises = appState.gym[currentGymDay]?.exercises || [];
 
       if (exercises.length === 0) {
-        list.innerHTML = `<p class="text-xs text-slate-500 font-mono text-center py-6">No hay ejercicios registrados para el ${currentGymDay}.</p>`;
+        list.innerHTML = `<p class="text-xs text-slate-500 font-mono text-center py-6">No hay ejercicios para el ${currentGymDay}.</p>`;
         return;
       }
 
@@ -1101,229 +1184,4 @@
       document.getElementById('total-liquidity-metric').textContent = `$${totalLiquidity.toFixed(2)}`;
 
       if (appState.cards.length === 0) {
-        container.innerHTML = `<div class="themed-card p-6 rounded-2xl text-center text-xs text-slate-500 font-mono">No tienes tarjetas agregadas.</div>`;
-        return;
-      }
-
-      container.innerHTML = appState.cards.map(c => {
-        if (c.type === 'TDC') {
-          const limit = Number(c.limit) || 0;
-          const debt = Number(c.debt) || 0;
-          const available = Math.max(0, limit - debt);
-          const usedPct = limit > 0 ? Math.min(100, Math.round((debt / limit) * 100)) : 0;
-
-          return `
-            <div class="themed-card rounded-2xl p-4 font-mono shadow-lg">
-              <div class="flex justify-between items-center mb-1">
-                <span class="text-[9px] uppercase px-2 py-0.5 rounded-full bg-[var(--primary)]/20 text-[var(--primary)] font-bold">TDC CRÉDITO</span>
-                <button onclick="deleteCard(${c.id})" class="text-slate-500 hover:text-rose-400 text-xs">✕</button>
-              </div>
-              <div class="flex justify-between items-baseline mt-2">
-                <h4 class="text-sm font-black text-white uppercase">${c.name}</h4>
-                <span class="text-[10px] text-slate-400">Límite: $${limit.toFixed(2)}</span>
-              </div>
-              
-              <div class="my-2.5">
-                <div class="flex justify-between text-[10px] mb-1">
-                  <span class="text-rose-400 font-bold">Deuda: $${debt.toFixed(2)}</span>
-                  <span class="text-emerald-400 font-bold">Disponible: $${available.toFixed(2)}</span>
-                </div>
-                <div class="w-full bg-slate-900 h-2 rounded-full overflow-hidden border border-white/5">
-                  <div class="bg-gradient-to-r from-emerald-400 via-amber-400 to-rose-500 h-full transition-all" style="width: ${usedPct}%"></div>
-                </div>
-              </div>
-
-              <div class="flex justify-between items-center text-[10px] text-slate-400 border-t border-white/5 pt-2">
-                <span>Corte: día ${c.cutoff} • Pago: día ${c.payday}</span>
-                <button onclick="openPaymentModal(${c.id})" class="text-[var(--primary)] font-black hover:underline">
-                  + Abonar / Pagar
-                </button>
-              </div>
-            </div>
-          `;
-        } else {
-          const balance = Number(c.balance) || 0;
-          return `
-            <div class="themed-card rounded-2xl p-4 font-mono shadow-lg">
-              <div class="flex justify-between items-center mb-1">
-                <span class="text-[9px] uppercase px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 font-bold">TDD DÉBITO</span>
-                <button onclick="deleteCard(${c.id})" class="text-slate-500 hover:text-rose-400 text-xs">✕</button>
-              </div>
-              <h4 class="text-sm font-black text-white uppercase mt-2">${c.name}</h4>
-              <div class="my-1.5">
-                <span class="text-[9px] text-slate-400 uppercase">Fondos Disponibles</span>
-                <p class="text-base font-bold text-emerald-400">$${balance.toFixed(2)}</p>
-              </div>
-            </div>
-          `;
-        }
-      }).join('');
-    }
-
-    function populateCardSelect() {
-      const select = document.getElementById('expense-card');
-      if (appState.cards.length === 0) {
-        select.innerHTML = '<option value="">Primero agrega una tarjeta arriba</option>';
-        return;
-      }
-      select.innerHTML = appState.cards.map(c => `
-        <option value="${c.id}">${c.name} (${c.type})</option>
-      `).join('');
-    }
-
-    document.getElementById('expense-form').addEventListener('submit', (e) => {
-      e.preventDefault();
-      const cardId = parseInt(document.getElementById('expense-card').value);
-      const concept = document.getElementById('expense-concept').value.trim();
-      const amount = parseFloat(document.getElementById('expense-amount').value);
-
-      if(!cardId || isNaN(amount)) return;
-
-      appState.cards = appState.cards.map(c => {
-        if(c.id === cardId) {
-          if(c.type === 'TDC') c.debt = (Number(c.debt) || 0) + amount;
-          if(c.type === 'TDD') c.balance = (Number(c.balance) || 0) - amount;
-        }
-        return c;
-      });
-
-      appState.expenses.unshift({
-        id: Date.now(),
-        cardId,
-        concept,
-        amount,
-        dateFormatted: formatToDDMMAA(new Date())
-      });
-
-      saveLocal();
-      e.target.reset();
-      renderCards();
-      populateCardSelect();
-      renderExpenses();
-    });
-
-    function renderExpenses() {
-      const list = document.getElementById('expenses-list');
-      if (appState.expenses.length === 0) {
-        list.innerHTML = `<p class="text-xs text-slate-500 text-center py-2">Sin gastos registrados.</p>`;
-        return;
-      }
-      list.innerHTML = appState.expenses.slice(0, 10).map(exp => {
-        const card = appState.cards.find(c => c.id === exp.cardId);
-        const cardLabel = card ? `${card.name} [${card.type}]` : 'Desconocida';
-        const amount = Number(exp.amount) || 0;
-        return `
-          <div class="themed-card p-2.5 rounded-xl flex justify-between items-center text-xs">
-            <div>
-              <p class="font-bold text-slate-200">${exp.concept}</p>
-              <p class="text-[10px] text-slate-500">${cardLabel} • ${exp.dateFormatted}</p>
-            </div>
-            <span class="font-bold text-rose-400">-$${amount.toFixed(2)}</span>
-          </div>
-        `;
-      }).join('');
-    }
-
-    // SINCRONIZACIÓN
-    let syncCode = localStorage.getItem('cc_sync_code') || '';
-    if (syncCode) {
-      document.getElementById('sync-btn-label').textContent = syncCode.slice(0, 8);
-    }
-
-    function saveSyncCode() {
-      const code = document.getElementById('sync-code-input').value.trim().toUpperCase();
-      if (!code) return;
-      syncCode = code;
-      localStorage.setItem('cc_sync_code', syncCode);
-      document.getElementById('sync-btn-label').textContent = syncCode.slice(0, 8);
-      alert(`Código "${syncCode}" guardado.`);
-    }
-
-    async function uploadToCloud() {
-      if (!syncCode) {
-        syncCode = 'TORO-' + Math.random().toString(36).substring(2, 8).toUpperCase();
-        localStorage.setItem('cc_sync_code', syncCode);
-        document.getElementById('sync-code-input').value = syncCode;
-        document.getElementById('sync-btn-label').textContent = syncCode.slice(0, 8);
-      }
-
-      try {
-        const res = await fetch(`https://api.restful-api.dev/objects`, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            name: 'TOROS_SYNC_' + syncCode,
-            data: { payload: JSON.stringify(appState), updatedAt: Date.now() }
-          })
-        });
-        const json = await res.json();
-        if (json.id) {
-          localStorage.setItem('cc_cloud_id_' + syncCode, json.id);
-          alert(`¡Datos subidos!\nCódigo: ${syncCode}`);
-        }
-      } catch (e) {
-        alert('Error al conectar con la nube.');
-      }
-    }
-
-    async function downloadFromCloud() {
-      if (!syncCode) return alert('Ingresa tu código primero.');
-      const cloudId = localStorage.getItem('cc_cloud_id_' + syncCode);
-      if (!cloudId) return alert('No se encontró respaldo previo en este navegador con ese código.');
-
-      try {
-        const res = await fetch(`https://api.restful-api.dev/objects/${cloudId}`);
-        const json = await res.json();
-        if (json.data && json.data.payload) {
-          appState = JSON.parse(json.data.payload);
-          saveLocal();
-          refreshAllUI();
-          alert('¡Sincronización completada!');
-          closeModal('sync-modal');
-        }
-      } catch (e) {
-        alert('Error al descargar datos.');
-      }
-    }
-
-    function exportDataString() {
-      const str = btoa(unescape(encodeURIComponent(JSON.stringify(appState))));
-      navigator.clipboard.writeText(str);
-      alert('Respaldo copiado al portapapeles.');
-    }
-
-    function importDataString() {
-      const str = prompt('Pega el código de respaldo aquí:');
-      if (str) {
-        try {
-          appState = JSON.parse(decodeURIComponent(escape(atob(str))));
-          saveLocal();
-          refreshAllUI();
-          alert('¡Datos restaurados!');
-        } catch (e) {
-          alert('Código inválido.');
-        }
-      }
-    }
-
-    function refreshAllUI() {
-      try {
-        renderTasks();
-        renderDayCapsules();
-        loadDietData();
-        renderGymDayCapsules();
-        loadGymData();
-        renderKeepNotes();
-        renderCards();
-        populateCardSelect();
-        renderExpenses();
-        lucide.createIcons();
-      } catch(e) {
-        console.error("Error al refrescar UI", e);
-      }
-    }
-
-    refreshAllUI();
-  </script>
-</body>
-</html>
+        container.innerHTML = `<div class="theme
