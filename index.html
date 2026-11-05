@@ -3,17 +3,19 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <!-- FORZAR A CHROME/SAMSUNG A NO GUARDAR CÓDIGO VIEJO EN CACHÉ -->
+  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+  <meta http-equiv="Pragma" content="no-cache">
+  <meta http-equiv="Expires" content="0">
   <title>Toros Negros • Capsule OS</title>
   
-  <!-- Fuentes: Chakra Petch + Plus Jakarta Sans -->
+  <!-- Fuentes -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 
   <!-- Tailwind CSS -->
   <script src="https://cdn.tailwindcss.com"></script>
-  <!-- Iconos Lucide -->
-  <script src="https://unpkg.com/lucide@latest"></script>
 
   <style>
     ::-webkit-scrollbar { display: none; }
@@ -70,7 +72,7 @@
 </head>
 <body data-theme="blackbulls" class="bg-[var(--bg-main)] text-slate-100 pb-32 antialiased min-h-screen">
 
-  <!-- NOTIFICACIÓN FLOTANTE (TOAST) -->
+  <!-- AVISO TOAST FLOTANTE -->
   <div id="app-toast" class="fixed top-4 left-1/2 -translate-x-1/2 z-50 px-4 py-2.5 rounded-2xl text-xs font-mono font-bold shadow-2xl opacity-0 pointer-events-none transition-all duration-300">
     Notificación
   </div>
@@ -79,10 +81,10 @@
   <header class="sticky top-0 z-40 bg-[var(--bg-main)] border-b border-[var(--primary-border)] px-4 py-2.5">
     <div class="max-w-[430px] mx-auto flex items-center justify-between">
       
-      <!-- Logo Toros Negros con Fondo Blanco Contrastado -->
+      <!-- Logo Toros Negros con Fondo Blanco -->
       <div class="flex items-center gap-2.5">
         <div class="w-9 h-9 rounded-xl bg-white border-2 border-[var(--primary)] p-0.5 flex items-center justify-center shadow-md">
-          <img id="app-logo" src="logo.png?v=9" 
+          <img id="app-logo" src="logo.png?v=11" 
                onerror="this.onerror=null; this.src='https://assets.stickpng.com/images/628c85c2bbec114743bed4bd.png'" 
                alt="Toros Negros" class="w-full h-full object-contain">
         </div>
@@ -94,12 +96,16 @@
 
       <!-- Herramientas -->
       <div class="flex items-center gap-1.5 font-mono">
-        <button type="button" onclick="openModal('theme-modal')" class="p-1.5 rounded-lg bg-slate-900 border border-[var(--primary-border)] text-[var(--primary)] text-xs active:scale-95 transition">
-          <i data-lucide="palette" class="w-3.5 h-3.5"></i>
+        <!-- BOTÓN DE EMERGENCIA DESCONGELAR -->
+        <button type="button" onclick="hardResetApp()" title="Descongelar / Limpiar Caché" class="p-1.5 rounded-lg bg-slate-900 border border-rose-500/50 text-rose-400 text-xs active:scale-95 transition">
+          🧹
         </button>
 
-        <button type="button" onclick="openModal('sync-modal')" class="flex items-center gap-1 bg-slate-900 border border-[var(--primary-border)] text-[var(--primary)] px-2.5 py-1 rounded-lg text-[10px] font-bold active:scale-95 transition">
-          <i data-lucide="refresh-cw" class="w-3 h-3"></i>
+        <button type="button" onclick="openModal('theme-modal')" class="p-1.5 rounded-lg bg-slate-900 border border-[var(--primary-border)] text-[var(--primary)] text-xs active:scale-95 transition">
+          🎨
+        </button>
+
+        <button type="button" onclick="openModal('sync-modal')" class="flex items-center gap-1 bg-slate-900 border border-[var(--primary-border)] text-[var(--primary)] px-2 py-1 rounded-lg text-[10px] font-bold active:scale-95 transition">
           <span>SYNC</span>
         </button>
 
@@ -166,23 +172,20 @@
     <section id="tab-diet" style="display: none;" class="space-y-4">
       <div class="flex gap-1.5 overflow-x-auto pb-1" id="diet-day-capsules"></div>
 
-      <!-- BOTÓN IMPORTAR DE GEMINI -->
       <div class="themed-card p-3 rounded-2xl flex items-center justify-between">
         <div>
           <span class="text-xs font-bold text-white block font-mono">Importar de Keep / Gemini</span>
           <span class="text-[10px] text-slate-400">Pega el texto de tu asistente</span>
         </div>
-        <button type="button" onclick="openModal('gemini-import-modal')" class="bg-gradient-to-r from-sky-500 to-indigo-600 text-white font-bold px-3 py-1.5 rounded-xl text-xs font-mono flex items-center gap-1.5 shadow-md active:scale-95 transition">
-          <i data-lucide="sparkles" class="w-3.5 h-3.5"></i> Pegar Dieta
+        <button type="button" onclick="openModal('gemini-import-modal')" class="bg-gradient-to-r from-sky-500 to-indigo-600 text-white font-bold px-3 py-1.5 rounded-xl text-xs font-mono shadow-md active:scale-95 transition">
+          Pegar Dieta ✨
         </button>
       </div>
 
       <!-- Hidratación 4.5L -->
       <div class="themed-card p-3.5 rounded-2xl space-y-2.5">
         <div class="flex justify-between items-center text-xs font-mono font-bold">
-          <span class="text-[var(--primary)] flex items-center gap-1.5">
-            <i data-lucide="droplet" class="w-3.5 h-3.5"></i> Hidratación Celular
-          </span>
+          <span class="text-[var(--primary)]">💧 Hidratación Celular</span>
           <span id="water-count-text" class="text-slate-200 font-bold">0.00L / 4.50L (0%)</span>
         </div>
 
@@ -323,7 +326,7 @@
           class="w-full bg-transparent text-xs text-slate-200 placeholder-slate-500 focus:outline-none resize-none"></textarea>
         
         <div class="flex items-center gap-2 pt-1 border-t border-white/5">
-          <i data-lucide="bell" class="w-3.5 h-3.5 text-[var(--primary)]"></i>
+          <span class="text-xs">⏰</span>
           <input type="datetime-local" id="note-alert" 
             class="bg-slate-900 text-[10px] text-slate-300 px-2 py-1 rounded-lg border border-slate-800 focus:outline-none font-mono">
         </div>
@@ -360,8 +363,8 @@
 
       <div>
         <div class="flex justify-between items-center mb-2 px-1 font-mono">
-          <span class="text-[11px] font-bold text-[var(--primary)] uppercase tracking-wider flex items-center gap-1">
-            <i data-lucide="credit-card" class="w-3.5 h-3.5"></i> MIS TARJETAS
+          <span class="text-[11px] font-bold text-[var(--primary)] uppercase tracking-wider">
+            💳 MIS TARJETAS
           </span>
           <button type="button" onclick="openModal('card-modal')" class="text-xs text-[var(--primary)] hover:underline font-bold">
             + AGREGAR TARJETA
@@ -371,8 +374,8 @@
       </div>
 
       <form id="expense-form" class="themed-card p-4 rounded-2xl space-y-3">
-        <h3 class="text-xs font-bold uppercase tracking-wider text-rose-400 font-mono flex items-center gap-1.5">
-          <i data-lucide="arrow-down-right" class="w-3.5 h-3.5"></i> Registrar Gasto
+        <h3 class="text-xs font-bold uppercase tracking-wider text-rose-400 font-mono">
+          📉 Registrar Gasto
         </h3>
         <select id="expense-card" required class="w-full bg-slate-900 border border-slate-800 rounded-xl px-3 py-2 text-xs text-white font-mono focus:outline-none"></select>
         
@@ -396,65 +399,55 @@
 
   </main>
 
-  <!-- ========================================== -->
-  <!-- MODAL: SINCRONIZACIÓN INFALIBLE            -->
-  <!-- ========================================== -->
-  <div id="sync-modal" style="display: none;" onclick="if(event.target === this) closeModal('sync-modal')" class="fixed inset-0 z-50 bg-black/85 flex items-center justify-center p-4">
+  <!-- MODAL: SINCRONIZACIÓN -->
+  <div id="sync-modal" style="display: none;" onclick="if(event.target === this) closeModal('sync-modal')" class="fixed inset-0 z-50 bg-black/85 items-center justify-center p-4">
     <div class="themed-card rounded-3xl p-5 w-full max-w-sm space-y-4 font-mono shadow-2xl">
       <div class="flex justify-between items-center border-b border-white/10 pb-2">
-        <h3 class="text-xs font-black text-[var(--primary)] uppercase flex items-center gap-1.5">
-          <i data-lucide="refresh-cw" class="w-4 h-4"></i> Sincronización Directa
-        </h3>
+        <h3 class="text-xs font-black text-[var(--primary)] uppercase">Sincronización Directa</h3>
         <button type="button" onclick="closeModal('sync-modal')" class="text-slate-400 hover:text-white p-1">✕</button>
       </div>
 
-      <!-- MÉTODO 1: ARCHIVO DIRECTO (.JSON) -->
+      <!-- ARCHIVO DIRECTO .JSON -->
       <div class="space-y-2 bg-slate-900/80 p-3 rounded-2xl border border-white/5">
-        <span class="text-[10px] font-bold text-amber-400 uppercase block">Opción 1: Archivo de Respaldo (Recomendado)</span>
+        <span class="text-[10px] font-bold text-amber-400 uppercase block">Opción 1: Archivo .JSON (100% Infalible)</span>
         <p class="text-[11px] text-slate-300 font-sans leading-tight">
           Descarga tus datos y pásalos a tu otro dispositivo (por Quick Share, WhatsApp o correo):
         </p>
         <div class="grid grid-cols-2 gap-2 pt-1">
-          <button type="button" onclick="downloadJSONFile()" class="bg-amber-500 hover:bg-amber-400 text-slate-950 font-black p-2 rounded-xl text-[10px] uppercase shadow-md active:scale-95 transition flex items-center justify-center gap-1">
-            <i data-lucide="download" class="w-3.5 h-3.5"></i> Descargar
+          <button type="button" onclick="downloadJSONFile()" class="bg-amber-500 hover:bg-amber-400 text-slate-950 font-black p-2 rounded-xl text-[10px] uppercase shadow-md active:scale-95 transition">
+            ⬇️ Descargar
           </button>
 
-          <label class="bg-slate-800 hover:bg-slate-700 text-white font-bold p-2 rounded-xl text-[10px] uppercase cursor-pointer text-center flex items-center justify-center gap-1 active:scale-95 transition">
-            <i data-lucide="upload" class="w-3.5 h-3.5"></i> Cargar
+          <label class="bg-slate-800 hover:bg-slate-700 text-white font-bold p-2 rounded-xl text-[10px] uppercase cursor-pointer text-center flex items-center justify-center active:scale-95 transition">
+            ⬆️ Cargar
             <input type="file" id="file-import-input" accept=".json" onchange="importJSONFile(event)" class="hidden">
           </label>
         </div>
       </div>
 
-      <!-- MÉTODO 2: COPIAR Y PEGAR TEXTO -->
+      <!-- COPIAR Y PEGAR TEXTO -->
       <div class="space-y-2 bg-slate-900/80 p-3 rounded-2xl border border-white/5">
         <span class="text-[10px] font-bold text-sky-400 uppercase block">Opción 2: Copiar y Pegar Texto</span>
         <div class="flex gap-2">
           <button type="button" onclick="copyProgressText()" class="flex-1 bg-slate-800 hover:bg-slate-700 text-slate-200 py-1.5 rounded-xl text-[10px] font-bold active:scale-95 transition">
             Copiar Datos
           </button>
-          <button type="button" onclick="pasteProgressText()" class="flex-1 bg-sky-500 hover:bg-sky-400 text-slate-950 py-1.5 rounded-xl text-[10px] font-black active:scale-95 transition">
-            Pegar y Cargar
+          <button type="button" onclick="restoreFromTextArea()" class="flex-1 bg-sky-500 hover:bg-sky-400 text-slate-950 py-1.5 rounded-xl text-[10px] font-black active:scale-95 transition">
+            Cargar Texto
           </button>
         </div>
       </div>
 
       <textarea id="sync-clipboard-area" rows="2" placeholder="O pega el texto copiado aquí..." 
         class="w-full bg-slate-900 border border-slate-800 rounded-xl p-2 text-[10px] text-white focus:outline-none"></textarea>
-      
-      <button type="button" onclick="restoreFromTextArea()" class="w-full bg-slate-800 hover:bg-slate-700 text-slate-300 py-2 rounded-xl text-[10px] uppercase font-bold active:scale-95 transition">
-        Restaurar desde el cuadro
-      </button>
     </div>
   </div>
 
   <!-- MODAL: IMPORTAR DE GEMINI -->
-  <div id="gemini-import-modal" style="display: none;" onclick="if(event.target === this) closeModal('gemini-import-modal')" class="fixed inset-0 z-50 bg-black/80 flex items-center justify-center p-4">
+  <div id="gemini-import-modal" style="display: none;" onclick="if(event.target === this) closeModal('gemini-import-modal')" class="fixed inset-0 z-50 bg-black/80 items-center justify-center p-4">
     <div class="themed-card rounded-3xl p-5 w-full max-w-sm space-y-3 font-mono shadow-2xl">
       <div class="flex justify-between items-center border-b border-white/10 pb-2">
-        <h3 class="text-xs font-black text-sky-400 uppercase flex items-center gap-1.5">
-          <i data-lucide="sparkles" class="w-4 h-4"></i> Pegar Dieta de Gemini
-        </h3>
+        <h3 class="text-xs font-black text-sky-400 uppercase">Pegar Dieta de Gemini ✨</h3>
         <button type="button" onclick="closeModal('gemini-import-modal')" class="text-slate-400 hover:text-white p-1">✕</button>
       </div>
 
@@ -473,12 +466,10 @@
   </div>
 
   <!-- MODAL: ABONO A TARJETA -->
-  <div id="payment-modal" style="display: none;" onclick="if(event.target === this) closeModal('payment-modal')" class="fixed inset-0 z-50 bg-black/80 flex items-center justify-center p-4">
+  <div id="payment-modal" style="display: none;" onclick="if(event.target === this) closeModal('payment-modal')" class="fixed inset-0 z-50 bg-black/80 items-center justify-center p-4">
     <div class="themed-card rounded-3xl p-5 w-full max-w-sm space-y-4 font-mono shadow-2xl">
       <div class="flex justify-between items-center border-b border-white/10 pb-2">
-        <h3 class="text-xs font-black text-[var(--primary)] uppercase flex items-center gap-1.5">
-          <i data-lucide="dollar-sign" class="w-4 h-4"></i> ABONAR A TARJETA
-        </h3>
+        <h3 class="text-xs font-black text-[var(--primary)] uppercase">💵 ABONAR A TARJETA</h3>
         <button type="button" onclick="closeModal('payment-modal')" class="text-slate-400 hover:text-white p-1">✕</button>
       </div>
 
@@ -507,7 +498,7 @@
   </div>
 
   <!-- MODAL: CAMBIAR TEMA -->
-  <div id="theme-modal" style="display: none;" onclick="if(event.target === this) closeModal('theme-modal')" class="fixed inset-0 z-50 bg-black/80 flex items-center justify-center p-4">
+  <div id="theme-modal" style="display: none;" onclick="if(event.target === this) closeModal('theme-modal')" class="fixed inset-0 z-50 bg-black/80 items-center justify-center p-4">
     <div class="themed-card rounded-3xl p-5 w-full max-w-sm space-y-4 font-mono shadow-2xl">
       <div class="flex justify-between items-center border-b border-white/10 pb-2">
         <h3 class="text-xs font-black text-[var(--primary)] uppercase">Selecciona el Tema</h3>
@@ -536,7 +527,7 @@
   </div>
 
   <!-- MODAL: AGREGAR TARJETA -->
-  <div id="card-modal" style="display: none;" onclick="if(event.target === this) closeModal('card-modal')" class="fixed inset-0 z-50 bg-black/80 flex items-center justify-center p-4">
+  <div id="card-modal" style="display: none;" onclick="if(event.target === this) closeModal('card-modal')" class="fixed inset-0 z-50 bg-black/80 items-center justify-center p-4">
     <div class="themed-card rounded-3xl p-5 w-full max-w-sm space-y-3 font-mono shadow-2xl">
       <div class="flex justify-between items-center border-b border-white/10 pb-2">
         <h3 class="text-xs font-black text-[var(--primary)] uppercase">Vincular Tarjeta</h3>
@@ -574,30 +565,36 @@
   <nav class="fixed bottom-0 left-0 right-0 z-40 bg-[var(--bg-main)] border-t border-[var(--primary-border)] px-2 py-2">
     <div class="max-w-[430px] mx-auto grid grid-cols-5 gap-1">
       <button type="button" onclick="switchTab('tasks')" id="nav-tasks" class="flex flex-col items-center py-1 text-[var(--primary)]">
-        <i data-lucide="check-square" class="w-4 h-4 mb-1"></i>
-        <span class="text-[8px] font-mono uppercase font-bold tracking-tighter">Tareas</span>
+        <span class="text-sm">📋</span>
+        <span class="text-[8px] font-mono uppercase font-bold tracking-tighter mt-0.5">Tareas</span>
       </button>
       <button type="button" onclick="switchTab('diet')" id="nav-diet" class="flex flex-col items-center py-1 text-slate-500 hover:text-slate-300">
-        <i data-lucide="utensils" class="w-4 h-4 mb-1"></i>
-        <span class="text-[8px] font-mono uppercase font-bold tracking-tighter">Dieta</span>
+        <span class="text-sm">🥗</span>
+        <span class="text-[8px] font-mono uppercase font-bold tracking-tighter mt-0.5">Dieta</span>
       </button>
       <button type="button" onclick="switchTab('gym')" id="nav-gym" class="flex flex-col items-center py-1 text-slate-500 hover:text-slate-300">
-        <i data-lucide="dumbbell" class="w-4 h-4 mb-1"></i>
-        <span class="text-[8px] font-mono uppercase font-bold tracking-tighter">Gym</span>
+        <span class="text-sm">🏋️</span>
+        <span class="text-[8px] font-mono uppercase font-bold tracking-tighter mt-0.5">Gym</span>
       </button>
       <button type="button" onclick="switchTab('reminders')" id="nav-reminders" class="flex flex-col items-center py-1 text-slate-500 hover:text-slate-300">
-        <i data-lucide="sticky-note" class="w-4 h-4 mb-1"></i>
-        <span class="text-[8px] font-mono uppercase font-bold tracking-tighter">Keep</span>
+        <span class="text-sm">📌</span>
+        <span class="text-[8px] font-mono uppercase font-bold tracking-tighter mt-0.5">Keep</span>
       </button>
       <button type="button" onclick="switchTab('finances')" id="nav-finances" class="flex flex-col items-center py-1 text-slate-500 hover:text-slate-300">
-        <i data-lucide="credit-card" class="w-4 h-4 mb-1"></i>
-        <span class="text-[8px] font-mono uppercase font-bold tracking-tighter">Tarjetas</span>
+        <span class="text-sm">💳</span>
+        <span class="text-[8px] font-mono uppercase font-bold tracking-tighter mt-0.5">Tarjetas</span>
       </button>
     </div>
   </nav>
 
-  <!-- JAVASCRIPT SIN SERVIDORES EXTERNOS NI ERRORES -->
+  <!-- JAVASCRIPT PROTEGIDO Y DESCONGELADO -->
   <script>
+    // CAPTURAR CUALQUIER ERROR OCULTO
+    window.addEventListener('error', function(e) {
+      console.error(e);
+      showToast('Aviso: ' + (e.message || 'Error detectado'), true);
+    });
+
     function showToast(msg, isError = false) {
       const toast = document.getElementById('app-toast');
       if (!toast) return;
@@ -606,8 +603,8 @@
         isError ? 'bg-rose-600 text-white' : 'bg-[var(--primary)] text-slate-950'
       }`;
       setTimeout(() => {
-        toast.className += ' opacity-0 pointer-events-none';
-      }, 2400);
+        toast.className = 'fixed top-4 left-1/2 -translate-x-1/2 z-50 px-4 py-2.5 rounded-2xl text-xs font-mono font-bold shadow-2xl transition-all duration-300 pointer-events-none opacity-0';
+      }, 2500);
     }
 
     function openModal(id) {
@@ -704,6 +701,14 @@
         localStorage.setItem('cc_cards', JSON.stringify(appState.cards));
         localStorage.setItem('cc_expenses', JSON.stringify(appState.expenses));
       } catch(e) {}
+    }
+
+    // BOTÓN DE EMERGENCIA PARA DESCONGELAR Y LIMPIAR
+    function hardResetApp() {
+      if (confirm('¿Deseas reiniciar la memoria interna de la app para descongelarla? (Tus datos no se perderán si descargaste un respaldo)')) {
+        localStorage.clear();
+        location.reload(true);
+      }
     }
 
     function switchTab(tabId) {
@@ -1331,4 +1336,105 @@
     });
 
     function renderExpenses() {
-      const list = document
+      const list = document.getElementById('expenses-list');
+      if (!list) return;
+      if (appState.expenses.length === 0) {
+        list.innerHTML = `<p class="text-xs text-slate-500 text-center py-2">Sin gastos registrados.</p>`;
+        return;
+      }
+      list.innerHTML = appState.expenses.slice(0, 10).map(exp => {
+        const card = appState.cards.find(c => c.id === exp.cardId);
+        const cardLabel = card ? `${card.name} [${card.type}]` : 'Desconocida';
+        const amount = Number(exp.amount) || 0;
+        return `
+          <div class="themed-card p-2.5 rounded-xl flex justify-between items-center text-xs">
+            <div>
+              <p class="font-bold text-slate-200">${exp.concept}</p>
+              <p class="text-[10px] text-slate-500">${cardLabel} • ${exp.dateFormatted}</p>
+            </div>
+            <span class="font-bold text-rose-400">-$${amount.toFixed(2)}</span>
+          </div>
+        `;
+      }).join('');
+    }
+
+    // ==========================================
+    // SISTEMA DE SINCRONIZACIÓN INFALIBLE (.JSON)
+    // ==========================================
+    function downloadJSONFile() {
+      try {
+        const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(appState, null, 2));
+        const downloadAnchor = document.createElement('a');
+        downloadAnchor.setAttribute("href", dataStr);
+        downloadAnchor.setAttribute("download", `toros_negros_${formatToDDMMAA(new Date()).replace(/\//g, '-')}.json`);
+        document.body.appendChild(downloadAnchor);
+        downloadAnchor.click();
+        downloadAnchor.remove();
+        showToast('Archivo descargado con éxito');
+      } catch(e) {
+        showToast('Error al descargar archivo', true);
+      }
+    }
+
+    function importJSONFile(event) {
+      const file = event.target.files[0];
+      if (!file) return;
+
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        try {
+          const parsed = JSON.parse(e.target.result);
+          if (parsed && typeof parsed === 'object') {
+            appState.tasks = Array.isArray(parsed.tasks) ? parsed.tasks : [];
+            appState.diet = parsed.diet || {};
+            appState.gym = parsed.gym || {};
+            appState.keepNotes = Array.isArray(parsed.keepNotes) ? parsed.keepNotes : [];
+            appState.cards = Array.isArray(parsed.cards) ? parsed.cards : [];
+            appState.expenses = Array.isArray(parsed.expenses) ? parsed.expenses : [];
+            saveLocal();
+            refreshAllUI();
+            closeModal('sync-modal');
+            showToast('¡Datos cargados al 100%!');
+          }
+        } catch(err) {
+          showToast('El archivo no es válido', true);
+        }
+      };
+      reader.readAsText(file);
+    }
+
+    function copyProgressText() {
+      try {
+        const jsonStr = JSON.stringify(appState);
+        navigator.clipboard.writeText(jsonStr).then(() => {
+          showToast('¡Datos copiados al portapapeles!');
+          document.getElementById('sync-clipboard-area').value = jsonStr;
+        }).catch(() => {
+          document.getElementById('sync-clipboard-area').value = jsonStr;
+          showToast('Texto colocado en el recuadro');
+        });
+      } catch(e) {
+        showToast('Error al copiar', true);
+      }
+    }
+
+    function restoreFromTextArea() {
+      const text = document.getElementById('sync-clipboard-area').value.trim();
+      if (!text) return showToast('El cuadro está vacío', true);
+
+      try {
+        const parsed = JSON.parse(text);
+        if (parsed && typeof parsed === 'object') {
+          appState.tasks = Array.isArray(parsed.tasks) ? parsed.tasks : [];
+          appState.diet = parsed.diet || {};
+          appState.gym = parsed.gym || {};
+          appState.keepNotes = Array.isArray(parsed.keepNotes) ? parsed.keepNotes : [];
+          appState.cards = Array.isArray(parsed.cards) ? parsed.cards : [];
+          appState.expenses = Array.isArray(parsed.expenses) ? parsed.expenses : [];
+          saveLocal();
+          refreshAllUI();
+          closeModal('sync-modal');
+          showToast('¡Progreso restaurado con éxito!');
+        }
+      } catch(e) {
+        showToast('Formato de texto inválid
