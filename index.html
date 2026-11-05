@@ -2,314 +2,313 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>TOROS NEGROS • CAPSULE OS</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <title>Toros Negros • Capsule OS</title>
   <!-- Tailwind CSS -->
   <script src="https://cdn.tailwindcss.com"></script>
-  <!-- Lucide Icons -->
+  <!-- Iconos Lucide -->
   <script src="https://unpkg.com/lucide@latest"></script>
-  <!-- GunDB para sincronización instantánea Teléfono <-> PC sin servidores de pago -->
-  <script src="https://cdn.jsdelivr.net/npm/gun/gun.js"></script>
-  
-  <script>
-    tailwind.config = {
-      darkMode: 'class',
-      theme: {
-        extend: {
-          colors: {
-            saiyan: {
-              gold: '#fbbf24',
-              kiBlue: '#38bdf8',
-              kiRed: '#ef4444',
-              antiMagic: '#dc2626',
-              bullGold: '#f59e0b',
-              darkAura: '#080a0f',
-              panel: 'rgba(12, 16, 26, 0.88)'
-            }
-          }
-        }
-      }
-    }
-  </script>
 
   <style>
     ::-webkit-scrollbar { display: none; }
-    body { -webkit-tap-highlight-color: transparent; }
-    .grimoire-border {
-      border: 1px solid rgba(245, 158, 11, 0.25);
-      box-shadow: 0 0 15px -3px rgba(245, 158, 11, 0.15);
+    body { 
+      -webkit-tap-highlight-color: transparent;
+      padding-top: env(safe-area-inset-top);
+      padding-bottom: env(safe-area-inset-bottom);
     }
-    .scouter-glow {
-      box-shadow: 0 0 20px -3px rgba(56, 189, 248, 0.3);
+
+    /* SISTEMA DE TEMAS */
+    :root {
+      --bg-main: #07090e;
+      --card-bg: rgba(13, 17, 28, 0.88);
+      --primary: #f59e0b;       /* Oro Toros Negros */
+      --primary-border: rgba(245, 158, 11, 0.35);
+      --accent: #dc2626;        /* Carmesí */
+      --text-glow: rgba(245, 158, 11, 0.2);
     }
-    .ki-meter-pulse {
-      animation: kiPulse 3s infinite alternate;
+
+    body[data-theme="saiyan"] {
+      --bg-main: #050813;
+      --card-bg: rgba(10, 18, 38, 0.90);
+      --primary: #38bdf8;       /* Azul Ki */
+      --primary-border: rgba(56, 189, 248, 0.35);
+      --accent: #fbbf24;        /* Oro Saiyan */
+      --text-glow: rgba(56, 189, 248, 0.25);
     }
-    @keyframes kiPulse {
-      0% { box-shadow: 0 0 10px rgba(56, 189, 248, 0.2); }
-      100% { box-shadow: 0 0 25px rgba(220, 38, 38, 0.35); }
+
+    body[data-theme="cyber"] {
+      --bg-main: #090614;
+      --card-bg: rgba(22, 14, 40, 0.90);
+      --primary: #c084fc;       /* Violeta */
+      --primary-border: rgba(192, 132, 252, 0.35);
+      --accent: #06b6d4;        /* Cian */
+      --text-glow: rgba(192, 132, 252, 0.25);
+    }
+
+    body[data-theme="stealth"] {
+      --bg-main: #09090b;
+      --card-bg: rgba(24, 24, 27, 0.90);
+      --primary: #e4e4e7;       /* Plata / Gris */
+      --primary-border: rgba(113, 113, 122, 0.35);
+      --accent: #71717a;
+      --text-glow: rgba(255, 255, 255, 0.05);
+    }
+
+    .themed-card {
+      background: var(--card-bg);
+      border: 1px solid var(--primary-border);
+      box-shadow: 0 4px 20px -2px var(--text-glow);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+    }
+    .themed-border {
+      border-color: var(--primary-border);
     }
   </style>
 </head>
-<body class="bg-saiyan-darkAura text-slate-100 font-sans pb-28 antialiased min-h-screen selection:bg-amber-500 selection:text-black">
+<body data-theme="blackbulls" class="bg-[var(--bg-main)] text-slate-100 font-sans pb-32 antialiased min-h-screen transition-colors duration-300">
 
-  <!-- HUD SUPERIOR ANIME-TECH: CAPSULE CORP & BLACK BULLS -->
-  <header class="sticky top-0 z-40 bg-slate-950/95 backdrop-blur-xl border-b border-amber-500/30 px-4 py-2.5">
-    <div class="max-w-md mx-auto flex items-center justify-between">
-      <!-- Escudo Toros Negros & Scouter -->
-      <div class="flex items-center gap-2">
-        <div class="w-8 h-8 rounded-lg bg-gradient-to-br from-amber-500 to-rose-600 flex items-center justify-center font-black text-black text-xs font-mono shadow-md shadow-amber-500/20 border border-amber-300">
-          🐂
+  <!-- ENCABEZADO OPTIMIZADO PARA S24 ULTRA (412-440PX) -->
+  <header class="sticky top-0 z-40 bg-[var(--bg-main)]/95 backdrop-blur-xl border-b border-[var(--primary-border)] px-4 py-2.5 transition-colors">
+    <div class="max-w-[430px] mx-auto flex items-center justify-between">
+      
+      <!-- Insignia Toros Negros (Imagen Oficial) -->
+      <div class="flex items-center gap-2.5">
+        <div class="w-9 h-9 rounded-xl bg-black/60 border border-[var(--primary-border)] p-1 flex items-center justify-center shadow-md">
+          <img id="app-logo" src="logo.png" 
+               onerror="this.onerror=null; this.src='https://assets.stickpng.com/images/628c85c2bbec114743bed4bd.png'" 
+               alt="Insignia Toros Negros" class="w-full h-full object-contain">
         </div>
         <div>
-          <div class="flex items-center gap-1.5">
-            <span class="text-[9px] font-mono font-black uppercase tracking-wider text-amber-400">TOROS NEGROS • CORP</span>
-            <span class="text-[9px] px-1 py-0.2 bg-red-950 text-red-400 border border-red-800 rounded font-mono font-bold">KI: OVER 9000</span>
-          </div>
-          <h1 id="header-title" class="text-xs font-black text-white tracking-wider uppercase">GRIMORIO: TAREAS</h1>
+          <span class="text-[9px] font-mono font-bold tracking-wider text-[var(--primary)] uppercase block leading-tight">TOROS NEGROS • HQ</span>
+          <h1 id="header-title" class="text-xs font-black tracking-wide uppercase text-white">Misiones Escolares</h1>
         </div>
       </div>
 
-      <!-- Reloj DD/MM/AA y Botón de Sincronización en la nube -->
-      <div class="flex items-center gap-2">
-        <button onclick="toggleSyncModal()" class="flex items-center gap-1 bg-amber-500/10 hover:bg-amber-500/20 border border-amber-500/40 text-amber-300 text-[10px] font-mono font-bold px-2 py-1 rounded-lg transition">
-          <i data-lucide="cloud" class="w-3 h-3 text-cyan-400"></i>
-          <span id="sync-status-badge">SYNC PIN</span>
+      <!-- Herramientas: Temas, Sincronización y Reloj DD/MM/AA -->
+      <div class="flex items-center gap-1.5 font-mono">
+        <!-- Botón Cambiar Tema -->
+        <button onclick="toggleThemeModal()" title="Cambiar Tema" class="p-1.5 rounded-lg bg-slate-900 border border-[var(--primary-border)] text-[var(--primary)] text-xs">
+          <i data-lucide="palette" class="w-3.5 h-3.5"></i>
         </button>
-        <div class="font-mono text-[10px] text-slate-400 bg-slate-900 px-2 py-1 rounded-lg border border-slate-800 text-right">
-          <span id="current-date-dmy" class="text-amber-400 font-bold block leading-none">--/--/--</span>
-          <span id="current-clock" class="text-[9px] text-slate-500">00:00</span>
+
+        <!-- Botón Sincronización Nube -->
+        <button onclick="toggleSyncModal()" title="Sincronizar Celular y PC" class="flex items-center gap-1 bg-slate-900 border border-[var(--primary-border)] text-[var(--primary)] px-2 py-1 rounded-lg text-[10px] font-bold">
+          <i data-lucide="cloud" class="w-3 h-3"></i>
+          <span id="sync-btn-label">SYNC</span>
+        </button>
+
+        <!-- Fecha DD/MM/AA -->
+        <div class="bg-slate-900 border border-slate-800 px-2 py-0.5 rounded-lg text-right text-[10px]">
+          <span id="hud-date" class="text-[var(--primary)] font-bold block leading-none">--/--/--</span>
+          <span id="hud-clock" class="text-[9px] text-slate-400">00:00</span>
         </div>
       </div>
-    </div>
 
-    <!-- Frase emblemática de Yami Sukehiro -->
-    <div class="max-w-md mx-auto mt-1 flex justify-between items-center text-[9px] font-mono text-slate-500 border-t border-white/5 pt-1">
-      <span class="text-amber-500/80 font-bold tracking-tight">"¡SUPERA TUS LÍMITES AQUÍ Y AHORA!"</span>
-      <span class="text-cyan-400">CAPSULE_SYS v3.0</span>
     </div>
   </header>
 
-  <!-- CONTENEDOR PRINCIPAL -->
-  <main class="max-w-md mx-auto px-4 pt-4">
+  <!-- CONTENEDOR PRINCIPAL CALIBRADO S24 ULTRA -->
+  <main class="max-w-[430px] mx-auto px-4 pt-4 space-y-4">
 
     <!-- ========================================== -->
-    <!-- 1. PESTAÑA: TAREAS (RASTREADOR DE MISIONES)-->
+    <!-- 1. PESTAÑA: TAREAS ESCOLARES               -->
     <!-- ========================================== -->
     <section id="tab-tasks" class="space-y-4">
-      <!-- Medidor de Ki Escolar -->
-      <div class="bg-saiyan-panel grimoire-border p-3.5 rounded-2xl ki-meter-pulse space-y-2">
-        <div class="flex justify-between items-center text-xs font-mono font-bold">
-          <span class="text-amber-400 flex items-center gap-1.5">
-            <i data-lucide="zap" class="w-3.5 h-3.5 text-amber-400"></i> NIVEL DE PODER (KI)
-          </span>
-          <span id="stat-ki-power" class="text-cyan-400">0 / 0 EXP</span>
+      <!-- Estadísticas Rápidas -->
+      <div class="grid grid-cols-3 gap-2 font-mono text-center">
+        <div class="themed-card p-2.5 rounded-2xl">
+          <span class="text-[9px] text-slate-400 block uppercase">Pendientes</span>
+          <span id="stat-pending" class="text-base font-black text-rose-400">0</span>
         </div>
-        <div class="w-full bg-slate-900 h-2 rounded-full overflow-hidden border border-amber-500/20">
-          <div id="ki-progress-bar" class="bg-gradient-to-r from-amber-400 via-rose-500 to-cyan-400 h-full w-0 transition-all duration-500"></div>
+        <div class="themed-card p-2.5 rounded-2xl">
+          <span class="text-[9px] text-slate-400 block uppercase">Hechas</span>
+          <span id="stat-done" class="text-base font-black text-emerald-400">0</span>
         </div>
-        <div class="flex justify-between text-[10px] font-mono text-slate-400 pt-0.5">
-          <span>Pendientes: <b id="stat-pending" class="text-rose-400">0</b></span>
-          <span>Cumplidas: <b id="stat-done" class="text-emerald-400">0</b></span>
-          <span>Rango: <b id="stat-rank" class="text-amber-400">Novato</b></span>
+        <div class="themed-card p-2.5 rounded-2xl">
+          <span class="text-[9px] text-slate-400 block uppercase">Progreso</span>
+          <span id="stat-rate" class="text-base font-black text-[var(--primary)]">100%</span>
         </div>
       </div>
 
-      <!-- Formulario Misión / Tarea -->
-      <form id="task-form" class="bg-saiyan-panel border border-slate-800 p-4 rounded-2xl space-y-3">
-        <h2 class="text-xs font-bold uppercase tracking-wider text-amber-400 font-mono flex items-center gap-1.5">
-          <i data-lucide="scroll" class="w-3.5 h-3.5"></i> Registrar Nueva Misión
-        </h2>
-        <input type="text" id="task-title" placeholder="Objetivo de la misión (ej: Examen de Álgebra)" required
-          class="w-full bg-slate-900 border border-slate-800 rounded-xl px-3.5 py-2.5 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-amber-400">
+      <!-- Formulario Tarea -->
+      <form id="task-form" class="themed-card p-4 rounded-2xl space-y-3">
+        <div class="flex justify-between items-center text-xs font-mono font-bold text-[var(--primary)]">
+          <span>+ REGISTRAR ASIGNACIÓN</span>
+          <span class="text-[10px] text-slate-500">FORMATO DD/MM/AA</span>
+        </div>
+        <input type="text" id="task-title" placeholder="Nombre de la entrega o examen" required
+          class="w-full bg-slate-900/90 border border-slate-700/70 rounded-xl px-3.5 py-2.5 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-[var(--primary)]">
         
         <div class="grid grid-cols-2 gap-2">
-          <input type="text" id="task-subject" placeholder="Materia / Escuadrón" required
-            class="bg-slate-900 border border-slate-800 rounded-xl px-3 py-2 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-amber-400">
-          <!-- Entrada fecha -->
+          <input type="text" id="task-subject" placeholder="Materia" required
+            class="bg-slate-900/90 border border-slate-700/70 rounded-xl px-3 py-2 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-[var(--primary)]">
           <input type="date" id="task-date" required
-            class="bg-slate-900 border border-slate-800 rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-amber-400">
+            class="bg-slate-900/90 border border-slate-700/70 rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-[var(--primary)]">
         </div>
 
         <div class="flex gap-2">
-          <select id="task-priority" class="bg-slate-900 border border-slate-800 rounded-xl px-3 py-2 text-xs text-slate-300 focus:outline-none flex-1">
-            <option value="normal">⚡ Nivel de Amenaza: Medio</option>
-            <option value="high">🔥 Nivel: Rango Capitán (Urgente)</option>
-            <option value="low">🌱 Misión Secundaria (Baja)</option>
+          <select id="task-priority" class="bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-xs text-slate-300 focus:outline-none flex-1">
+            <option value="normal">Prioridad Normal</option>
+            <option value="high">Prioridad Alta</option>
+            <option value="low">Prioridad Baja</option>
           </select>
-          <button type="submit" class="bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-400 hover:to-amber-500 text-slate-950 font-black px-4 py-2 rounded-xl text-xs uppercase font-mono transition shadow-md shadow-amber-500/20">
+          <button type="submit" class="bg-[var(--primary)] hover:opacity-90 text-slate-950 font-black px-4 py-2 rounded-xl text-xs uppercase font-mono transition">
             Añadir
           </button>
         </div>
       </form>
 
-      <!-- Lista de Misiones -->
+      <!-- Lista -->
       <div id="tasks-list" class="space-y-2"></div>
     </section>
 
     <!-- ========================================== -->
-    <!-- 2. PESTAÑA: DIETA (SENZU & BIO-KI)        -->
+    <!-- 2. PESTAÑA: DIETA & 2 COLACIONES           -->
     <!-- ========================================== -->
     <section id="tab-diet" class="hidden space-y-4">
-      <!-- Selector de días estilo cápsula -->
       <div class="flex gap-1.5 overflow-x-auto pb-1" id="diet-day-capsules"></div>
 
-      <!-- Hidratación / Tanque de Recuperación Saiyan -->
-      <div class="bg-saiyan-panel border border-cyan-500/30 p-4 rounded-2xl scouter-glow space-y-2">
-        <div class="flex justify-between items-center font-mono">
-          <span class="text-xs font-bold text-cyan-400 uppercase flex items-center gap-1.5">
-            <i data-lucide="droplet" class="w-3.5 h-3.5"></i> Hidratación Celular
+      <!-- Hidratación -->
+      <div class="themed-card p-3.5 rounded-2xl space-y-2">
+        <div class="flex justify-between items-center text-xs font-mono font-bold">
+          <span class="text-[var(--primary)] flex items-center gap-1.5">
+            <i data-lucide="droplet" class="w-3.5 h-3.5"></i> Hidratación Diaria
           </span>
-          <span id="water-count-text" class="text-xs font-bold text-cyan-300">0 / 8 Vasos (2.0L)</span>
+          <span id="water-count-text" class="text-slate-300">0 / 8 Vasos (2.0L)</span>
         </div>
-        <div class="w-full bg-slate-900 h-2.5 rounded-full overflow-hidden border border-cyan-500/20">
-          <div id="water-progress-bar" class="bg-gradient-to-r from-cyan-500 to-blue-500 h-full w-0 transition-all duration-300"></div>
+        <div class="w-full bg-slate-900 h-2 rounded-full overflow-hidden border border-white/5">
+          <div id="water-progress-bar" class="bg-[var(--primary)] h-full w-0 transition-all duration-300"></div>
         </div>
-        <div class="flex items-center justify-between pt-1">
-          <div class="flex gap-1.5" id="water-icons-container"></div>
-          <div class="flex gap-1">
-            <button onclick="changeWater(-1)" class="w-7 h-7 bg-slate-800 hover:bg-slate-700 text-cyan-300 rounded-lg text-xs font-mono font-bold">-1</button>
-            <button onclick="changeWater(1)" class="w-7 h-7 bg-cyan-500 hover:bg-cyan-400 text-slate-950 font-black rounded-lg text-xs font-mono">+1</button>
+        <div class="flex justify-between items-center pt-1">
+          <div class="flex gap-1" id="water-icons-container"></div>
+          <div class="flex gap-1 font-mono">
+            <button onclick="changeWater(-1)" class="w-7 h-7 bg-slate-800 text-slate-300 rounded-lg text-xs font-bold">-1</button>
+            <button onclick="changeWater(1)" class="w-7 h-7 bg-[var(--primary)] text-slate-950 rounded-lg text-xs font-black">+1</button>
           </div>
         </div>
       </div>
 
-      <!-- Macros / Energía Ki -->
-      <div class="bg-saiyan-panel border border-slate-800 p-3 rounded-2xl grid grid-cols-3 gap-2 text-center font-mono">
+      <!-- Macros rápidos -->
+      <div class="themed-card p-3 rounded-2xl grid grid-cols-3 gap-2 text-center font-mono">
         <div>
-          <span class="text-[9px] text-amber-400 font-bold block">KCAL (PODER)</span>
-          <input type="number" id="macro-calories" placeholder="2200" onchange="saveMacros()"
-            class="w-full bg-slate-900 text-center text-xs font-bold text-white rounded-lg py-1 border border-slate-700 focus:outline-none focus:border-amber-400">
+          <span class="text-[9px] text-slate-400 block uppercase">Calorías</span>
+          <input type="number" id="macro-calories" placeholder="2000" onchange="saveMacros()"
+            class="w-full bg-slate-900 text-center text-xs font-bold text-amber-400 rounded-lg py-1 border border-slate-800 focus:outline-none">
         </div>
         <div>
-          <span class="text-[9px] text-rose-400 font-bold block">PROTEÍNA (g)</span>
-          <input type="number" id="macro-protein" placeholder="150" onchange="saveMacros()"
-            class="w-full bg-slate-900 text-center text-xs font-bold text-white rounded-lg py-1 border border-slate-700 focus:outline-none focus:border-rose-400">
+          <span class="text-[9px] text-slate-400 block uppercase">Proteína (g)</span>
+          <input type="number" id="macro-protein" placeholder="140" onchange="saveMacros()"
+            class="w-full bg-slate-900 text-center text-xs font-bold text-emerald-400 rounded-lg py-1 border border-slate-800 focus:outline-none">
         </div>
         <div>
-          <span class="text-[9px] text-cyan-400 font-bold block">CARBS (g)</span>
-          <input type="number" id="macro-carbs" placeholder="250" onchange="saveMacros()"
-            class="w-full bg-slate-900 text-center text-xs font-bold text-white rounded-lg py-1 border border-slate-700 focus:outline-none focus:border-cyan-400">
+          <span class="text-[9px] text-slate-400 block uppercase">Carbs (g)</span>
+          <input type="number" id="macro-carbs" placeholder="220" onchange="saveMacros()"
+            class="w-full bg-slate-900 text-center text-xs font-bold text-cyan-400 rounded-lg py-1 border border-slate-800 focus:outline-none">
         </div>
       </div>
 
-      <!-- Las 5 Comidas Estructuradas -->
+      <!-- 5 Comidas -->
       <div class="space-y-2.5">
-        <div class="bg-saiyan-panel border-l-4 border-l-amber-500 p-3 rounded-2xl border border-slate-800 space-y-1">
-          <div class="flex justify-between items-center font-mono">
-            <h3 class="text-xs font-bold text-amber-400 uppercase">🍳 01 • Desayuno Saiyan</h3>
-            <span class="text-[9px] text-slate-500">Energía inicial</span>
-          </div>
-          <textarea id="diet-desayuno" rows="2" placeholder="Comida del amanecer..."
-            class="w-full bg-slate-900 border border-slate-800 rounded-xl p-2 text-xs text-white focus:outline-none focus:border-amber-400"></textarea>
+        <div class="themed-card border-l-4 border-l-amber-500 p-3 rounded-2xl space-y-1">
+          <span class="text-xs font-bold text-amber-400 font-mono">🍳 01 • Desayuno</span>
+          <textarea id="diet-desayuno" rows="2" placeholder="Huevos, avena, café..."
+            class="w-full bg-slate-900/70 border border-slate-800 rounded-xl p-2 text-xs text-white focus:outline-none"></textarea>
         </div>
 
-        <div class="bg-saiyan-panel border-l-4 border-l-emerald-500 p-3 rounded-2xl border border-slate-800 space-y-1">
-          <div class="flex justify-between items-center font-mono">
-            <h3 class="text-xs font-bold text-emerald-400 uppercase">🍏 02 • Colación Matutina (Snack 1)</h3>
-            <span class="text-[9px] text-slate-500">Media Mañana</span>
-          </div>
-          <textarea id="diet-colacion1" rows="2" placeholder="Frutos secos, batido, semillas del ermitaño..."
-            class="w-full bg-slate-900 border border-slate-800 rounded-xl p-2 text-xs text-white focus:outline-none focus:border-emerald-400"></textarea>
+        <div class="themed-card border-l-4 border-l-emerald-500 p-3 rounded-2xl space-y-1">
+          <span class="text-xs font-bold text-emerald-400 font-mono">🍏 02 • Colación Matutina (Snack 1)</span>
+          <textarea id="diet-colacion1" rows="2" placeholder="Yogurt con frutos secos, manzana o proteína..."
+            class="w-full bg-slate-900/70 border border-slate-800 rounded-xl p-2 text-xs text-white focus:outline-none"></textarea>
         </div>
 
-        <div class="bg-saiyan-panel border-l-4 border-l-cyan-500 p-3 rounded-2xl border border-slate-800 space-y-1">
-          <div class="flex justify-between items-center font-mono">
-            <h3 class="text-xs font-bold text-cyan-400 uppercase">🍲 03 • Almuerzo / Banquete</h3>
-            <span class="text-[9px] text-slate-500">Carga máxima</span>
-          </div>
-          <textarea id="diet-comida" rows="2" placeholder="Carne, arroz, verduras para recuperación de Ki..."
-            class="w-full bg-slate-900 border border-slate-800 rounded-xl p-2 text-xs text-white focus:outline-none focus:border-cyan-400"></textarea>
+        <div class="themed-card border-l-4 border-l-cyan-500 p-3 rounded-2xl space-y-1">
+          <span class="text-xs font-bold text-cyan-400 font-mono">🍲 03 • Almuerzo / Comida Principal</span>
+          <textarea id="diet-comida" rows="2" placeholder="Pollo, arroz, verduras, ensalada..."
+            class="w-full bg-slate-900/70 border border-slate-800 rounded-xl p-2 text-xs text-white focus:outline-none"></textarea>
         </div>
 
-        <div class="bg-saiyan-panel border-l-4 border-l-purple-500 p-3 rounded-2xl border border-slate-800 space-y-1">
-          <div class="flex justify-between items-center font-mono">
-            <h3 class="text-xs font-bold text-purple-400 uppercase">🫐 04 • Colación Vespertina (Snack 2)</h3>
-            <span class="text-[9px] text-slate-500">Media Tarde</span>
-          </div>
-          <textarea id="diet-colacion2" rows="2" placeholder="Snack proteico o fruta..."
-            class="w-full bg-slate-900 border border-slate-800 rounded-xl p-2 text-xs text-white focus:outline-none focus:border-purple-400"></textarea>
+        <div class="themed-card border-l-4 border-l-purple-500 p-3 rounded-2xl space-y-1">
+          <span class="text-xs font-bold text-purple-400 font-mono">🫐 04 • Colación Vespertina (Snack 2)</span>
+          <textarea id="diet-colacion2" rows="2" placeholder="Barrita de proteína, almendras, té..."
+            class="w-full bg-slate-900/70 border border-slate-800 rounded-xl p-2 text-xs text-white focus:outline-none"></textarea>
         </div>
 
-        <div class="bg-saiyan-panel border-l-4 border-l-rose-500 p-3 rounded-2xl border border-slate-800 space-y-1">
-          <div class="flex justify-between items-center font-mono">
-            <h3 class="text-xs font-bold text-rose-400 uppercase">🥗 05 • Cena de Descanso</h3>
-            <span class="text-[9px] text-slate-500">Regeneración nocturna</span>
-          </div>
+        <div class="themed-card border-l-4 border-l-rose-500 p-3 rounded-2xl space-y-1">
+          <span class="text-xs font-bold text-rose-400 font-mono">🥗 05 • Cena</span>
           <textarea id="diet-cena" rows="2" placeholder="Cena balanceada y ligera..."
-            class="w-full bg-slate-900 border border-slate-800 rounded-xl p-2 text-xs text-white focus:outline-none focus:border-rose-400"></textarea>
+            class="w-full bg-slate-900/70 border border-slate-800 rounded-xl p-2 text-xs text-white focus:outline-none"></textarea>
         </div>
 
-        <button onclick="saveDiet()" class="w-full bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-400 hover:to-amber-500 text-slate-950 font-black py-2.5 rounded-xl text-xs uppercase font-mono tracking-wider transition shadow-lg shadow-amber-500/20">
-          Guardar Dieta del Día
+        <button onclick="saveDiet()" class="w-full bg-[var(--primary)] text-slate-950 font-black py-2.5 rounded-xl text-xs uppercase font-mono tracking-wider transition">
+          Guardar Menú del Día
         </button>
       </div>
     </section>
 
     <!-- ========================================== -->
-    <!-- 3. PESTAÑA: NOTAS KEEP (PERGAMINOS MÁGICOS)-->
+    <!-- 3. PESTAÑA: NOTAS KEEP (2 COLUMNAS)        -->
     <!-- ========================================== -->
     <section id="tab-reminders" class="hidden space-y-4">
-      <div class="bg-saiyan-panel grimoire-border p-4 rounded-2xl space-y-3">
-        <input type="text" id="note-title" placeholder="Título del hechizo o nota..." 
-          class="w-full bg-transparent text-sm font-bold text-amber-300 placeholder-slate-500 focus:outline-none">
-        <textarea id="note-body" rows="2" placeholder="Escribe aquí tu apunte o secreto de grimorio..." 
+      <div class="themed-card p-4 rounded-2xl space-y-3">
+        <input type="text" id="note-title" placeholder="Título..." 
+          class="w-full bg-transparent text-sm font-bold text-white placeholder-slate-500 focus:outline-none">
+        <textarea id="note-body" rows="2" placeholder="Nota o apunte rápido..." 
           class="w-full bg-transparent text-xs text-slate-200 placeholder-slate-500 focus:outline-none resize-none"></textarea>
         
         <div class="flex items-center gap-2 pt-1 border-t border-white/5">
-          <i data-lucide="bell" class="w-3.5 h-3.5 text-amber-400"></i>
+          <i data-lucide="bell" class="w-3.5 h-3.5 text-[var(--primary)]"></i>
           <input type="datetime-local" id="note-alert" 
             class="bg-slate-900 text-[10px] text-slate-300 px-2 py-1 rounded-lg border border-slate-800 focus:outline-none">
         </div>
 
         <div class="flex justify-between items-center pt-2">
-          <!-- Colores inspirados en auras de Ki y Grimorios -->
           <div class="flex items-center gap-1.5" id="color-picker">
-            <button type="button" onclick="selectNoteColor('dark')" class="w-5 h-5 rounded-full bg-slate-900 border-2 border-amber-400 scale-110 color-dot" data-color="dark"></button>
-            <button type="button" onclick="selectNoteColor('gold')" class="w-5 h-5 rounded-full bg-amber-900/90 border border-amber-500 color-dot" data-color="gold"></button>
-            <button type="button" onclick="selectNoteColor('crimson')" class="w-5 h-5 rounded-full bg-rose-950 border border-rose-500 color-dot" data-color="crimson"></button>
-            <button type="button" onclick="selectNoteColor('kiBlue')" class="w-5 h-5 rounded-full bg-cyan-950 border border-cyan-400 color-dot" data-color="kiBlue"></button>
-            <button type="button" onclick="selectNoteColor('purple')" class="w-5 h-5 rounded-full bg-purple-950 border border-purple-500 color-dot" data-color="purple"></button>
+            <button type="button" onclick="selectNoteColor('dark')" class="w-5 h-5 rounded-full bg-slate-900 border-2 border-[var(--primary)] color-dot" data-color="dark"></button>
+            <button type="button" onclick="selectNoteColor('gold')" class="w-5 h-5 rounded-full bg-amber-900 border border-amber-500 color-dot" data-color="gold"></button>
+            <button type="button" onclick="selectNoteColor('emerald')" class="w-5 h-5 rounded-full bg-emerald-950 border border-emerald-500 color-dot" data-color="emerald"></button>
+            <button type="button" onclick="selectNoteColor('blue')" class="w-5 h-5 rounded-full bg-cyan-950 border border-cyan-400 color-dot" data-color="blue"></button>
+            <button type="button" onclick="selectNoteColor('rose')" class="w-5 h-5 rounded-full bg-rose-950 border border-rose-500 color-dot" data-color="rose"></button>
           </div>
-          <button onclick="createKeepNote()" class="bg-amber-400 hover:bg-amber-300 text-slate-950 font-black px-3.5 py-1.5 rounded-xl text-xs font-mono transition">
-            Grabar
+          <button onclick="createKeepNote()" class="bg-[var(--primary)] text-slate-950 font-black px-3.5 py-1.5 rounded-xl text-xs font-mono">
+            Guardar
           </button>
         </div>
       </div>
 
-      <!-- Cuadrícula 2 Columnas Estilo Google Keep -->
+      <!-- Cuadrícula Estilo Google Keep -->
       <div id="keep-notes-grid" class="grid grid-cols-2 gap-2.5 items-start"></div>
     </section>
 
     <!-- ========================================== -->
-    <!-- 4. PESTAÑA: BÓVEDA FINANCIERA (CAPSULE CORP)-->
+    <!-- 4. PESTAÑA: TARJETAS (TDC Y TDD)           -->
     <!-- ========================================== -->
     <section id="tab-finances" class="hidden space-y-4">
-      <div class="bg-saiyan-panel border border-amber-500/30 p-4 rounded-2xl scouter-glow space-y-3 font-mono">
+      <div class="themed-card p-4 rounded-2xl space-y-3 font-mono">
         <div class="flex justify-between items-center text-xs">
-          <span class="text-slate-400">DEUDA TOTAL EN TDC:</span>
+          <span class="text-slate-400">PASIVO TOTAL (DEUDAS TDC):</span>
           <span id="total-debt-metric" class="text-rose-400 font-bold text-sm">$0.00</span>
         </div>
         <div class="flex justify-between items-center text-xs">
-          <span class="text-slate-400">LIQUIDEZ EN DÉBITO (TDD):</span>
+          <span class="text-slate-400">DISPONIBLE DÉBITO (TDD):</span>
           <span id="total-liquidity-metric" class="text-emerald-400 font-bold text-sm">$0.00</span>
         </div>
       </div>
 
       <div>
         <div class="flex justify-between items-center mb-2 px-1 font-mono">
-          <span class="text-[11px] font-bold text-amber-400 uppercase tracking-wider flex items-center gap-1">
-            <span>💳</span> TARJETAS TDC Y TDD
+          <span class="text-[11px] font-bold text-[var(--primary)] uppercase tracking-wider flex items-center gap-1">
+            <i data-lucide="credit-card" class="w-3.5 h-3.5"></i> MIS TARJETAS
           </span>
-          <button onclick="toggleCardModal()" class="text-xs text-cyan-400 hover:text-cyan-300 font-bold">
-            + VINCULAR TARJETA
+          <button onclick="toggleCardModal()" class="text-xs text-[var(--primary)] hover:underline font-bold">
+            + AGREGAR TARJETA
           </button>
         </div>
         <div id="cards-container" class="space-y-3"></div>
       </div>
 
-      <!-- Formulario de Gastos -->
-      <form id="expense-form" class="bg-saiyan-panel border border-slate-800 p-4 rounded-2xl space-y-3">
+      <!-- Registrar Gasto -->
+      <form id="expense-form" class="themed-card p-4 rounded-2xl space-y-3">
         <h3 class="text-xs font-bold uppercase tracking-wider text-rose-400 font-mono flex items-center gap-1.5">
           <i data-lucide="arrow-down-right" class="w-3.5 h-3.5"></i> Registrar Consumo / Gasto
         </h3>
@@ -322,52 +321,135 @@
             class="bg-slate-900 border border-slate-800 rounded-xl px-3 py-2 text-xs text-white focus:outline-none">
         </div>
         
-        <button type="submit" class="w-full bg-rose-600 hover:bg-rose-500 text-white font-black py-2.5 rounded-xl text-xs uppercase font-mono tracking-wider transition shadow-lg shadow-rose-600/20">
-          Ejecutar Gasto
+        <button type="submit" class="w-full bg-rose-600 hover:bg-rose-500 text-white font-black py-2.5 rounded-xl text-xs uppercase font-mono tracking-wider transition">
+          Aplicar Gasto
         </button>
       </form>
 
       <div>
-        <span class="text-[10px] font-mono uppercase text-slate-500 px-1 block mb-2">Movimientos Recientes</span>
+        <span class="text-[10px] font-mono uppercase text-slate-500 px-1 block mb-2">Últimos Movimientos</span>
         <div id="expenses-list" class="space-y-2 font-mono"></div>
       </div>
     </section>
 
   </main>
 
-  <!-- MODAL: SINCRONIZACIÓN NUBE (GUN.JS) -->
+  <!-- ==================================================== -->
+  <!-- MODAL NUEVO: RECUADRO DE ABONO A TARJETA DE CRÉDITO -->
+  <!-- ==================================================== -->
+  <div id="payment-modal" class="hidden fixed inset-0 z-50 bg-black/85 backdrop-blur-md flex items-center justify-center p-4">
+    <div class="themed-card rounded-3xl p-5 w-full max-w-sm space-y-4 font-mono shadow-2xl">
+      <div class="flex justify-between items-center border-b border-white/10 pb-2">
+        <h3 class="text-xs font-black text-[var(--primary)] uppercase flex items-center gap-1.5">
+          <i data-lucide="dollar-sign" class="w-4 h-4"></i> ABONAR A TARJETA
+        </h3>
+        <button onclick="closePaymentModal()" class="text-slate-400 hover:text-white">✕</button>
+      </div>
+
+      <div class="space-y-1">
+        <p id="pay-card-title" class="text-sm font-bold text-white">Tarjeta</p>
+        <div class="flex justify-between text-xs text-slate-400">
+          <span>Deuda actual:</span>
+          <span id="pay-card-debt" class="text-rose-400 font-bold">$0.00</span>
+        </div>
+      </div>
+
+      <!-- Atajos rápidos -->
+      <div class="grid grid-cols-3 gap-1.5 text-xs">
+        <button onclick="setPaymentAmount(500)" class="bg-slate-900 border border-slate-800 py-1.5 rounded-xl hover:border-[var(--primary)]">+$500</button>
+        <button onclick="setPaymentAmount(1000)" class="bg-slate-900 border border-slate-800 py-1.5 rounded-xl hover:border-[var(--primary)]">+$1,000</button>
+        <button onclick="setPaymentFullDebt()" class="bg-slate-900 border border-emerald-500/40 text-emerald-300 py-1.5 rounded-xl">Liquidar</button>
+      </div>
+
+      <input type="number" step="0.01" id="pay-amount-input" placeholder="Monto exacto a abonar $" 
+        class="w-full bg-slate-900 border border-slate-800 rounded-xl px-3.5 py-2.5 text-xs text-white font-bold focus:outline-none focus:border-[var(--primary)]">
+
+      <div class="flex gap-2 pt-1">
+        <button onclick="closePaymentModal()" class="flex-1 bg-slate-900 text-slate-400 py-2.5 rounded-xl text-xs">Cancelar</button>
+        <button onclick="confirmCardPayment()" class="flex-1 bg-[var(--primary)] text-slate-950 font-black py-2.5 rounded-xl text-xs">Confirmar Abono</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL: CAMBIAR TEMA -->
+  <div id="theme-modal" class="hidden fixed inset-0 z-50 bg-black/85 backdrop-blur-md flex items-center justify-center p-4">
+    <div class="themed-card rounded-3xl p-5 w-full max-w-sm space-y-4 font-mono shadow-2xl">
+      <div class="flex justify-between items-center border-b border-white/10 pb-2">
+        <h3 class="text-xs font-black text-[var(--primary)] uppercase">Selecciona el Tema</h3>
+        <button onclick="toggleThemeModal()" class="text-slate-400 hover:text-white">✕</button>
+      </div>
+
+      <div class="space-y-2 text-xs font-bold">
+        <button onclick="setAppTheme('blackbulls')" class="w-full text-left p-3 rounded-xl border border-amber-500/40 bg-black/50 hover:border-amber-400 flex items-center justify-between">
+          <span class="text-amber-400">🐂 Toros Negros (Original)</span>
+          <span class="w-3 h-3 rounded-full bg-amber-400"></span>
+        </button>
+        <button onclick="setAppTheme('saiyan')" class="w-full text-left p-3 rounded-xl border border-sky-500/40 bg-black/50 hover:border-sky-400 flex items-center justify-between">
+          <span class="text-sky-400">⚡ Dragon Ball / Super Saiyan</span>
+          <span class="w-3 h-3 rounded-full bg-sky-400"></span>
+        </button>
+        <button onclick="setAppTheme('cyber')" class="w-full text-left p-3 rounded-xl border border-purple-500/40 bg-black/50 hover:border-purple-400 flex items-center justify-between">
+          <span class="text-purple-400">👾 Cyberpunk Neón</span>
+          <span class="w-3 h-3 rounded-full bg-purple-400"></span>
+        </button>
+        <button onclick="setAppTheme('stealth')" class="w-full text-left p-3 rounded-xl border border-zinc-500/40 bg-black/50 hover:border-zinc-400 flex items-center justify-between">
+          <span class="text-zinc-200">🕶️ Modo Sigilo (Minimal Black)</span>
+          <span class="w-3 h-3 rounded-full bg-zinc-400"></span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL: SINCRONIZACIÓN NUBE REPARADA (REST API + TRANSFERENCIA) -->
   <div id="sync-modal" class="hidden fixed inset-0 z-50 bg-black/85 backdrop-blur-md flex items-center justify-center p-4">
-    <div class="bg-slate-950 border border-amber-500/50 rounded-3xl p-5 w-full max-w-sm space-y-4 shadow-2xl font-mono">
-      <div class="flex justify-between items-center border-b border-amber-500/20 pb-2">
-        <h3 class="text-xs font-black text-amber-400 uppercase flex items-center gap-1.5">
-          <i data-lucide="radio" class="w-4 h-4 text-cyan-400"></i> ENLACE NUBE MULTIDISPOSITIVO
+    <div class="themed-card rounded-3xl p-5 w-full max-w-sm space-y-4 font-mono shadow-2xl">
+      <div class="flex justify-between items-center border-b border-white/10 pb-2">
+        <h3 class="text-xs font-black text-[var(--primary)] uppercase flex items-center gap-1.5">
+          <i data-lucide="refresh-cw" class="w-4 h-4"></i> Sincronizar PC & Celular
         </h3>
         <button onclick="toggleSyncModal()" class="text-slate-400 hover:text-white">✕</button>
       </div>
 
       <p class="text-[11px] text-slate-300 leading-relaxed">
-        Escribe un <b>PIN personal</b> (ej: <code class="text-amber-400">MI-TORO-77</code>). Si escribes exactamente este mismo PIN en tu <b>computadora</b> y en tu <b>celular</b>, todos tus datos se sincronizarán al instante.
+        Usa tu <b>Código de Nube</b> en ambos dispositivos para compartir todos tus datos:
       </p>
 
-      <input type="text" id="sync-pin-input" placeholder="Ingresa tu PIN secreto..." 
-        class="w-full bg-slate-900 border border-amber-500/40 rounded-xl px-3.5 py-2.5 text-xs text-amber-300 uppercase font-black tracking-wider focus:outline-none">
+      <div class="space-y-2">
+        <label class="text-[10px] text-slate-400 uppercase">Tu Código de Sincronización:</label>
+        <div class="flex gap-1.5">
+          <input type="text" id="sync-code-input" placeholder="Ej: TORO-12345" 
+            class="flex-1 bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-xs text-[var(--primary)] font-bold focus:outline-none">
+          <button onclick="saveSyncCode()" class="bg-[var(--primary)] text-slate-950 px-3 py-2 rounded-xl text-xs font-black">Conectar</button>
+        </div>
+      </div>
 
-      <div class="flex gap-2 pt-1">
-        <button onclick="toggleSyncModal()" class="flex-1 bg-slate-900 text-slate-400 py-2.5 rounded-xl text-xs">Cerrar</button>
-        <button onclick="saveSyncPin()" class="flex-1 bg-amber-500 hover:bg-amber-400 text-slate-950 font-black py-2.5 rounded-xl text-xs">Conectar PIN</button>
+      <!-- Acciones de Sincronización -->
+      <div class="grid grid-cols-2 gap-2 pt-2 border-t border-white/10">
+        <button onclick="uploadToCloud()" class="bg-slate-900 border border-emerald-500/40 text-emerald-400 p-2 rounded-xl text-[11px] font-bold hover:bg-emerald-950/40">
+          ⬆️ Subir a la Nube
+        </button>
+        <button onclick="downloadFromCloud()" class="bg-slate-900 border border-sky-500/40 text-sky-400 p-2 rounded-xl text-[11px] font-bold hover:bg-sky-950/40">
+          ⬇️ Descargar Datos
+        </button>
+      </div>
+
+      <!-- Alternativa rápida por texto si no hay conexión -->
+      <div class="pt-2 border-t border-white/5 flex justify-between items-center text-[10px]">
+        <button onclick="exportDataString()" class="text-slate-400 hover:text-white underline">Copiar Respaldo Manual</button>
+        <button onclick="importDataString()" class="text-slate-400 hover:text-white underline">Pegar Respaldo Manual</button>
       </div>
     </div>
   </div>
 
   <!-- MODAL: VINCULAR TARJETA -->
   <div id="card-modal" class="hidden fixed inset-0 z-50 bg-black/85 backdrop-blur-md flex items-center justify-center p-4">
-    <div class="bg-slate-950 border border-amber-500/40 rounded-3xl p-5 w-full max-w-sm space-y-3 font-mono">
+    <div class="themed-card rounded-3xl p-5 w-full max-w-sm space-y-3 font-mono shadow-2xl">
       <div class="flex justify-between items-center border-b border-white/10 pb-2">
-        <h3 class="text-xs font-black text-amber-400 uppercase">Vincular Módulo de Pago</h3>
+        <h3 class="text-xs font-black text-[var(--primary)] uppercase">Vincular Tarjeta</h3>
         <button onclick="toggleCardModal()" class="text-slate-400 hover:text-white">✕</button>
       </div>
 
-      <input type="text" id="card-name" placeholder="Banco (ej: Nu, BBVA, Santander)" 
+      <input type="text" id="card-name" placeholder="Banco o Nombre (ej: Nu, BBVA)" 
         class="w-full bg-slate-900 border border-slate-800 rounded-xl px-3 py-2 text-xs text-white">
 
       <select id="card-type" class="w-full bg-slate-900 border border-slate-800 rounded-xl px-3 py-2 text-xs text-white" onchange="toggleCardInputs()">
@@ -378,55 +460,53 @@
       <div id="tdc-fields" class="space-y-2">
         <input type="number" step="0.01" id="card-limit" placeholder="Límite autorizado $" class="w-full bg-slate-900 border border-slate-800 rounded-xl px-3 py-2 text-xs text-white">
         <div class="grid grid-cols-2 gap-2">
-          <input type="number" id="card-cutoff" placeholder="Día de corte (1-31)" class="bg-slate-900 border border-slate-800 rounded-xl px-3 py-2 text-xs text-white">
-          <input type="number" id="card-payday" placeholder="Día de pago (1-31)" class="bg-slate-900 border border-slate-800 rounded-xl px-3 py-2 text-xs text-white">
+          <input type="number" id="card-cutoff" placeholder="Día corte (1-31)" class="bg-slate-900 border border-slate-800 rounded-xl px-3 py-2 text-xs text-white">
+          <input type="number" id="card-payday" placeholder="Día pago (1-31)" class="bg-slate-900 border border-slate-800 rounded-xl px-3 py-2 text-xs text-white">
         </div>
       </div>
 
       <div id="tdd-fields" class="hidden">
-        <input type="number" step="0.01" id="card-balance" placeholder="Saldo inicial disponible $" class="w-full bg-slate-900 border border-slate-800 rounded-xl px-3 py-2 text-xs text-white">
+        <input type="number" step="0.01" id="card-balance" placeholder="Saldo actual disponible $" class="w-full bg-slate-900 border border-slate-800 rounded-xl px-3 py-2 text-xs text-white">
       </div>
 
       <div class="flex gap-2 pt-2">
         <button onclick="toggleCardModal()" class="flex-1 bg-slate-900 text-slate-400 py-2.5 rounded-xl text-xs">Cancelar</button>
-        <button onclick="addCard()" class="flex-1 bg-amber-500 hover:bg-amber-400 text-slate-950 font-black py-2.5 rounded-xl text-xs">Guardar</button>
+        <button onclick="addCard()" class="flex-1 bg-[var(--primary)] text-slate-950 font-black py-2.5 rounded-xl text-xs">Guardar</button>
       </div>
     </div>
   </div>
 
-  <!-- NAVEGACIÓN INFERIOR ESTILO CAPSULE CORP -->
-  <nav class="fixed bottom-0 left-0 right-0 z-40 bg-slate-950/95 backdrop-blur-2xl border-t border-amber-500/20 px-3 py-2">
-    <div class="max-w-md mx-auto grid grid-cols-4 gap-1">
-      <button onclick="switchTab('tasks')" id="nav-tasks" class="flex flex-col items-center py-1 text-amber-400">
-        <i data-lucide="swords" class="w-4 h-4 mb-1"></i>
-        <span class="text-[9px] font-mono uppercase font-black">Misiones</span>
+  <!-- NAVEGACIÓN INFERIOR (COMPATIBLE S24 ULTRA) -->
+  <nav class="fixed bottom-0 left-0 right-0 z-40 bg-[var(--bg-main)]/95 backdrop-blur-2xl border-t border-[var(--primary-border)] px-4 py-2">
+    <div class="max-w-[430px] mx-auto grid grid-cols-4 gap-1">
+      <button onclick="switchTab('tasks')" id="nav-tasks" class="flex flex-col items-center py-1 text-[var(--primary)]">
+        <i data-lucide="check-square" class="w-4 h-4 mb-1"></i>
+        <span class="text-[9px] font-mono uppercase font-bold">Tareas</span>
       </button>
       <button onclick="switchTab('diet')" id="nav-diet" class="flex flex-col items-center py-1 text-slate-500 hover:text-slate-300">
-        <i data-lucide="flame" class="w-4 h-4 mb-1"></i>
-        <span class="text-[9px] font-mono uppercase font-black">Bio-Ki</span>
+        <i data-lucide="utensils" class="w-4 h-4 mb-1"></i>
+        <span class="text-[9px] font-mono uppercase font-bold">Dieta</span>
       </button>
       <button onclick="switchTab('reminders')" id="nav-reminders" class="flex flex-col items-center py-1 text-slate-500 hover:text-slate-300">
-        <i data-lucide="book-marked" class="w-4 h-4 mb-1"></i>
-        <span class="text-[9px] font-mono uppercase font-black">Grimorio</span>
+        <i data-lucide="sticky-note" class="w-4 h-4 mb-1"></i>
+        <span class="text-[9px] font-mono uppercase font-bold">Keep</span>
       </button>
       <button onclick="switchTab('finances')" id="nav-finances" class="flex flex-col items-center py-1 text-slate-500 hover:text-slate-300">
-        <i data-lucide="shield-check" class="w-4 h-4 mb-1"></i>
-        <span class="text-[9px] font-mono uppercase font-black">Bóveda</span>
+        <i data-lucide="credit-card" class="w-4 h-4 mb-1"></i>
+        <span class="text-[9px] font-mono uppercase font-bold">Tarjetas</span>
       </button>
     </div>
   </nav>
 
-  <!-- JAVASCRIPT: LÓGICA, SINCRONIZACIÓN Y FECHAS DD/MM/AA -->
+  <!-- JAVASCRIPT -->
   <script>
     lucide.createIcons();
 
     /* ==================================================== */
-    /* HELPER: FORMATEO ESTRICTO DE FECHAS EN FORMATO DD/MM/AA */
+    /* FORMATEADOR ESTRICTO DD/MM/AA                        */
     /* ==================================================== */
     function formatToDDMMAA(dateInput) {
       if (!dateInput) return '--/--/--';
-      
-      // Si viene como string 'YYYY-MM-DD'
       if (typeof dateInput === 'string' && dateInput.includes('-')) {
         const parts = dateInput.split('T')[0].split('-');
         if (parts.length === 3) {
@@ -436,7 +516,6 @@
           return `${dd}/${mm}/${aa}`;
         }
       }
-
       const d = new Date(dateInput);
       if (isNaN(d.getTime())) return dateInput;
       const dd = String(d.getDate()).padStart(2, '0');
@@ -445,22 +524,33 @@
       return `${dd}/${mm}/${aa}`;
     }
 
-    // Actualizar reloj y fecha en vivo
-    function updateClockHUD() {
+    // Actualizar reloj y fecha en el encabezado
+    function updateClock() {
       const now = new Date();
-      document.getElementById('current-date-dmy').textContent = formatToDDMMAA(now);
-      document.getElementById('current-clock').textContent = now.toTimeString().substring(0, 5);
+      document.getElementById('hud-date').textContent = formatToDDMMAA(now);
+      document.getElementById('hud-clock').textContent = now.toTimeString().substring(0, 5);
     }
-    setInterval(updateClockHUD, 1000);
-    updateClockHUD();
+    setInterval(updateClock, 1000);
+    updateClock();
 
     /* ==================================================== */
-    /* MOTOR DE SINCRONIZACIÓN EN LA NUBE (GUN.JS)          */
+    /* GESTIÓN DE TEMAS                                     */
     /* ==================================================== */
-    const gun = Gun(['https://gun-manhattan.herokuapp.com/gun', 'https://relay.peer.ooo/gun']);
-    let syncPin = localStorage.getItem('cc_sync_pin') || '';
+    function setAppTheme(themeName) {
+      document.body.setAttribute('data-theme', themeName);
+      localStorage.setItem('cc_theme', themeName);
+      toggleThemeModal();
+    }
+    const savedTheme = localStorage.getItem('cc_theme') || 'blackbulls';
+    document.body.setAttribute('data-theme', savedTheme);
 
-    // Estado local reactivo
+    function toggleThemeModal() {
+      document.getElementById('theme-modal').classList.toggle('hidden');
+    }
+
+    /* ==================================================== */
+    /* ESTADO LOCAL                                         */
+    /* ==================================================== */
     let appState = {
       tasks: JSON.parse(localStorage.getItem('cc_tasks')) || [],
       diet: JSON.parse(localStorage.getItem('cc_diet')) || {},
@@ -469,38 +559,11 @@
       expenses: JSON.parse(localStorage.getItem('cc_expenses')) || []
     };
 
-    let selectedColor = 'dark';
+    let selectedNoteColor = 'dark';
     let currentDietDay = 'Lunes';
+    let activePayingCardId = null;
 
-    // Iniciar escucha Gun si hay un PIN configurado
-    if (syncPin) {
-      document.getElementById('sync-status-badge').textContent = `SYNC: ${syncPin.slice(0, 6)}...`;
-      initGunSync(syncPin);
-    }
-
-    function initGunSync(pin) {
-      gun.get('toros_negros_vault_' + pin).on((data) => {
-        if (!data || !data.payload) return;
-        try {
-          const cloudState = JSON.parse(data.payload);
-          appState = cloudState;
-          saveLocalSilently();
-          refreshAllUI();
-        } catch(e) { console.error("Error al sincronizar nube", e); }
-      });
-    }
-
-    function pushToCloud() {
-      saveLocalSilently();
-      if (syncPin) {
-        gun.get('toros_negros_vault_' + syncPin).put({
-          payload: JSON.stringify(appState),
-          updatedAt: Date.now()
-        });
-      }
-    }
-
-    function saveLocalSilently() {
+    function saveLocal() {
       localStorage.setItem('cc_tasks', JSON.stringify(appState.tasks));
       localStorage.setItem('cc_diet', JSON.stringify(appState.diet));
       localStorage.setItem('cc_keep_notes', JSON.stringify(appState.keepNotes));
@@ -508,38 +571,117 @@
       localStorage.setItem('cc_expenses', JSON.stringify(appState.expenses));
     }
 
+    /* ==================================================== */
+    /* SINCRONIZACIÓN REPARADA (CLOUD REST + TOKEN)         */
+    /* ==================================================== */
+    let syncCode = localStorage.getItem('cc_sync_code') || '';
+    if (syncCode) {
+      document.getElementById('sync-btn-label').textContent = syncCode.slice(0, 8);
+    }
+
     function toggleSyncModal() {
       document.getElementById('sync-modal').classList.toggle('hidden');
-      if (syncPin) document.getElementById('sync-pin-input').value = syncPin;
+      if (syncCode) document.getElementById('sync-code-input').value = syncCode;
     }
 
-    function saveSyncPin() {
-      const pin = document.getElementById('sync-pin-input').value.trim().toUpperCase();
-      if (!pin) return;
-      syncPin = pin;
-      localStorage.setItem('cc_sync_pin', syncPin);
-      document.getElementById('sync-status-badge').textContent = `SYNC: ${syncPin.slice(0, 6)}...`;
-      toggleSyncModal();
-      initGunSync(syncPin);
-      pushToCloud();
-      alert(`[ENLACE CONECTADO] PIN "${syncPin}" activado. Úsalo en tus otros dispositivos.`);
+    function saveSyncCode() {
+      const code = document.getElementById('sync-code-input').value.trim().toUpperCase();
+      if (!code) return;
+      syncCode = code;
+      localStorage.setItem('cc_sync_code', syncCode);
+      document.getElementById('sync-btn-label').textContent = syncCode.slice(0, 8);
+      alert(`Código "${syncCode}" guardado.`);
     }
 
-    // NAVEGACIÓN
+    // Subir a la nube
+    async function uploadToCloud() {
+      if (!syncCode) {
+        syncCode = 'TORO-' + Math.random().toString(36).substring(2, 8).toUpperCase();
+        localStorage.setItem('cc_sync_code', syncCode);
+        document.getElementById('sync-code-input').value = syncCode;
+        document.getElementById('sync-btn-label').textContent = syncCode.slice(0, 8);
+      }
+
+      try {
+        const res = await fetch(`https://api.restful-api.dev/objects`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            name: 'TOROS_SYNC_' + syncCode,
+            data: { payload: JSON.stringify(appState), updatedAt: Date.now() }
+          })
+        });
+        const json = await res.json();
+        if (json.id) {
+          localStorage.setItem('cc_cloud_id_' + syncCode, json.id);
+          alert(`¡Datos subidos con éxito!\nTu código de sincronización es: ${syncCode}`);
+        }
+      } catch (e) {
+        alert('Error al conectar con la nube. Revisa tu conexión a internet.');
+      }
+    }
+
+    // Descargar desde la nube
+    async function downloadFromCloud() {
+      if (!syncCode) return alert('Primero ingresa tu código de sincronización.');
+      const cloudId = localStorage.getItem('cc_cloud_id_' + syncCode);
+      
+      if (!cloudId) {
+        return alert('No hay un respaldo previo asociado a este código en este navegador. Primero sube los datos desde el otro dispositivo o usa la opción "Copiar Respaldo Manual".');
+      }
+
+      try {
+        const res = await fetch(`https://api.restful-api.dev/objects/${cloudId}`);
+        const json = await res.json();
+        if (json.data && json.data.payload) {
+          appState = JSON.parse(json.data.payload);
+          saveLocal();
+          refreshAllUI();
+          alert('¡Sincronización completada! Todos tus datos se han actualizado.');
+          toggleSyncModal();
+        }
+      } catch (e) {
+        alert('No se pudo descargar el respaldo. Verifica el código.');
+      }
+    }
+
+    // Transferencia manual directa (infalible)
+    function exportDataString() {
+      const str = btoa(unescape(encodeURIComponent(JSON.stringify(appState))));
+      navigator.clipboard.writeText(str);
+      alert('¡Código copiado al portapapeles! Puedes pegarlo en tu otro dispositivo en "Pegar Respaldo Manual".');
+    }
+
+    function importDataString() {
+      const str = prompt('Pega aquí el código que copiaste de tu otro dispositivo:');
+      if (str) {
+        try {
+          const parsed = JSON.parse(decodeURIComponent(escape(atob(str))));
+          appState = parsed;
+          saveLocal();
+          refreshAllUI();
+          alert('¡Datos restaurados con éxito!');
+        } catch (e) {
+          alert('Código inválido.');
+        }
+      }
+    }
+
+    // NAVEGACIÓN ENTRE PESTAÑAS
     function switchTab(tabId) {
       const tabs = ['tasks', 'diet', 'reminders', 'finances'];
       const titles = {
-        tasks: 'GRIMORIO: MISIONES',
-        diet: 'BIO-KI & NUTRICIÓN',
-        reminders: 'PERGAMINOS (KEEP)',
-        finances: 'BÓVEDA CAPSULE CORP'
+        tasks: 'Misiones Escolares',
+        diet: 'Plan de Nutrición (5 Comidas)',
+        reminders: 'Notas y Avisos',
+        finances: 'Tarjetas y Finanzas'
       };
 
       tabs.forEach(t => {
         document.getElementById(`tab-${t}`).classList.toggle('hidden', t !== tabId);
         const nav = document.getElementById(`nav-${t}`);
         if(t === tabId) {
-          nav.className = "flex flex-col items-center py-1 text-amber-400";
+          nav.className = "flex flex-col items-center py-1 text-[var(--primary)]";
         } else {
           nav.className = "flex flex-col items-center py-1 text-slate-500 hover:text-slate-300";
         }
@@ -548,7 +690,7 @@
     }
 
     /* ==================================================== */
-    /* 1. MISIONES / TAREAS                                 */
+    /* 1. TAREAS                                            */
     /* ==================================================== */
     document.getElementById('task-form').addEventListener('submit', (e) => {
       e.preventDefault();
@@ -558,20 +700,20 @@
       const priority = document.getElementById('task-priority').value;
 
       appState.tasks.unshift({ id: Date.now(), title, subject, date, priority, completed: false });
-      pushToCloud();
+      saveLocal();
       e.target.reset();
       renderTasks();
     });
 
     function toggleTask(id) {
       appState.tasks = appState.tasks.map(t => t.id === id ? { ...t, completed: !t.completed } : t);
-      pushToCloud();
+      saveLocal();
       renderTasks();
     }
 
     function deleteTask(id) {
       appState.tasks = appState.tasks.filter(t => t.id !== id);
-      pushToCloud();
+      saveLocal();
       renderTasks();
     }
 
@@ -583,38 +725,31 @@
 
       document.getElementById('stat-pending').textContent = pending;
       document.getElementById('stat-done').textContent = done;
-      document.getElementById('stat-ki-power').textContent = `${done * 100} / ${Math.max(1, total) * 100} KI`;
-
-      const pct = total > 0 ? (done / total) * 100 : 0;
-      document.getElementById('ki-progress-bar').style.width = `${pct}%`;
-
-      // Rango de Caballero Mágico
-      const rank = done >= 15 ? "Capitán de Orden" : done >= 8 ? "Caballero Senior" : done >= 3 ? "Intermedio" : "Novato";
-      document.getElementById('stat-rank').textContent = rank;
+      document.getElementById('stat-rate').textContent = total > 0 ? Math.round((done / total) * 100) + '%' : '100%';
 
       if (appState.tasks.length === 0) {
-        list.innerHTML = `<p class="text-xs text-slate-600 font-mono text-center py-8">SIN_MISIONES_ACTIVAS // PAZ TEMPORAL</p>`;
+        list.innerHTML = `<p class="text-xs text-slate-500 font-mono text-center py-8">No hay tareas pendientes.</p>`;
         return;
       }
 
       list.innerHTML = appState.tasks.map(t => {
         const priorityColors = {
           high: 'border-l-rose-500 text-rose-400 bg-rose-500/10',
-          normal: 'border-l-amber-500 text-amber-400 bg-amber-500/10',
+          normal: 'border-l-[var(--primary)] text-[var(--primary)] bg-[var(--primary)]/10',
           low: 'border-l-slate-600 text-slate-400 bg-slate-600/10'
         };
 
         return `
-          <div class="bg-saiyan-panel border border-slate-800 p-3 rounded-xl flex items-center justify-between border-l-4 ${priorityColors[t.priority] || 'border-l-amber-500'} ${t.completed ? 'opacity-35' : ''}">
+          <div class="themed-card p-3 rounded-xl flex items-center justify-between border-l-4 ${priorityColors[t.priority] || 'border-l-[var(--primary)]'} ${t.completed ? 'opacity-35' : ''}">
             <div class="flex items-center gap-3">
               <input type="checkbox" ${t.completed ? 'checked' : ''} onchange="toggleTask(${t.id})" 
                 class="w-4 h-4 rounded bg-slate-900 border-slate-700 text-amber-500 focus:ring-0 cursor-pointer">
               <div>
                 <p class="text-xs font-bold ${t.completed ? 'line-through text-slate-500' : 'text-slate-100'}">${t.title}</p>
-                <div class="flex items-center gap-2 mt-0.5 font-mono">
-                  <span class="text-[10px] text-amber-400">${t.subject}</span>
-                  <span class="text-[10px] text-slate-600">•</span>
-                  <span class="text-[10px] text-cyan-400">📅 ${formatToDDMMAA(t.date)}</span>
+                <div class="flex items-center gap-2 mt-0.5 font-mono text-[10px]">
+                  <span class="text-[var(--primary)]">${t.subject}</span>
+                  <span class="text-slate-600">•</span>
+                  <span class="text-slate-400">Entrega: ${formatToDDMMAA(t.date)}</span>
                 </div>
               </div>
             </div>
@@ -625,14 +760,14 @@
     }
 
     /* ==================================================== */
-    /* 2. DIETA & BIO-KI (CON 2 COLACIONES Y AGUA)          */
+    /* 2. DIETA (5 COMIDAS)                                 */
     /* ==================================================== */
     const days = ['Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado', 'Domingo'];
 
     function renderDayCapsules() {
       const container = document.getElementById('diet-day-capsules');
       container.innerHTML = days.map(d => `
-        <button onclick="selectDietDay('${d}')" class="px-3 py-1.5 rounded-xl text-xs font-mono font-bold transition whitespace-nowrap ${currentDietDay === d ? 'bg-amber-500 text-slate-950 font-black shadow-md shadow-amber-500/30' : 'bg-slate-900 text-slate-400 border border-slate-800'}">
+        <button onclick="selectDietDay('${d}')" class="px-3 py-1.5 rounded-xl text-xs font-mono font-bold transition whitespace-nowrap ${currentDietDay === d ? 'bg-[var(--primary)] text-slate-950 font-black' : 'bg-slate-900 text-slate-400 border border-slate-800'}">
           ${d}
         </button>
       `).join('');
@@ -666,8 +801,8 @@
         colacion2: document.getElementById('diet-colacion2').value,
         cena: document.getElementById('diet-cena').value,
       };
-      pushToCloud();
-      alert(`[KI CARGADO] Menú de ${currentDietDay} guardado.`);
+      saveLocal();
+      alert(`Menú de ${currentDietDay} guardado con éxito.`);
     }
 
     function saveMacros() {
@@ -677,14 +812,14 @@
         protein: document.getElementById('macro-protein').value,
         carbs: document.getElementById('macro-carbs').value
       };
-      pushToCloud();
+      saveLocal();
     }
 
     function changeWater(delta) {
       const current = (appState.diet[currentDietDay]?.water || 0) + delta;
       const finalWater = Math.max(0, Math.min(12, current));
       appState.diet[currentDietDay] = { ...(appState.diet[currentDietDay] || {}), water: finalWater };
-      pushToCloud();
+      saveLocal();
       renderWaterUI(finalWater);
     }
 
@@ -696,18 +831,18 @@
       const iconsCont = document.getElementById('water-icons-container');
       let dots = '';
       for(let i = 0; i < 8; i++) {
-        dots += `<div class="w-3 h-3 rounded-full border border-cyan-400/50 ${i < count ? 'bg-cyan-400 shadow-sm shadow-cyan-400' : 'bg-transparent'}"></div>`;
+        dots += `<div class="w-3 h-3 rounded-full border border-[var(--primary)]/50 ${i < count ? 'bg-[var(--primary)]' : 'bg-transparent'}"></div>`;
       }
       iconsCont.innerHTML = dots;
     }
 
     /* ==================================================== */
-    /* 3. NOTAS (PERGAMINOS KEEP CON FECHA DD/MM/AA)        */
+    /* 3. NOTAS GOOGLE KEEP                                 */
     /* ==================================================== */
     function selectNoteColor(color) {
-      selectedColor = color;
+      selectedNoteColor = color;
       document.querySelectorAll('.color-dot').forEach(dot => {
-        dot.classList.toggle('border-amber-400', dot.dataset.color === color);
+        dot.classList.toggle('border-[var(--primary)]', dot.dataset.color === color);
         dot.classList.toggle('scale-110', dot.dataset.color === color);
       });
     }
@@ -724,11 +859,11 @@
         title,
         body,
         alertTime,
-        color: selectedColor,
+        color: selectedNoteColor,
         pinned: false
       });
 
-      pushToCloud();
+      saveLocal();
       document.getElementById('note-title').value = '';
       document.getElementById('note-body').value = '';
       document.getElementById('note-alert').value = '';
@@ -738,36 +873,36 @@
     function togglePinNote(id) {
       appState.keepNotes = appState.keepNotes.map(n => n.id === id ? { ...n, pinned: !n.pinned } : n);
       appState.keepNotes.sort((a,b) => (b.pinned === a.pinned) ? 0 : b.pinned ? 1 : -1);
-      pushToCloud();
+      saveLocal();
       renderKeepNotes();
     }
 
     function deleteKeepNote(id) {
       appState.keepNotes = appState.keepNotes.filter(n => n.id !== id);
-      pushToCloud();
+      saveLocal();
       renderKeepNotes();
     }
 
     function renderKeepNotes() {
       const grid = document.getElementById('keep-notes-grid');
       if (appState.keepNotes.length === 0) {
-        grid.innerHTML = `<div class="col-span-2 text-center py-10 text-slate-600 font-mono text-xs">GRIMORIO_VACÍO</div>`;
+        grid.innerHTML = `<div class="col-span-2 text-center py-10 text-slate-600 font-mono text-xs">Sin notas registradas.</div>`;
         return;
       }
 
       const colorThemes = {
         dark: 'bg-slate-900 border-slate-800 text-slate-200',
         gold: 'bg-amber-950/70 border-amber-500/40 text-amber-200',
-        crimson: 'bg-rose-950/70 border-rose-500/40 text-rose-200',
-        kiBlue: 'bg-cyan-950/70 border-cyan-500/40 text-cyan-200',
-        purple: 'bg-purple-950/70 border-purple-500/40 text-purple-200'
+        emerald: 'bg-emerald-950/70 border-emerald-500/40 text-emerald-200',
+        blue: 'bg-cyan-950/70 border-cyan-500/40 text-cyan-200',
+        rose: 'bg-rose-950/70 border-rose-500/40 text-rose-200'
       };
 
       grid.innerHTML = appState.keepNotes.map(n => `
         <div class="rounded-2xl p-3 border ${colorThemes[n.color] || colorThemes.dark} flex flex-col justify-between relative shadow-md">
           <div>
             <div class="flex justify-between items-start mb-1.5">
-              ${n.title ? `<h4 class="text-xs font-black leading-tight line-clamp-2">${n.title}</h4>` : '<span></span>'}
+              ${n.title ? `<h4 class="text-xs font-bold leading-tight line-clamp-2">${n.title}</h4>` : '<span></span>'}
               <button onclick="togglePinNote(${n.id})" class="text-xs p-0.5 ml-1 ${n.pinned ? 'text-amber-400' : 'text-slate-500 hover:text-white'}">
                 📌
               </button>
@@ -784,7 +919,7 @@
     }
 
     /* ==================================================== */
-    /* 4. TARJETAS Y FINANZAS (CON FECHAS DD/MM/AA)         */
+    /* 4. TARJETAS Y RECUADRO DE ABONO                     */
     /* ==================================================== */
     function toggleCardModal() {
       document.getElementById('card-modal').classList.toggle('hidden');
@@ -800,7 +935,7 @@
       const name = document.getElementById('card-name').value.trim();
       const type = document.getElementById('card-type').value;
 
-      if(!name) return alert('Ingresa el nombre del banco o tarjeta');
+      if(!name) return alert('Ingresa el nombre de la tarjeta');
 
       if (type === 'TDC') {
         const limit = parseFloat(document.getElementById('card-limit').value) || 0;
@@ -812,33 +947,61 @@
         appState.cards.push({ id: Date.now(), name, type, balance });
       }
 
-      pushToCloud();
+      saveLocal();
       toggleCardModal();
       renderCards();
       populateCardSelect();
     }
 
     function deleteCard(id) {
-      if(confirm('¿Desvincular esta tarjeta?')) {
+      if(confirm('¿Eliminar esta tarjeta?')) {
         appState.cards = appState.cards.filter(c => c.id !== id);
-        pushToCloud();
+        saveLocal();
         renderCards();
         populateCardSelect();
       }
     }
 
-    function payCreditCard(id) {
-      const amount = prompt("¿Monto a abonar para liquidar deuda?");
-      if(amount && !isNaN(amount)) {
-        appState.cards = appState.cards.map(c => {
-          if(c.id === id) {
-            c.debt = Math.max(0, c.debt - parseFloat(amount));
-          }
-          return c;
-        });
-        pushToCloud();
-        renderCards();
-      }
+    /* RECUADRO MODAL DE ABONO */
+    function openPaymentModal(cardId) {
+      const card = appState.cards.find(c => c.id === cardId);
+      if(!card) return;
+      activePayingCardId = cardId;
+      document.getElementById('pay-card-title').textContent = `${card.name} (TDC)`;
+      document.getElementById('pay-card-debt').textContent = `$${card.debt.toFixed(2)}`;
+      document.getElementById('pay-amount-input').value = '';
+      document.getElementById('payment-modal').classList.remove('hidden');
+    }
+
+    function closePaymentModal() {
+      document.getElementById('payment-modal').classList.add('hidden');
+      activePayingCardId = null;
+    }
+
+    function setPaymentAmount(amount) {
+      document.getElementById('pay-amount-input').value = amount;
+    }
+
+    function setPaymentFullDebt() {
+      const card = appState.cards.find(c => c.id === activePayingCardId);
+      if(card) document.getElementById('pay-amount-input').value = card.debt;
+    }
+
+    function confirmCardPayment() {
+      const amount = parseFloat(document.getElementById('pay-amount-input').value);
+      if(!amount || isNaN(amount) || amount <= 0) return alert('Ingresa un monto válido.');
+
+      appState.cards = appState.cards.map(c => {
+        if(c.id === activePayingCardId) {
+          c.debt = Math.max(0, c.debt - amount);
+        }
+        return c;
+      });
+
+      saveLocal();
+      closePaymentModal();
+      renderCards();
+      alert(`Abono de $${amount.toFixed(2)} registrado correctamente.`);
     }
 
     function renderCards() {
@@ -855,7 +1018,7 @@
       document.getElementById('total-liquidity-metric').textContent = `$${totalLiquidity.toFixed(2)}`;
 
       if (appState.cards.length === 0) {
-        container.innerHTML = `<div class="bg-saiyan-panel p-6 rounded-2xl text-center text-xs text-slate-500 font-mono">SIN_TARJETAS_REGISTRADAS</div>`;
+        container.innerHTML = `<div class="themed-card p-6 rounded-2xl text-center text-xs text-slate-500 font-mono">No tienes tarjetas agregadas.</div>`;
         return;
       }
 
@@ -864,9 +1027,9 @@
           const available = Math.max(0, c.limit - c.debt);
           const usedPct = Math.min(100, Math.round((c.debt / (c.limit || 1)) * 100));
           return `
-            <div class="relative rounded-2xl bg-gradient-to-br from-slate-950 via-slate-900 to-amber-950/40 p-4 border border-amber-500/30 shadow-xl font-mono">
+            <div class="themed-card rounded-2xl p-4 font-mono shadow-lg">
               <div class="flex justify-between items-center mb-1">
-                <span class="text-[9px] uppercase px-2 py-0.5 rounded-full bg-amber-500/20 text-amber-300 border border-amber-500/40 font-black">TDC CRÉDITO • CAPSULE</span>
+                <span class="text-[9px] uppercase px-2 py-0.5 rounded-full bg-[var(--primary)]/20 text-[var(--primary)] font-bold">TDC CRÉDITO</span>
                 <button onclick="deleteCard(${c.id})" class="text-slate-500 hover:text-rose-400 text-xs">✕</button>
               </div>
               <div class="flex justify-between items-baseline mt-2">
@@ -886,15 +1049,17 @@
 
               <div class="flex justify-between items-center text-[10px] text-slate-400 border-t border-white/5 pt-2">
                 <span>Corte: día ${c.cutoff} • Pago: día ${c.payday}</span>
-                <button onclick="payCreditCard(${c.id})" class="text-amber-400 font-black hover:underline">Abonar Deuda</button>
+                <button onclick="openPaymentModal(${c.id})" class="text-[var(--primary)] font-black hover:underline">
+                  + Abonar / Pagar
+                </button>
               </div>
             </div>
           `;
         } else {
           return `
-            <div class="relative rounded-2xl bg-gradient-to-br from-slate-950 via-slate-900 to-emerald-950/40 p-4 border border-emerald-500/30 shadow-xl font-mono">
+            <div class="themed-card rounded-2xl p-4 font-mono shadow-lg">
               <div class="flex justify-between items-center mb-1">
-                <span class="text-[9px] uppercase px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 border border-emerald-500/40 font-black">TDD DÉBITO</span>
+                <span class="text-[9px] uppercase px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 font-bold">TDD DÉBITO</span>
                 <button onclick="deleteCard(${c.id})" class="text-slate-500 hover:text-rose-400 text-xs">✕</button>
               </div>
               <h4 class="text-sm font-black text-white uppercase mt-2">${c.name}</h4>
@@ -911,7 +1076,7 @@
     function populateCardSelect() {
       const select = document.getElementById('expense-card');
       if (appState.cards.length === 0) {
-        select.innerHTML = '<option value="">Primero vincula una tarjeta arriba</option>';
+        select.innerHTML = '<option value="">Primero agrega una tarjeta arriba</option>';
         return;
       }
       select.innerHTML = appState.cards.map(c => `
@@ -935,7 +1100,6 @@
         return c;
       });
 
-      // Registro con fecha DD/MM/AA
       appState.expenses.unshift({
         id: Date.now(),
         cardId,
@@ -944,47 +1108,8 @@
         dateFormatted: formatToDDMMAA(new Date())
       });
 
-      pushToCloud();
+      saveLocal();
       e.target.reset();
       renderCards();
       populateCardSelect();
-      renderExpenses();
-    });
-
-    function renderExpenses() {
-      const list = document.getElementById('expenses-list');
-      if (appState.expenses.length === 0) {
-        list.innerHTML = `<p class="text-xs text-slate-600 text-center py-2">SIN_REGISTROS</p>`;
-        return;
-      }
-      list.innerHTML = appState.expenses.slice(0, 10).map(exp => {
-        const card = appState.cards.find(c => c.id === exp.cardId);
-        const cardLabel = card ? `${card.name} [${card.type}]` : 'Desconocida';
-        return `
-          <div class="bg-saiyan-panel border border-slate-800 p-2.5 rounded-xl flex justify-between items-center text-xs">
-            <div>
-              <p class="font-bold text-slate-200">${exp.concept}</p>
-              <p class="text-[10px] text-slate-500">${cardLabel} • ${exp.dateFormatted}</p>
-            </div>
-            <span class="font-bold text-rose-400">-$${exp.amount.toFixed(2)}</span>
-          </div>
-        `;
-      }).join('');
-    }
-
-    // REFRESCO TOTAL DE INTERFAZ
-    function refreshAllUI() {
-      renderTasks();
-      renderDayCapsules();
-      loadDietData();
-      renderKeepNotes();
-      renderCards();
-      populateCardSelect();
-      renderExpenses();
-    }
-
-    // ARRANQUE
-    refreshAllUI();
-  </script>
-</body>
-</html>
+    
