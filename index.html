@@ -230,7 +230,7 @@
 </head>
 <body>
 
-  <!-- TOAST FLOTANTE -->
+  <!-- AVISO TOAST FLOTANTE -->
   <div id="app-toast" class="font-mono">Aviso</div>
 
   <!-- ENCABEZADO -->
@@ -238,7 +238,7 @@
     <div class="header-inner">
       <div style="display: flex; align-items: center; gap: 10px;">
         <div class="logo-box">
-          <img id="app-logo" src="logo.png?v=14" 
+          <img id="app-logo" src="logo.png?v=15" 
                onerror="this.onerror=null; this.src='https://assets.stickpng.com/images/628c85c2bbec114743bed4bd.png'" 
                alt="Toros Negros">
         </div>
@@ -500,19 +500,23 @@
         </div>
 
         <p style="font-size: 10px; color: #94a3b8; margin-bottom: 8px; font-family: sans-serif; line-height: 1.4;">
-          Usa exactamente la misma clave en tu <b>celular</b> y en tu <b>computadora</b> para que todo se actualice solo en tiempo real.
+          Usa exactamente la misma clave en tu <b>celular</b> y en tu <b>computadora</b>:
         </p>
 
         <label style="font-size: 9px; color: #64748b; display: block; margin-bottom: 4px;">CLAVE DE NUBE COMPARTIDA:</label>
         <input type="text" id="sync-key-input" placeholder="Ej: TOROS-777" class="font-mono" style="margin-bottom: 8px;">
 
+        <!-- CONFIGURACIÓN OPCIONAL DE FIREBASE -->
+        <label style="font-size: 9px; color: var(--primary); display: block; margin-bottom: 4px;">URL DE GOOGLE FIREBASE (OPCIONAL / EN TIEMPO REAL):</label>
+        <input type="text" id="firebase-url-input" placeholder="https://tu-proyecto.firebaseio.com" class="font-mono" style="font-size: 10px; margin-bottom: 10px;">
+
         <div class="grid-2">
-          <button type="button" onclick="generateNewSyncKey()" class="btn-secondary">Generar Nueva</button>
-          <button type="button" onclick="saveAndEnableAutoSync()" class="btn-primary" style="padding: 8px;">Vincular y Activar</button>
+          <button type="button" onclick="generateNewSyncKey()" class="btn-secondary">Generar Clave</button>
+          <button type="button" onclick="saveAndEnableAutoSync()" class="btn-primary" style="padding: 8px;">Activar Auto-Sync</button>
         </div>
       </div>
 
-      <!-- RESPALDO MANUAL DE EMERGENCIA -->
+      <!-- RESPALDO MANUAL .JSON -->
       <div style="background: #090d16; padding: 10px; border-radius: 12px; border: 1px solid #1e293b;">
         <span style="font-size: 10px; font-weight: 700; color: #64748b; display: block; margin-bottom: 6px;">RESPALDO POR ARCHIVO (.JSON)</span>
         <div class="grid-2">
@@ -591,7 +595,7 @@
       </div>
 
       <div id="tdd-fields" style="display: none;">
-        <input type="number" step="0.01" id="card-balance" placeholder="Saldo actual disponible $">
+        <input type="number" step="0.01" id="card-balance" placeholder="Saldo actual disponible $" >
       </div>
 
       <div class="grid-2">
@@ -601,7 +605,7 @@
     </div>
   </div>
 
-  <!-- JAVASCRIPT CON AUTO-SYNC EN SEGUNDO PLANO -->
+  <!-- JAVASCRIPT SEGURO -->
   <script>
     function showToast(msg, isError = false) {
       const toast = document.getElementById('app-toast');
@@ -694,9 +698,10 @@
     let currentGymDay = 'Lunes';
     let activePayingCardId = null;
 
-    // CONFIGURACIÓN DE SINCRONIZACIÓN AUTOMÁTICA
+    // CONFIGURACIÓN DE SINCRONIZACIÓN
     let autoSyncKey = localStorage.getItem('cc_auto_sync_key') || '';
     let autoSyncActive = localStorage.getItem('cc_auto_sync_active') === 'true';
+    let firebaseUrl = localStorage.getItem('cc_firebase_url') || '';
     let autoSyncPushTimeout = null;
 
     function saveLocal(shouldPush = true) {
@@ -717,7 +722,7 @@
     }
 
     // ==========================================
-    // MOTOR DE SINCRONIZACIÓN AUTOMÁTICA REAL
+    // MOTOR DE AUTO-SYNC (SIN LÍMITES DE 50 PETICIONES)
     // ==========================================
     function updateSyncIndicator(label, color = null) {
       const ind = document.getElementById('sync-status-indicator');
@@ -728,8 +733,10 @@
 
     function updateSyncModalUI() {
       const statusText = document.getElementById('auto-sync-status-text');
-      const input = document.getElementById('sync-key-input');
-      if (input) input.value = autoSyncKey;
+      const inputKey = document.getElementById('sync-key-input');
+      const inputFb = document.getElementById('firebase-url-input');
+      if (inputKey) inputKey.value = autoSyncKey;
+      if (inputFb) inputFb.value = firebaseUrl;
 
       if (autoSyncActive && autoSyncKey) {
         statusText.textContent = `ACTIVO 🟢 (Clave: ${autoSyncKey})`;
@@ -750,36 +757,39 @@
 
     function saveAndEnableAutoSync() {
       const key = document.getElementById('sync-key-input').value.trim().toUpperCase();
+      const fb = document.getElementById('firebase-url-input').value.trim().replace(/\/+$/, '');
+
       if (!key) return showToast('Escribe una clave primero', true);
 
       autoSyncKey = key;
+      firebaseUrl = fb;
       autoSyncActive = true;
       localStorage.setItem('cc_auto_sync_key', autoSyncKey);
+      localStorage.setItem('cc_firebase_url', firebaseUrl);
       localStorage.setItem('cc_auto_sync_active', 'true');
 
       updateSyncModalUI();
       closeModal('sync-modal');
-      showToast(`Sincronización activada para: ${autoSyncKey}`);
+      showToast(`Auto-Sync activado con clave: ${autoSyncKey}`);
       
-      // Enviar de inmediato y luego escuchar
       pushToCloudDirect();
-      pullFromCloudDirect(true);
+      pullFromCloudDirect(false);
     }
 
-    // ENVÍO EN SEGUNDO PLANO (DEBOUNCE 1 SEGUNDO)
     function triggerAutoPush() {
       updateSyncIndicator('SYNC [⬆]', 'var(--primary)');
       clearTimeout(autoSyncPushTimeout);
       autoSyncPushTimeout = setTimeout(() => {
         pushToCloudDirect();
-      }, 1000);
+      }, 1200);
     }
 
+    // SUBIR DATOS (FIREBASE O KVDB)
     async function pushToCloudDirect() {
       if (!autoSyncKey || !autoSyncActive) return;
+
       try {
         const payload = {
-          key: autoSyncKey,
           updatedAt: appState.updatedAt,
           tasks: appState.tasks,
           diet: appState.diet,
@@ -789,18 +799,33 @@
           expenses: appState.expenses
         };
 
-        const res = await fetch(`https://api.restful-api.dev/objects`, {
+        // Si el usuario configuró Firebase (Recomendado)
+        if (firebaseUrl) {
+          const res = await fetch(`${firebaseUrl}/sync/${autoSyncKey}.json`, {
+            method: 'PUT',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(payload)
+          });
+          if (res.ok) {
+            updateSyncIndicator('SYNC [AUTO 🟢]', 'var(--success)');
+            return;
+          }
+        }
+
+        // Si no usa Firebase, usamos el bucket KVDB de 24,000 peticiones
+        let bucket = localStorage.getItem('cc_kvdb_bucket');
+        if (!bucket) {
+          const bRes = await fetch('https://kvdb.io/', { method: 'POST' });
+          bucket = (await bRes.text()).trim();
+          localStorage.setItem('cc_kvdb_bucket', bucket);
+        }
+
+        const res = await fetch(`https://kvdb.io/${bucket}/${autoSyncKey}`, {
           method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            name: 'SYNC_' + autoSyncKey,
-            data: { payload: JSON.stringify(payload) }
-          })
+          body: JSON.stringify(payload)
         });
 
-        const json = await res.json();
-        if (json && json.id) {
-          localStorage.setItem('cc_remote_id_' + autoSyncKey, json.id);
+        if (res.ok) {
           updateSyncIndicator('SYNC [AUTO 🟢]', 'var(--success)');
         }
       } catch(e) {
@@ -808,40 +833,44 @@
       }
     }
 
-    // DESCARGA AUTOMÁTICA EN SEGUNDO PLANO
+    // DESCARGAR DATOS
     async function pullFromCloudDirect(silent = true) {
       if (!autoSyncKey || !autoSyncActive) return;
-      const remoteId = localStorage.getItem('cc_remote_id_' + autoSyncKey);
-      if (!remoteId) return;
 
       try {
-        const res = await fetch(`https://api.restful-api.dev/objects/${remoteId}`);
-        if (!res.ok) return;
+        let remoteState = null;
 
-        const data = await res.json();
-        if (data && data.data && data.data.payload) {
-          const remoteState = JSON.parse(data.data.payload);
-
-          // Solo actualizar si la nube tiene datos más nuevos
-          if (remoteState.updatedAt && remoteState.updatedAt > (appState.updatedAt || 0)) {
-            appState.updatedAt = remoteState.updatedAt;
-            appState.tasks = Array.isArray(remoteState.tasks) ? remoteState.tasks : [];
-            appState.diet = remoteState.diet || {};
-            appState.gym = remoteState.gym || {};
-            appState.keepNotes = Array.isArray(remoteState.keepNotes) ? remoteState.keepNotes : [];
-            appState.cards = Array.isArray(remoteState.cards) ? remoteState.cards : [];
-            appState.expenses = Array.isArray(remoteState.expenses) ? remoteState.expenses : [];
-
-            saveLocal(false); // Guardar sin volver a subir para evitar bucles
-            refreshAllUI();
-            if (!silent) showToast('Datos actualizados de la nube');
+        // Si usa Firebase
+        if (firebaseUrl) {
+          const res = await fetch(`${firebaseUrl}/sync/${autoSyncKey}.json`);
+          if (res.ok) remoteState = await res.json();
+        } else {
+          // Si usa KVDB
+          let bucket = localStorage.getItem('cc_kvdb_bucket');
+          if (bucket) {
+            const res = await fetch(`https://kvdb.io/${bucket}/${autoSyncKey}`);
+            if (res.ok) remoteState = await res.json();
           }
+        }
+
+        if (remoteState && remoteState.updatedAt && remoteState.updatedAt > (appState.updatedAt || 0)) {
+          appState.updatedAt = remoteState.updatedAt;
+          appState.tasks = Array.isArray(remoteState.tasks) ? remoteState.tasks : [];
+          appState.diet = remoteState.diet || {};
+          appState.gym = remoteState.gym || {};
+          appState.keepNotes = Array.isArray(remoteState.keepNotes) ? remoteState.keepNotes : [];
+          appState.cards = Array.isArray(remoteState.cards) ? remoteState.cards : [];
+          appState.expenses = Array.isArray(remoteState.expenses) ? remoteState.expenses : [];
+
+          saveLocal(false);
+          refreshAllUI();
+          if (!silent) showToast('Datos actualizados de la nube');
         }
         updateSyncIndicator('SYNC [AUTO 🟢]', 'var(--success)');
       } catch(e) {}
     }
 
-    // DISPARADORES AUTOMÁTICOS: Al volver a la pestaña, al desbloquear el teléfono o cada 10 segundos
+    // Escucha inteligente: solo al volver a la ventana y cada 30 segundos
     document.addEventListener('visibilitychange', () => {
       if (!document.hidden && autoSyncActive) pullFromCloudDirect(true);
     });
@@ -850,11 +879,9 @@
     });
     setInterval(() => {
       if (autoSyncActive && !document.hidden) pullFromCloudDirect(true);
-    }, 10000);
+    }, 30000);
 
-    // ==========================================
-    // RESPALDO EN ARCHIVO (MÉTODO ALTERNATIVO)
-    // ==========================================
+    // RESPALDO EN ARCHIVO
     function downloadJSONFile() {
       try {
         const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(appState, null, 2));
@@ -897,9 +924,7 @@
       reader.readAsText(file);
     }
 
-    // ==========================================
-    // NAVEGACIÓN Y SECCIONES
-    // ==========================================
+    // NAVEGACIÓN
     function switchTab(tabId) {
       const tabs = ['tasks', 'diet', 'gym', 'reminders', 'finances'];
       const titles = {
@@ -982,7 +1007,7 @@
       `).join('');
     }
 
-    // 2. DIETA & AGUA 4.5L
+    // 2. DIETA & 4.5L
     const days = ['Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado', 'Domingo'];
 
     function renderDayCapsules() {
@@ -1519,7 +1544,7 @@
       } catch(e) {}
     }
 
-    // ARRANQUE SEGURO Y VERIFICACIÓN DE AUTO-SYNC
+    // ARRANQUE SEGURO
     refreshAllUI();
     updateSyncModalUI();
     if (autoSyncActive) {
