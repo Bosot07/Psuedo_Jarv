@@ -12,7 +12,6 @@
   <link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
 
   <style>
-    /* CSS NATIVO ULTRA-RÁPIDO (CERO FRAMEWORKS EXTERNOS QUE TRABEN LA PANTALLA) */
     :root {
       --bg: #07090e;
       --card: #0d121f;
@@ -45,7 +44,6 @@
       padding: 12px 16px;
     }
 
-    /* HEADER */
     header {
       position: sticky;
       top: 0;
@@ -74,7 +72,6 @@
     }
     .logo-box img { width: 100%; height: 100%; object-fit: contain; }
 
-    /* TARJETAS Y PANELES */
     .card {
       background: var(--card);
       border: 1px solid var(--border);
@@ -83,7 +80,6 @@
       margin-bottom: 12px;
     }
 
-    /* BOTONES */
     button {
       cursor: pointer;
       border: none;
@@ -121,7 +117,6 @@
       width: 100%;
     }
 
-    /* INPUTS Y FORMULARIOS */
     input, select, textarea {
       width: 100%;
       background: #090d16;
@@ -141,7 +136,6 @@
     .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
     .grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 6px; }
 
-    /* NAVEGACIÓN INFERIOR (5 PESTAÑAS) */
     nav {
       position: fixed;
       bottom: 0;
@@ -174,7 +168,6 @@
       background: rgba(245, 158, 11, 0.1);
     }
 
-    /* DÍAS CÁPSULAS */
     .capsules-bar {
       display: flex;
       gap: 6px;
@@ -197,7 +190,6 @@
       border-color: var(--primary);
     }
 
-    /* TOAST */
     #app-toast {
       position: fixed;
       top: 10px;
@@ -216,7 +208,6 @@
       transition: opacity 0.2s ease;
     }
 
-    /* MODALES */
     .modal-overlay {
       position: fixed;
       inset: 0;
@@ -239,7 +230,7 @@
 </head>
 <body>
 
-  <!-- AVISO TOAST -->
+  <!-- TOAST FLOTANTE -->
   <div id="app-toast" class="font-mono">Aviso</div>
 
   <!-- ENCABEZADO -->
@@ -247,7 +238,7 @@
     <div class="header-inner">
       <div style="display: flex; align-items: center; gap: 10px;">
         <div class="logo-box">
-          <img id="app-logo" src="logo.png?v=12" 
+          <img id="app-logo" src="logo.png?v=14" 
                onerror="this.onerror=null; this.src='https://assets.stickpng.com/images/628c85c2bbec114743bed4bd.png'" 
                alt="Toros Negros">
         </div>
@@ -258,7 +249,7 @@
       </div>
 
       <div style="display: flex; align-items: center; gap: 6px;">
-        <button type="button" onclick="openModal('sync-modal')" class="btn-secondary font-mono" style="font-weight: 800;">
+        <button type="button" onclick="openModal('sync-modal')" id="sync-status-indicator" class="btn-secondary font-mono" style="font-weight: 800;">
           SYNC
         </button>
         <div class="font-mono" style="background: #090d16; border: 1px solid #1e293b; padding: 4px 8px; border-radius: 8px; text-align: right; font-size: 10px;">
@@ -482,7 +473,7 @@
 
   </main>
 
-  <!-- NAVEGACIÓN INFERIOR (TEXTO PURO, CERO ÍCONOS) -->
+  <!-- NAVEGACIÓN INFERIOR (TEXTO PURO) -->
   <nav>
     <div class="nav-inner font-mono">
       <button type="button" onclick="switchTab('tasks')" id="nav-tasks" class="nav-btn active">TAREAS</button>
@@ -493,33 +484,44 @@
     </div>
   </nav>
 
-  <!-- MODAL: SINCRONIZACIÓN -->
+  <!-- MODAL: SINCRONIZACIÓN AUTOMÁTICA -->
   <div id="sync-modal" class="modal-overlay" style="display: none;" onclick="if(event.target === this) closeModal('sync-modal')">
     <div class="modal-content font-mono">
       <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #1e293b; padding-bottom: 8px; margin-bottom: 12px;">
-        <span style="font-size: 12px; font-weight: 800; color: var(--primary);">SINCRONIZACIÓN DE DATOS</span>
+        <span style="font-size: 12px; font-weight: 800; color: var(--primary);">SINCRONIZACIÓN AUTOMÁTICA</span>
         <button type="button" onclick="closeModal('sync-modal')" class="btn-secondary" style="padding: 2px 8px;">X</button>
       </div>
 
-      <div style="background: #090d16; padding: 10px; border-radius: 12px; border: 1px solid #1e293b; margin-bottom: 12px;">
-        <span style="font-size: 10px; font-weight: 700; color: var(--primary); display: block; margin-bottom: 4px;">OPCIÓN 1: ARCHIVO .JSON (RECOMENDADA)</span>
-        <p style="font-size: 10px; color: #94a3b8; margin-bottom: 8px; font-family: sans-serif;">Descarga tus datos y pásalos a tu otro dispositivo:</p>
+      <!-- ESTADO AUTO-SYNC -->
+      <div style="background: #090d16; padding: 12px; border-radius: 12px; border: 1px solid #1e293b; margin-bottom: 12px;">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
+          <span style="font-size: 10px; color: #94a3b8;">ESTADO:</span>
+          <span id="auto-sync-status-text" style="font-size: 10px; font-weight: 800; color: var(--danger);">INACTIVO ⚪</span>
+        </div>
+
+        <p style="font-size: 10px; color: #94a3b8; margin-bottom: 8px; font-family: sans-serif; line-height: 1.4;">
+          Usa exactamente la misma clave en tu <b>celular</b> y en tu <b>computadora</b> para que todo se actualice solo en tiempo real.
+        </p>
+
+        <label style="font-size: 9px; color: #64748b; display: block; margin-bottom: 4px;">CLAVE DE NUBE COMPARTIDA:</label>
+        <input type="text" id="sync-key-input" placeholder="Ej: TOROS-777" class="font-mono" style="margin-bottom: 8px;">
+
         <div class="grid-2">
-          <button type="button" onclick="downloadJSONFile()" class="btn-primary" style="padding: 8px;">Descargar</button>
+          <button type="button" onclick="generateNewSyncKey()" class="btn-secondary">Generar Nueva</button>
+          <button type="button" onclick="saveAndEnableAutoSync()" class="btn-primary" style="padding: 8px;">Vincular y Activar</button>
+        </div>
+      </div>
+
+      <!-- RESPALDO MANUAL DE EMERGENCIA -->
+      <div style="background: #090d16; padding: 10px; border-radius: 12px; border: 1px solid #1e293b;">
+        <span style="font-size: 10px; font-weight: 700; color: #64748b; display: block; margin-bottom: 6px;">RESPALDO POR ARCHIVO (.JSON)</span>
+        <div class="grid-2">
+          <button type="button" onclick="downloadJSONFile()" class="btn-secondary">Descargar</button>
           <label class="btn-secondary" style="display: flex; align-items: center; justify-content: center; cursor: pointer; text-align: center;">
             Cargar
             <input type="file" id="file-import-input" accept=".json" onchange="importJSONFile(event)" style="display: none;">
           </label>
         </div>
-      </div>
-
-      <div style="background: #090d16; padding: 10px; border-radius: 12px; border: 1px solid #1e293b;">
-        <span style="font-size: 10px; font-weight: 700; color: var(--blue); display: block; margin-bottom: 4px;">OPCIÓN 2: COPIAR Y PEGAR TEXTO</span>
-        <div class="grid-2" style="margin-bottom: 8px;">
-          <button type="button" onclick="copyProgressText()" class="btn-secondary">Copiar</button>
-          <button type="button" onclick="restoreFromTextArea()" class="btn-secondary" style="color: var(--blue);">Cargar Texto</button>
-        </div>
-        <textarea id="sync-clipboard-area" rows="2" placeholder="Pega el texto aquí..."></textarea>
       </div>
     </div>
   </div>
@@ -599,7 +601,7 @@
     </div>
   </div>
 
-  <!-- JAVASCRIPT SEGURO -->
+  <!-- JAVASCRIPT CON AUTO-SYNC EN SEGUNDO PLANO -->
   <script>
     function showToast(msg, isError = false) {
       const toast = document.getElementById('app-toast');
@@ -617,6 +619,9 @@
       if (id === 'gemini-import-modal') {
         const lbl = document.getElementById('import-current-day-label');
         if (lbl) lbl.textContent = currentDietDay;
+      }
+      if (id === 'sync-modal') {
+        updateSyncModalUI();
       }
     }
 
@@ -675,6 +680,7 @@
     }
 
     let appState = {
+      updatedAt: Number(localStorage.getItem('cc_updated_at')) || Date.now(),
       tasks: safeArray('cc_tasks'),
       diet: safeObject('cc_diet'),
       gym: safeObject('cc_gym'),
@@ -688,17 +694,212 @@
     let currentGymDay = 'Lunes';
     let activePayingCardId = null;
 
-    function saveLocal() {
+    // CONFIGURACIÓN DE SINCRONIZACIÓN AUTOMÁTICA
+    let autoSyncKey = localStorage.getItem('cc_auto_sync_key') || '';
+    let autoSyncActive = localStorage.getItem('cc_auto_sync_active') === 'true';
+    let autoSyncPushTimeout = null;
+
+    function saveLocal(shouldPush = true) {
       try {
+        appState.updatedAt = Date.now();
+        localStorage.setItem('cc_updated_at', appState.updatedAt);
         localStorage.setItem('cc_tasks', JSON.stringify(appState.tasks));
         localStorage.setItem('cc_diet', JSON.stringify(appState.diet));
         localStorage.setItem('cc_gym', JSON.stringify(appState.gym));
         localStorage.setItem('cc_keep_notes', JSON.stringify(appState.keepNotes));
         localStorage.setItem('cc_cards', JSON.stringify(appState.cards));
         localStorage.setItem('cc_expenses', JSON.stringify(appState.expenses));
+
+        if (shouldPush && autoSyncActive && autoSyncKey) {
+          triggerAutoPush();
+        }
       } catch(e) {}
     }
 
+    // ==========================================
+    // MOTOR DE SINCRONIZACIÓN AUTOMÁTICA REAL
+    // ==========================================
+    function updateSyncIndicator(label, color = null) {
+      const ind = document.getElementById('sync-status-indicator');
+      if (!ind) return;
+      ind.textContent = label;
+      if (color) ind.style.color = color;
+    }
+
+    function updateSyncModalUI() {
+      const statusText = document.getElementById('auto-sync-status-text');
+      const input = document.getElementById('sync-key-input');
+      if (input) input.value = autoSyncKey;
+
+      if (autoSyncActive && autoSyncKey) {
+        statusText.textContent = `ACTIVO 🟢 (Clave: ${autoSyncKey})`;
+        statusText.style.color = 'var(--success)';
+        updateSyncIndicator('SYNC [AUTO 🟢]', 'var(--success)');
+      } else {
+        statusText.textContent = 'INACTIVO ⚪';
+        statusText.style.color = 'var(--danger)';
+        updateSyncIndicator('SYNC [OFF]', '#64748b');
+      }
+    }
+
+    function generateNewSyncKey() {
+      const key = 'TORO-' + Math.random().toString(36).substring(2, 7).toUpperCase();
+      document.getElementById('sync-key-input').value = key;
+      showToast('Nueva clave generada');
+    }
+
+    function saveAndEnableAutoSync() {
+      const key = document.getElementById('sync-key-input').value.trim().toUpperCase();
+      if (!key) return showToast('Escribe una clave primero', true);
+
+      autoSyncKey = key;
+      autoSyncActive = true;
+      localStorage.setItem('cc_auto_sync_key', autoSyncKey);
+      localStorage.setItem('cc_auto_sync_active', 'true');
+
+      updateSyncModalUI();
+      closeModal('sync-modal');
+      showToast(`Sincronización activada para: ${autoSyncKey}`);
+      
+      // Enviar de inmediato y luego escuchar
+      pushToCloudDirect();
+      pullFromCloudDirect(true);
+    }
+
+    // ENVÍO EN SEGUNDO PLANO (DEBOUNCE 1 SEGUNDO)
+    function triggerAutoPush() {
+      updateSyncIndicator('SYNC [⬆]', 'var(--primary)');
+      clearTimeout(autoSyncPushTimeout);
+      autoSyncPushTimeout = setTimeout(() => {
+        pushToCloudDirect();
+      }, 1000);
+    }
+
+    async function pushToCloudDirect() {
+      if (!autoSyncKey || !autoSyncActive) return;
+      try {
+        const payload = {
+          key: autoSyncKey,
+          updatedAt: appState.updatedAt,
+          tasks: appState.tasks,
+          diet: appState.diet,
+          gym: appState.gym,
+          keepNotes: appState.keepNotes,
+          cards: appState.cards,
+          expenses: appState.expenses
+        };
+
+        const res = await fetch(`https://api.restful-api.dev/objects`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            name: 'SYNC_' + autoSyncKey,
+            data: { payload: JSON.stringify(payload) }
+          })
+        });
+
+        const json = await res.json();
+        if (json && json.id) {
+          localStorage.setItem('cc_remote_id_' + autoSyncKey, json.id);
+          updateSyncIndicator('SYNC [AUTO 🟢]', 'var(--success)');
+        }
+      } catch(e) {
+        updateSyncIndicator('SYNC [ERROR]', 'var(--danger)');
+      }
+    }
+
+    // DESCARGA AUTOMÁTICA EN SEGUNDO PLANO
+    async function pullFromCloudDirect(silent = true) {
+      if (!autoSyncKey || !autoSyncActive) return;
+      const remoteId = localStorage.getItem('cc_remote_id_' + autoSyncKey);
+      if (!remoteId) return;
+
+      try {
+        const res = await fetch(`https://api.restful-api.dev/objects/${remoteId}`);
+        if (!res.ok) return;
+
+        const data = await res.json();
+        if (data && data.data && data.data.payload) {
+          const remoteState = JSON.parse(data.data.payload);
+
+          // Solo actualizar si la nube tiene datos más nuevos
+          if (remoteState.updatedAt && remoteState.updatedAt > (appState.updatedAt || 0)) {
+            appState.updatedAt = remoteState.updatedAt;
+            appState.tasks = Array.isArray(remoteState.tasks) ? remoteState.tasks : [];
+            appState.diet = remoteState.diet || {};
+            appState.gym = remoteState.gym || {};
+            appState.keepNotes = Array.isArray(remoteState.keepNotes) ? remoteState.keepNotes : [];
+            appState.cards = Array.isArray(remoteState.cards) ? remoteState.cards : [];
+            appState.expenses = Array.isArray(remoteState.expenses) ? remoteState.expenses : [];
+
+            saveLocal(false); // Guardar sin volver a subir para evitar bucles
+            refreshAllUI();
+            if (!silent) showToast('Datos actualizados de la nube');
+          }
+        }
+        updateSyncIndicator('SYNC [AUTO 🟢]', 'var(--success)');
+      } catch(e) {}
+    }
+
+    // DISPARADORES AUTOMÁTICOS: Al volver a la pestaña, al desbloquear el teléfono o cada 10 segundos
+    document.addEventListener('visibilitychange', () => {
+      if (!document.hidden && autoSyncActive) pullFromCloudDirect(true);
+    });
+    window.addEventListener('focus', () => {
+      if (autoSyncActive) pullFromCloudDirect(true);
+    });
+    setInterval(() => {
+      if (autoSyncActive && !document.hidden) pullFromCloudDirect(true);
+    }, 10000);
+
+    // ==========================================
+    // RESPALDO EN ARCHIVO (MÉTODO ALTERNATIVO)
+    // ==========================================
+    function downloadJSONFile() {
+      try {
+        const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(appState, null, 2));
+        const downloadAnchor = document.createElement('a');
+        downloadAnchor.setAttribute("href", dataStr);
+        downloadAnchor.setAttribute("download", `toros_negros_datos.json`);
+        document.body.appendChild(downloadAnchor);
+        downloadAnchor.click();
+        downloadAnchor.remove();
+        showToast('Archivo descargado');
+      } catch(e) {
+        showToast('Error al descargar', true);
+      }
+    }
+
+    function importJSONFile(event) {
+      const file = event.target.files[0];
+      if (!file) return;
+
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        try {
+          const parsed = JSON.parse(e.target.result);
+          if (parsed && typeof parsed === 'object') {
+            appState.tasks = Array.isArray(parsed.tasks) ? parsed.tasks : [];
+            appState.diet = parsed.diet || {};
+            appState.gym = parsed.gym || {};
+            appState.keepNotes = Array.isArray(parsed.keepNotes) ? parsed.keepNotes : [];
+            appState.cards = Array.isArray(parsed.cards) ? parsed.cards : [];
+            appState.expenses = Array.isArray(parsed.expenses) ? parsed.expenses : [];
+            saveLocal(true);
+            refreshAllUI();
+            closeModal('sync-modal');
+            showToast('¡Datos cargados al 100%!');
+          }
+        } catch(err) {
+          showToast('El archivo no es válido', true);
+        }
+      };
+      reader.readAsText(file);
+    }
+
+    // ==========================================
+    // NAVEGACIÓN Y SECCIONES
+    // ==========================================
     function switchTab(tabId) {
       const tabs = ['tasks', 'diet', 'gym', 'reminders', 'finances'];
       const titles = {
@@ -715,11 +916,8 @@
 
         const nav = document.getElementById(`nav-${t}`);
         if (nav) {
-          if (t === tabId) {
-            nav.classList.add('active');
-          } else {
-            nav.classList.remove('active');
-          }
+          if (t === tabId) nav.classList.add('active');
+          else nav.classList.remove('active');
         }
       });
       const hTitle = document.getElementById('header-title');
@@ -784,7 +982,7 @@
       `).join('');
     }
 
-    // 2. DIETA & 4.5L
+    // 2. DIETA & AGUA 4.5L
     const days = ['Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado', 'Domingo'];
 
     function renderDayCapsules() {
@@ -1307,87 +1505,6 @@
       }).join('');
     }
 
-    // SINCRONIZACIÓN (.JSON / TEXTO)
-    function downloadJSONFile() {
-      try {
-        const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(appState, null, 2));
-        const downloadAnchor = document.createElement('a');
-        downloadAnchor.setAttribute("href", dataStr);
-        downloadAnchor.setAttribute("download", `toros_negros_datos.json`);
-        document.body.appendChild(downloadAnchor);
-        downloadAnchor.click();
-        downloadAnchor.remove();
-        showToast('Archivo descargado');
-      } catch(e) {
-        showToast('Error al descargar', true);
-      }
-    }
-
-    function importJSONFile(event) {
-      const file = event.target.files[0];
-      if (!file) return;
-
-      const reader = new FileReader();
-      reader.onload = function(e) {
-        try {
-          const parsed = JSON.parse(e.target.result);
-          if (parsed && typeof parsed === 'object') {
-            appState.tasks = Array.isArray(parsed.tasks) ? parsed.tasks : [];
-            appState.diet = parsed.diet || {};
-            appState.gym = parsed.gym || {};
-            appState.keepNotes = Array.isArray(parsed.keepNotes) ? parsed.keepNotes : [];
-            appState.cards = Array.isArray(parsed.cards) ? parsed.cards : [];
-            appState.expenses = Array.isArray(parsed.expenses) ? parsed.expenses : [];
-            saveLocal();
-            refreshAllUI();
-            closeModal('sync-modal');
-            showToast('¡Datos cargados al 100%!');
-          }
-        } catch(err) {
-          showToast('El archivo no es válido', true);
-        }
-      };
-      reader.readAsText(file);
-    }
-
-    function copyProgressText() {
-      try {
-        const jsonStr = JSON.stringify(appState);
-        navigator.clipboard.writeText(jsonStr).then(() => {
-          showToast('Datos copiados');
-          document.getElementById('sync-clipboard-area').value = jsonStr;
-        }).catch(() => {
-          document.getElementById('sync-clipboard-area').value = jsonStr;
-          showToast('Texto colocado en el recuadro');
-        });
-      } catch(e) {
-        showToast('Error al copiar', true);
-      }
-    }
-
-    function restoreFromTextArea() {
-      const text = document.getElementById('sync-clipboard-area').value.trim();
-      if (!text) return showToast('El cuadro está vacío', true);
-
-      try {
-        const parsed = JSON.parse(text);
-        if (parsed && typeof parsed === 'object') {
-          appState.tasks = Array.isArray(parsed.tasks) ? parsed.tasks : [];
-          appState.diet = parsed.diet || {};
-          appState.gym = parsed.gym || {};
-          appState.keepNotes = Array.isArray(parsed.keepNotes) ? parsed.keepNotes : [];
-          appState.cards = Array.isArray(parsed.cards) ? parsed.cards : [];
-          appState.expenses = Array.isArray(parsed.expenses) ? parsed.expenses : [];
-          saveLocal();
-          refreshAllUI();
-          closeModal('sync-modal');
-          showToast('¡Progreso restaurado!');
-        }
-      } catch(e) {
-        showToast('Formato de texto inválido', true);
-      }
-    }
-
     function refreshAllUI() {
       try {
         renderTasks();
@@ -1402,8 +1519,12 @@
       } catch(e) {}
     }
 
-    // ARRANQUE LIMPIO
+    // ARRANQUE SEGURO Y VERIFICACIÓN DE AUTO-SYNC
     refreshAllUI();
+    updateSyncModalUI();
+    if (autoSyncActive) {
+      pullFromCloudDirect(true);
+    }
   </script>
 </body>
 </html>
