@@ -3,608 +3,612 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-  <!-- FORZAR A CHROME/SAMSUNG A NO GUARDAR CÓDIGO VIEJO EN CACHÉ -->
   <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
-  <meta http-equiv="Pragma" content="no-cache">
-  <meta http-equiv="Expires" content="0">
   <title>Toros Negros • Capsule OS</title>
-  
+
   <!-- Fuentes -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-
-  <!-- Tailwind CSS -->
-  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
 
   <style>
-    ::-webkit-scrollbar { display: none; }
-    
-    body { 
-      -webkit-tap-highlight-color: transparent;
-      padding-top: env(safe-area-inset-top);
-      padding-bottom: env(safe-area-inset-bottom);
-      font-family: 'Plus Jakarta Sans', sans-serif;
-    }
-
-    .font-mono, h1, h2, h3, h4, .tech-font {
-      font-family: 'Chakra Petch', monospace !important;
-      letter-spacing: 0.02em;
-    }
-
+    /* CSS NATIVO ULTRA-RÁPIDO (CERO FRAMEWORKS EXTERNOS QUE TRABEN LA PANTALLA) */
     :root {
-      --bg-main: #07090e;
-      --card-bg: #0d121f;
+      --bg: #07090e;
+      --card: #0d121f;
+      --border: rgba(245, 158, 11, 0.35);
       --primary: #f59e0b;
-      --primary-border: rgba(245, 158, 11, 0.4);
-      --accent: #dc2626;
+      --text: #f8fafc;
+      --muted: #94a3b8;
+      --danger: #ef4444;
+      --success: #10b981;
+      --blue: #0ea5e9;
     }
 
-    body[data-theme="saiyan"] {
-      --bg-main: #050813;
-      --card-bg: #091226;
-      --primary: #38bdf8;
-      --primary-border: rgba(56, 189, 248, 0.4);
-      --accent: #fbbf24;
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    ::-webkit-scrollbar { display: none; }
+
+    body {
+      background-color: var(--bg);
+      color: var(--text);
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      padding-top: env(safe-area-inset-top);
+      padding-bottom: calc(env(safe-area-inset-bottom) + 80px);
+      -webkit-tap-highlight-color: transparent;
     }
 
-    body[data-theme="cyber"] {
-      --bg-main: #090614;
-      --card-bg: #150f28;
-      --primary: #c084fc;
-      --primary-border: rgba(192, 132, 252, 0.4);
-      --accent: #06b6d4;
+    .font-mono { font-family: 'Chakra Petch', monospace; }
+
+    .app-container {
+      max-width: 430px;
+      margin: 0 auto;
+      padding: 12px 16px;
     }
 
-    body[data-theme="stealth"] {
-      --bg-main: #09090b;
-      --card-bg: #18181b;
-      --primary: #e4e4e7;
-      --primary-border: rgba(113, 113, 122, 0.4);
-      --accent: #71717a;
+    /* HEADER */
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 30;
+      background: rgba(7, 9, 14, 0.98);
+      border-bottom: 1px solid var(--border);
+      padding: 10px 16px;
+    }
+    .header-inner {
+      max-width: 430px;
+      margin: 0 auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .logo-box {
+      width: 36px;
+      height: 36px;
+      background: #ffffff;
+      border: 2px solid var(--primary);
+      border-radius: 10px;
+      padding: 2px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .logo-box img { width: 100%; height: 100%; object-fit: contain; }
+
+    /* TARJETAS Y PANELES */
+    .card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 14px;
+      margin-bottom: 12px;
     }
 
-    .themed-card {
-      background: var(--card-bg);
-      border: 1px solid var(--primary-border);
+    /* BOTONES */
+    button {
+      cursor: pointer;
+      border: none;
+      outline: none;
+      font-family: 'Chakra Petch', monospace;
+      font-weight: 700;
+      transition: transform 0.05s ease;
+    }
+    button:active { transform: scale(0.97); }
+
+    .btn-primary {
+      background: var(--primary);
+      color: #000;
+      padding: 10px 14px;
+      border-radius: 12px;
+      font-size: 11px;
+      text-transform: uppercase;
+      width: 100%;
+    }
+    .btn-secondary {
+      background: #1e293b;
+      color: #cbd5e1;
+      border: 1px solid #334155;
+      padding: 8px 12px;
+      border-radius: 10px;
+      font-size: 10px;
+    }
+    .btn-danger {
+      background: var(--danger);
+      color: #fff;
+      padding: 10px 14px;
+      border-radius: 12px;
+      font-size: 11px;
+      text-transform: uppercase;
+      width: 100%;
+    }
+
+    /* INPUTS Y FORMULARIOS */
+    input, select, textarea {
+      width: 100%;
+      background: #090d16;
+      border: 1px solid #1e293b;
+      color: #fff;
+      padding: 9px 12px;
+      border-radius: 10px;
+      font-size: 12px;
+      outline: none;
+      font-family: inherit;
+      margin-bottom: 8px;
+    }
+    input:focus, select:focus, textarea:focus {
+      border-color: var(--primary);
+    }
+
+    .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+    .grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 6px; }
+
+    /* NAVEGACIÓN INFERIOR (5 PESTAÑAS) */
+    nav {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      z-index: 40;
+      background: #07090e;
+      border-top: 1px solid var(--border);
+      padding: 8px 4px;
+    }
+    .nav-inner {
+      max-width: 430px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 4px;
+    }
+    .nav-btn {
+      background: transparent;
+      color: var(--muted);
+      padding: 8px 2px;
+      border-radius: 8px;
+      font-size: 10px;
+      text-transform: uppercase;
+      font-weight: 700;
+      text-align: center;
+    }
+    .nav-btn.active {
+      color: var(--primary);
+      background: rgba(245, 158, 11, 0.1);
+    }
+
+    /* DÍAS CÁPSULAS */
+    .capsules-bar {
+      display: flex;
+      gap: 6px;
+      overflow-x: auto;
+      margin-bottom: 12px;
+    }
+    .capsule-btn {
+      background: #090d16;
+      border: 1px solid #1e293b;
+      color: var(--muted);
+      padding: 6px 12px;
+      border-radius: 10px;
+      font-size: 11px;
+      white-space: nowrap;
+    }
+    .capsule-btn.active {
+      background: var(--primary);
+      color: #000;
+      font-weight: 800;
+      border-color: var(--primary);
+    }
+
+    /* TOAST */
+    #app-toast {
+      position: fixed;
+      top: 10px;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 100;
+      background: var(--primary);
+      color: #000;
+      padding: 8px 16px;
+      border-radius: 14px;
+      font-size: 11px;
+      font-weight: 800;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.6);
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.2s ease;
+    }
+
+    /* MODALES */
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      z-index: 50;
+      background: rgba(0, 0, 0, 0.85);
+      padding: 16px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .modal-content {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 18px;
+      width: 100%;
+      max-width: 380px;
     }
   </style>
 </head>
-<body data-theme="blackbulls" class="bg-[var(--bg-main)] text-slate-100 pb-32 antialiased min-h-screen">
+<body>
 
-  <!-- AVISO TOAST FLOTANTE -->
-  <div id="app-toast" class="fixed top-4 left-1/2 -translate-x-1/2 z-50 px-4 py-2.5 rounded-2xl text-xs font-mono font-bold shadow-2xl opacity-0 pointer-events-none transition-all duration-300">
-    Notificación
-  </div>
+  <!-- AVISO TOAST -->
+  <div id="app-toast" class="font-mono">Aviso</div>
 
   <!-- ENCABEZADO -->
-  <header class="sticky top-0 z-40 bg-[var(--bg-main)] border-b border-[var(--primary-border)] px-4 py-2.5">
-    <div class="max-w-[430px] mx-auto flex items-center justify-between">
-      
-      <!-- Logo Toros Negros con Fondo Blanco -->
-      <div class="flex items-center gap-2.5">
-        <div class="w-9 h-9 rounded-xl bg-white border-2 border-[var(--primary)] p-0.5 flex items-center justify-center shadow-md">
-          <img id="app-logo" src="logo.png?v=11" 
+  <header>
+    <div class="header-inner">
+      <div style="display: flex; align-items: center; gap: 10px;">
+        <div class="logo-box">
+          <img id="app-logo" src="logo.png?v=12" 
                onerror="this.onerror=null; this.src='https://assets.stickpng.com/images/628c85c2bbec114743bed4bd.png'" 
-               alt="Toros Negros" class="w-full h-full object-contain">
+               alt="Toros Negros">
         </div>
         <div>
-          <span class="text-[9px] font-mono font-bold tracking-wider text-[var(--primary)] uppercase block leading-tight">TOROS NEGROS • HQ</span>
-          <h1 id="header-title" class="text-xs font-black tracking-wide uppercase text-white">Misiones Escolares</h1>
+          <span class="font-mono" style="font-size: 9px; color: var(--primary); font-weight: 700; letter-spacing: 0.1em; display: block;">TOROS NEGROS • HQ</span>
+          <h1 id="header-title" class="font-mono" style="font-size: 13px; font-weight: 800; text-transform: uppercase;">Misiones Escolares</h1>
         </div>
       </div>
 
-      <!-- Herramientas -->
-      <div class="flex items-center gap-1.5 font-mono">
-        <!-- BOTÓN DE EMERGENCIA DESCONGELAR -->
-        <button type="button" onclick="hardResetApp()" title="Descongelar / Limpiar Caché" class="p-1.5 rounded-lg bg-slate-900 border border-rose-500/50 text-rose-400 text-xs active:scale-95 transition">
-          🧹
+      <div style="display: flex; align-items: center; gap: 6px;">
+        <button type="button" onclick="openModal('sync-modal')" class="btn-secondary font-mono" style="font-weight: 800;">
+          SYNC
         </button>
-
-        <button type="button" onclick="openModal('theme-modal')" class="p-1.5 rounded-lg bg-slate-900 border border-[var(--primary-border)] text-[var(--primary)] text-xs active:scale-95 transition">
-          🎨
-        </button>
-
-        <button type="button" onclick="openModal('sync-modal')" class="flex items-center gap-1 bg-slate-900 border border-[var(--primary-border)] text-[var(--primary)] px-2 py-1 rounded-lg text-[10px] font-bold active:scale-95 transition">
-          <span>SYNC</span>
-        </button>
-
-        <div class="bg-slate-900 border border-slate-800 px-2 py-0.5 rounded-lg text-right text-[10px]">
-          <span id="hud-date" class="text-[var(--primary)] font-bold block leading-none">--/--/--</span>
-          <span id="hud-clock" class="text-[9px] text-slate-400">00:00</span>
+        <div class="font-mono" style="background: #090d16; border: 1px solid #1e293b; padding: 4px 8px; border-radius: 8px; text-align: right; font-size: 10px;">
+          <span id="hud-date" style="color: var(--primary); font-weight: 700; display: block;">--/--/--</span>
+          <span id="hud-clock" style="color: #64748b; font-size: 9px;">00:00</span>
         </div>
       </div>
-
     </div>
   </header>
 
-  <!-- CONTENEDOR PRINCIPAL S24 ULTRA -->
-  <main class="max-w-[430px] mx-auto px-4 pt-4 space-y-4">
+  <main class="app-container">
 
-    <!-- 1. TAREAS -->
-    <section id="tab-tasks" class="space-y-4">
-      <div class="grid grid-cols-3 gap-2 font-mono text-center">
-        <div class="themed-card p-2.5 rounded-2xl">
-          <span class="text-[9px] text-slate-400 block uppercase">Pendientes</span>
-          <span id="stat-pending" class="text-base font-black text-rose-400">0</span>
+    <!-- 1. TAREAS ESCOLARES -->
+    <section id="tab-tasks">
+      <div class="card grid-3 font-mono" style="text-align: center; padding: 10px;">
+        <div>
+          <span style="font-size: 9px; color: #64748b; display: block;">PENDIENTES</span>
+          <span id="stat-pending" style="font-size: 16px; font-weight: 800; color: var(--danger);">0</span>
         </div>
-        <div class="themed-card p-2.5 rounded-2xl">
-          <span class="text-[9px] text-slate-400 block uppercase">Hechas</span>
-          <span id="stat-done" class="text-base font-black text-emerald-400">0</span>
+        <div>
+          <span style="font-size: 9px; color: #64748b; display: block;">HECHAS</span>
+          <span id="stat-done" style="font-size: 16px; font-weight: 800; color: var(--success);">0</span>
         </div>
-        <div class="themed-card p-2.5 rounded-2xl">
-          <span class="text-[9px] text-slate-400 block uppercase">Progreso</span>
-          <span id="stat-rate" class="text-base font-black text-[var(--primary)]">100%</span>
+        <div>
+          <span style="font-size: 9px; color: #64748b; display: block;">PROGRESO</span>
+          <span id="stat-rate" style="font-size: 16px; font-weight: 800; color: var(--primary);">100%</span>
         </div>
       </div>
 
-      <form id="task-form" class="themed-card p-4 rounded-2xl space-y-3">
-        <div class="flex justify-between items-center text-xs font-mono font-bold text-[var(--primary)]">
-          <span>+ REGISTRAR ASIGNACIÓN</span>
-          <span class="text-[10px] text-slate-500">FORMATO DD/MM/AA</span>
+      <form id="task-form" class="card font-mono">
+        <div style="display: flex; justify-content: space-between; margin-bottom: 8px; font-size: 11px; font-weight: 700; color: var(--primary);">
+          <span>[+] NUEVA TAREA</span>
+          <span style="color: #64748b; font-size: 9px;">FECHA DD/MM/AA</span>
         </div>
-        <input type="text" id="task-title" placeholder="Nombre de la entrega o examen" required
-          class="w-full bg-slate-900 border border-slate-800 rounded-xl px-3.5 py-2.5 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-[var(--primary)]">
-        
-        <div class="grid grid-cols-2 gap-2">
-          <input type="text" id="task-subject" placeholder="Materia" required
-            class="bg-slate-900 border border-slate-800 rounded-xl px-3 py-2 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-[var(--primary)]">
-          <input type="date" id="task-date" required
-            class="bg-slate-900 border border-slate-800 rounded-xl px-3 py-2 text-xs text-white font-mono focus:outline-none focus:border-[var(--primary)]">
+        <input type="text" id="task-title" placeholder="Nombre de la entrega o examen" required>
+        <div class="grid-2">
+          <input type="text" id="task-subject" placeholder="Materia" required>
+          <input type="date" id="task-date" required>
         </div>
-
-        <div class="flex gap-2 font-mono">
-          <select id="task-priority" class="bg-slate-900 border border-slate-800 rounded-xl px-3 py-2 text-xs text-slate-300 focus:outline-none flex-1">
+        <div style="display: flex; gap: 8px;">
+          <select id="task-priority" style="flex: 1; margin-bottom: 0;">
             <option value="normal">Prioridad Normal</option>
             <option value="high">Prioridad Alta</option>
             <option value="low">Prioridad Baja</option>
           </select>
-          <button type="submit" class="bg-[var(--primary)] text-slate-950 font-black px-4 py-2 rounded-xl text-xs uppercase font-mono shadow-md">
-            Añadir
-          </button>
+          <button type="submit" class="btn-primary" style="width: auto; padding: 0 16px;">Añadir</button>
         </div>
       </form>
 
-      <div id="tasks-list" class="space-y-2"></div>
+      <div id="tasks-list"></div>
     </section>
 
-    <!-- 2. DIETA & 4.5L -->
-    <section id="tab-diet" style="display: none;" class="space-y-4">
-      <div class="flex gap-1.5 overflow-x-auto pb-1" id="diet-day-capsules"></div>
+    <!-- 2. DIETA & 4.5 LITROS -->
+    <section id="tab-diet" style="display: none;">
+      <div class="capsules-bar font-mono" id="diet-day-capsules"></div>
 
-      <div class="themed-card p-3 rounded-2xl flex items-center justify-between">
+      <div class="card" style="display: flex; justify-content: space-between; align-items: center;">
         <div>
-          <span class="text-xs font-bold text-white block font-mono">Importar de Keep / Gemini</span>
-          <span class="text-[10px] text-slate-400">Pega el texto de tu asistente</span>
+          <span class="font-mono" style="font-size: 11px; font-weight: 700; display: block;">IMPORTAR DE GEMINI / KEEP</span>
+          <span style="font-size: 10px; color: #64748b;">Pega el texto copiado de tu asistente</span>
         </div>
-        <button type="button" onclick="openModal('gemini-import-modal')" class="bg-gradient-to-r from-sky-500 to-indigo-600 text-white font-bold px-3 py-1.5 rounded-xl text-xs font-mono shadow-md active:scale-95 transition">
-          Pegar Dieta ✨
+        <button type="button" onclick="openModal('gemini-import-modal')" class="btn-secondary font-mono" style="border-color: var(--blue); color: var(--blue);">
+          PEGAR TEXTO
         </button>
       </div>
 
       <!-- Hidratación 4.5L -->
-      <div class="themed-card p-3.5 rounded-2xl space-y-2.5">
-        <div class="flex justify-between items-center text-xs font-mono font-bold">
-          <span class="text-[var(--primary)]">💧 Hidratación Celular</span>
-          <span id="water-count-text" class="text-slate-200 font-bold">0.00L / 4.50L (0%)</span>
+      <div class="card font-mono">
+        <div style="display: flex; justify-content: space-between; font-size: 11px; font-weight: 700; margin-bottom: 6px;">
+          <span style="color: var(--blue);">HIDRATACIÓN (META 4.5L)</span>
+          <span id="water-count-text" style="color: #fff;">0.00L / 4.50L (0%)</span>
+        </div>
+        
+        <div style="width: 100%; height: 8px; background: #090d16; border-radius: 4px; overflow: hidden; margin-bottom: 10px; border: 1px solid #1e293b;">
+          <div id="water-progress-bar" style="width: 0%; height: 100%; background: var(--blue); transition: width 0.2s;"></div>
         </div>
 
-        <div class="w-full bg-slate-900 h-2.5 rounded-full overflow-hidden border border-white/5 p-0.5">
-          <div id="water-progress-bar" class="bg-gradient-to-r from-sky-400 to-[var(--primary)] h-full w-0 rounded-full transition-all duration-300"></div>
-        </div>
-
-        <div class="flex justify-between items-center pt-0.5" id="water-icons-container"></div>
-
-        <div class="flex items-center justify-between pt-1 font-mono text-xs">
-          <button type="button" onclick="changeWater(-1)" class="bg-slate-900 border border-slate-800 text-slate-400 px-3 py-1.5 rounded-xl font-bold active:scale-95">
-            -250ml
-          </button>
-          <div class="flex gap-1.5">
-            <button type="button" onclick="changeWater(1)" class="bg-slate-900 border border-[var(--primary-border)] text-[var(--primary)] px-3 py-1.5 rounded-xl font-bold active:scale-95">
-              +250ml
-            </button>
-            <button type="button" onclick="changeWater(2)" class="bg-[var(--primary)] text-slate-950 font-black px-3.5 py-1.5 rounded-xl shadow-md active:scale-95">
-              +500ml
-            </button>
+        <div style="display: flex; justify-content: space-between; align-items: center;">
+          <button type="button" onclick="changeWater(-1)" class="btn-secondary">-250ml</button>
+          <div style="display: flex; gap: 6px;">
+            <button type="button" onclick="changeWater(1)" class="btn-secondary" style="color: var(--blue); border-color: var(--blue);">+250ml</button>
+            <button type="button" onclick="changeWater(2)" class="btn-primary" style="width: auto; padding: 6px 12px;">+500ml</button>
           </div>
         </div>
       </div>
 
       <!-- Macros -->
-      <div class="themed-card p-3 rounded-2xl grid grid-cols-3 gap-2 text-center font-mono">
+      <div class="card grid-3 font-mono" style="padding: 10px; text-align: center;">
         <div>
-          <span class="text-[9px] text-slate-400 block uppercase">Calorías</span>
-          <input type="number" id="macro-calories" placeholder="2000" onchange="saveMacros()"
-            class="w-full bg-slate-900 text-center text-xs font-bold text-amber-400 rounded-lg py-1 border border-slate-800 focus:outline-none">
+          <span style="font-size: 9px; color: #64748b; display: block;">KCAL</span>
+          <input type="number" id="macro-calories" placeholder="2000" onchange="saveMacros()" style="text-align: center; margin-bottom: 0;">
         </div>
         <div>
-          <span class="text-[9px] text-slate-400 block uppercase">Proteína (g)</span>
-          <input type="number" id="macro-protein" placeholder="140" onchange="saveMacros()"
-            class="w-full bg-slate-900 text-center text-xs font-bold text-emerald-400 rounded-lg py-1 border border-slate-800 focus:outline-none">
+          <span style="font-size: 9px; color: #64748b; display: block;">PROTEÍNA (g)</span>
+          <input type="number" id="macro-protein" placeholder="140" onchange="saveMacros()" style="text-align: center; margin-bottom: 0;">
         </div>
         <div>
-          <span class="text-[9px] text-slate-400 block uppercase">Carbs (g)</span>
-          <input type="number" id="macro-carbs" placeholder="220" onchange="saveMacros()"
-            class="w-full bg-slate-900 text-center text-xs font-bold text-cyan-400 rounded-lg py-1 border border-slate-800 focus:outline-none">
+          <span style="font-size: 9px; color: #64748b; display: block;">CARBS (g)</span>
+          <input type="number" id="macro-carbs" placeholder="220" onchange="saveMacros()" style="text-align: center; margin-bottom: 0;">
         </div>
       </div>
 
       <!-- 5 Comidas -->
-      <div class="space-y-2.5">
-        <div class="themed-card border-l-4 border-l-amber-500 p-3 rounded-2xl space-y-1">
-          <span class="text-xs font-bold text-amber-400 font-mono">🍳 01 • Desayuno</span>
-          <textarea id="diet-desayuno" rows="2" placeholder="Huevos, avena, café..."
-            class="w-full bg-slate-900/70 border border-slate-800 rounded-xl p-2 text-xs text-white focus:outline-none"></textarea>
-        </div>
-
-        <div class="themed-card border-l-4 border-l-emerald-500 p-3 rounded-2xl space-y-1">
-          <span class="text-xs font-bold text-emerald-400 font-mono">🍏 02 • Colación Matutina (Snack 1)</span>
-          <textarea id="diet-colacion1" rows="2" placeholder="Yogurt, manzana o proteína..."
-            class="w-full bg-slate-900/70 border border-slate-800 rounded-xl p-2 text-xs text-white focus:outline-none"></textarea>
-        </div>
-
-        <div class="themed-card border-l-4 border-l-cyan-500 p-3 rounded-2xl space-y-1">
-          <span class="text-xs font-bold text-cyan-400 font-mono">🍲 03 • Almuerzo / Comida</span>
-          <textarea id="diet-comida" rows="2" placeholder="Pollo, arroz, ensalada..."
-            class="w-full bg-slate-900/70 border border-slate-800 rounded-xl p-2 text-xs text-white focus:outline-none"></textarea>
-        </div>
-
-        <div class="themed-card border-l-4 border-l-purple-500 p-3 rounded-2xl space-y-1">
-          <span class="text-xs font-bold text-purple-400 font-mono">🫐 04 • Colación Vespertina (Snack 2)</span>
-          <textarea id="diet-colacion2" rows="2" placeholder="Barrita de proteína, frutos secos..."
-            class="w-full bg-slate-900/70 border border-slate-800 rounded-xl p-2 text-xs text-white focus:outline-none"></textarea>
-        </div>
-
-        <div class="themed-card border-l-4 border-l-rose-500 p-3 rounded-2xl space-y-1">
-          <span class="text-xs font-bold text-rose-400 font-mono">🥗 05 • Cena</span>
-          <textarea id="diet-cena" rows="2" placeholder="Cena balanceada..."
-            class="w-full bg-slate-900/70 border border-slate-800 rounded-xl p-2 text-xs text-white focus:outline-none"></textarea>
-        </div>
-
-        <button type="button" onclick="saveDiet()" class="w-full bg-[var(--primary)] text-slate-950 font-black py-2.5 rounded-xl text-xs uppercase font-mono tracking-wider shadow-md active:scale-95 transition">
-          Guardar Menú del Día
-        </button>
+      <div class="card" style="border-left: 3px solid var(--primary);">
+        <span class="font-mono" style="font-size: 11px; font-weight: 700; color: var(--primary); display: block; margin-bottom: 4px;">01 • DESAYUNO</span>
+        <textarea id="diet-desayuno" rows="2" placeholder="Desayuno..."></textarea>
       </div>
+
+      <div class="card" style="border-left: 3px solid var(--success);">
+        <span class="font-mono" style="font-size: 11px; font-weight: 700; color: var(--success); display: block; margin-bottom: 4px;">02 • COLACIÓN MATUTINA (SNACK 1)</span>
+        <textarea id="diet-colacion1" rows="2" placeholder="Snack 1..."></textarea>
+      </div>
+
+      <div class="card" style="border-left: 3px solid var(--blue);">
+        <span class="font-mono" style="font-size: 11px; font-weight: 700; color: var(--blue); display: block; margin-bottom: 4px;">03 • ALMUERZO / COMIDA</span>
+        <textarea id="diet-comida" rows="2" placeholder="Comida principal..."></textarea>
+      </div>
+
+      <div class="card" style="border-left: 3px solid #a855f7;">
+        <span class="font-mono" style="font-size: 11px; font-weight: 700; color: #a855f7; display: block; margin-bottom: 4px;">04 • COLACIÓN VESPERTINA (SNACK 2)</span>
+        <textarea id="diet-colacion2" rows="2" placeholder="Snack 2..."></textarea>
+      </div>
+
+      <div class="card" style="border-left: 3px solid var(--danger);">
+        <span class="font-mono" style="font-size: 11px; font-weight: 700; color: var(--danger); display: block; margin-bottom: 4px;">05 • CENA</span>
+        <textarea id="diet-cena" rows="2" placeholder="Cena..."></textarea>
+      </div>
+
+      <button type="button" onclick="saveDiet()" class="btn-primary" style="margin-bottom: 12px;">Guardar Menú del Día</button>
     </section>
 
-    <!-- 3. GYM -->
-    <section id="tab-gym" style="display: none;" class="space-y-4">
-      <div class="flex gap-1.5 overflow-x-auto pb-1" id="gym-day-capsules"></div>
+    <!-- 3. RUTINAS DEL GYM -->
+    <section id="tab-gym" style="display: none;">
+      <div class="capsules-bar font-mono" id="gym-day-capsules"></div>
 
-      <div class="themed-card p-3 rounded-2xl space-y-1.5">
-        <label class="text-[10px] font-mono uppercase text-slate-400 font-bold flex items-center justify-between">
-          <span>🎯 Enfoque del Día</span>
-          <span class="text-[9px] text-[var(--primary)]">Auto-guardado</span>
-        </label>
-        <input type="text" id="gym-focus" placeholder="Ej: Pecho & Tríceps / Push Day" onchange="saveGymFocus()"
-          class="w-full bg-slate-900 border border-slate-800 rounded-xl px-3 py-2 text-xs text-white font-bold font-mono focus:outline-none focus:border-[var(--primary)]">
+      <div class="card">
+        <label class="font-mono" style="font-size: 10px; color: #64748b; font-weight: 700; display: block; margin-bottom: 4px;">ENFOQUE MUSCULAR DEL DÍA</label>
+        <input type="text" id="gym-focus" placeholder="Ej: Pecho y Tríceps" onchange="saveGymFocus()" class="font-mono" style="margin-bottom: 0;">
       </div>
 
-      <form id="gym-exercise-form" class="themed-card p-4 rounded-2xl space-y-3 font-mono">
-        <div class="flex justify-between items-center text-xs font-bold text-[var(--primary)]">
-          <span>+ AGREGAR EJERCICIO</span>
-          <button type="button" onclick="resetGymChecks()" class="text-[10px] text-slate-400 hover:text-white underline">
-            Reiniciar Casillas
-          </button>
+      <form id="gym-exercise-form" class="card font-mono">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+          <span style="font-size: 11px; font-weight: 700; color: var(--primary);">[+] AÑADIR EJERCICIO</span>
+          <button type="button" onclick="resetGymChecks()" style="background: none; color: #64748b; font-size: 9px; text-decoration: underline;">Reiniciar Casillas</button>
         </div>
-
-        <input type="text" id="gym-ex-name" placeholder="Nombre (ej: Press Banca Plano)" required
-          class="w-full bg-slate-900 border border-slate-800 rounded-xl px-3 py-2 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-[var(--primary)]">
-
-        <div class="grid grid-cols-3 gap-2">
-          <div>
-            <label class="text-[9px] text-slate-400 block mb-0.5">Series</label>
-            <input type="text" id="gym-ex-sets" placeholder="4" required
-              class="w-full bg-slate-900 border border-slate-800 rounded-xl px-2 py-1.5 text-xs text-center text-white focus:outline-none">
-          </div>
-          <div>
-            <label class="text-[9px] text-slate-400 block mb-0.5">Reps</label>
-            <input type="text" id="gym-ex-reps" placeholder="10-12" required
-              class="w-full bg-slate-900 border border-slate-800 rounded-xl px-2 py-1.5 text-xs text-center text-white focus:outline-none">
-          </div>
-          <div>
-            <label class="text-[9px] text-slate-400 block mb-0.5">Peso</label>
-            <input type="text" id="gym-ex-weight" placeholder="60 kg"
-              class="w-full bg-slate-900 border border-slate-800 rounded-xl px-2 py-1.5 text-xs text-center text-white focus:outline-none">
-          </div>
+        <input type="text" id="gym-ex-name" placeholder="Nombre (ej: Press Banca Plano)" required>
+        <div class="grid-3">
+          <input type="text" id="gym-ex-sets" placeholder="Series (4)" required>
+          <input type="text" id="gym-ex-reps" placeholder="Reps (10-12)" required>
+          <input type="text" id="gym-ex-weight" placeholder="Peso (60 kg)">
         </div>
-
-        <button type="submit" class="w-full bg-[var(--primary)] text-slate-950 font-black py-2 rounded-xl text-xs uppercase shadow-md active:scale-95 transition">
-          Añadir a la Rutina
-        </button>
+        <button type="submit" class="btn-primary">Añadir a la Rutina</button>
       </form>
 
-      <div id="gym-exercises-list" class="space-y-2"></div>
+      <div id="gym-exercises-list"></div>
     </section>
 
-    <!-- 4. KEEP -->
-    <section id="tab-reminders" style="display: none;" class="space-y-4">
-      <div class="themed-card p-4 rounded-2xl space-y-3">
-        <input type="text" id="note-title" placeholder="Título..." 
-          class="w-full bg-transparent text-sm font-bold text-white placeholder-slate-500 focus:outline-none font-mono">
-        <textarea id="note-body" rows="2" placeholder="Nota o apunte rápido..." 
-          class="w-full bg-transparent text-xs text-slate-200 placeholder-slate-500 focus:outline-none resize-none"></textarea>
+    <!-- 4. NOTAS KEEP -->
+    <section id="tab-reminders" style="display: none;">
+      <div class="card font-mono">
+        <input type="text" id="note-title" placeholder="Título de la nota..." style="font-weight: 700;">
+        <textarea id="note-body" rows="2" placeholder="Escribe tu apunte aquí..."></textarea>
         
-        <div class="flex items-center gap-2 pt-1 border-t border-white/5">
-          <span class="text-xs">⏰</span>
-          <input type="datetime-local" id="note-alert" 
-            class="bg-slate-900 text-[10px] text-slate-300 px-2 py-1 rounded-lg border border-slate-800 focus:outline-none font-mono">
+        <div style="margin-bottom: 8px;">
+          <input type="datetime-local" id="note-alert" style="font-size: 11px;">
         </div>
 
-        <div class="flex justify-between items-center pt-2">
-          <div class="flex items-center gap-1.5" id="color-picker">
-            <button type="button" onclick="selectNoteColor('dark')" class="w-5 h-5 rounded-full bg-slate-900 border-2 border-[var(--primary)] color-dot" data-color="dark"></button>
-            <button type="button" onclick="selectNoteColor('gold')" class="w-5 h-5 rounded-full bg-amber-900 border border-amber-500 color-dot" data-color="gold"></button>
-            <button type="button" onclick="selectNoteColor('emerald')" class="w-5 h-5 rounded-full bg-emerald-950 border border-emerald-500 color-dot" data-color="emerald"></button>
-            <button type="button" onclick="selectNoteColor('blue')" class="w-5 h-5 rounded-full bg-cyan-950 border border-cyan-400 color-dot" data-color="blue"></button>
-            <button type="button" onclick="selectNoteColor('rose')" class="w-5 h-5 rounded-full bg-rose-950 border border-rose-500 color-dot" data-color="rose"></button>
+        <div style="display: flex; justify-content: space-between; align-items: center;">
+          <div style="display: flex; gap: 6px;" id="color-picker">
+            <button type="button" onclick="selectNoteColor('dark')" class="color-btn" data-color="dark" style="width: 20px; height: 20px; border-radius: 50%; background: #090d16; border: 2px solid var(--primary);"></button>
+            <button type="button" onclick="selectNoteColor('gold')" class="color-btn" data-color="gold" style="width: 20px; height: 20px; border-radius: 50%; background: #78350f; border: 1px solid #d97706;"></button>
+            <button type="button" onclick="selectNoteColor('emerald')" class="color-btn" data-color="emerald" style="width: 20px; height: 20px; border-radius: 50%; background: #064e3b; border: 1px solid #059669;"></button>
+            <button type="button" onclick="selectNoteColor('blue')" class="color-btn" data-color="blue" style="width: 20px; height: 20px; border-radius: 50%; background: #0c4a6e; border: 1px solid #0284c7;"></button>
+            <button type="button" onclick="selectNoteColor('rose')" class="color-btn" data-color="rose" style="width: 20px; height: 20px; border-radius: 50%; background: #4c0519; border: 1px solid #e11d48;"></button>
           </div>
-          <button type="button" onclick="createKeepNote()" class="bg-[var(--primary)] text-slate-950 font-black px-3.5 py-1.5 rounded-xl text-xs font-mono shadow-md active:scale-95 transition">
-            Guardar
-          </button>
+          <button type="button" onclick="createKeepNote()" class="btn-primary" style="width: auto; padding: 6px 14px;">Guardar</button>
         </div>
       </div>
 
-      <div id="keep-notes-grid" class="grid grid-cols-2 gap-2.5 items-start"></div>
+      <div id="keep-notes-grid" class="grid-2"></div>
     </section>
 
-    <!-- 5. TARJETAS -->
-    <section id="tab-finances" style="display: none;" class="space-y-4">
-      <div class="themed-card p-4 rounded-2xl space-y-3 font-mono">
-        <div class="flex justify-between items-center text-xs">
-          <span class="text-slate-400">PASIVO TOTAL (DEUDAS TDC):</span>
-          <span id="total-debt-metric" class="text-rose-400 font-bold text-sm">$0.00</span>
+    <!-- 5. TARJETAS Y FINANZAS -->
+    <section id="tab-finances" style="display: none;">
+      <div class="card font-mono" style="padding: 10px;">
+        <div style="display: flex; justify-content: space-between; font-size: 11px; margin-bottom: 4px;">
+          <span style="color: #64748b;">DEUDA TOTAL (TDC):</span>
+          <span id="total-debt-metric" style="color: var(--danger); font-weight: 800;">$0.00</span>
         </div>
-        <div class="flex justify-between items-center text-xs">
-          <span class="text-slate-400">DISPONIBLE DÉBITO (TDD):</span>
-          <span id="total-liquidity-metric" class="text-emerald-400 font-bold text-sm">$0.00</span>
+        <div style="display: flex; justify-content: space-between; font-size: 11px;">
+          <span style="color: #64748b;">DISPONIBLE DÉBITO (TDD):</span>
+          <span id="total-liquidity-metric" style="color: var(--success); font-weight: 800;">$0.00</span>
         </div>
       </div>
 
-      <div>
-        <div class="flex justify-between items-center mb-2 px-1 font-mono">
-          <span class="text-[11px] font-bold text-[var(--primary)] uppercase tracking-wider">
-            💳 MIS TARJETAS
-          </span>
-          <button type="button" onclick="openModal('card-modal')" class="text-xs text-[var(--primary)] hover:underline font-bold">
-            + AGREGAR TARJETA
-          </button>
-        </div>
-        <div id="cards-container" class="space-y-3"></div>
-      </div>
-
-      <form id="expense-form" class="themed-card p-4 rounded-2xl space-y-3">
-        <h3 class="text-xs font-bold uppercase tracking-wider text-rose-400 font-mono">
-          📉 Registrar Gasto
-        </h3>
-        <select id="expense-card" required class="w-full bg-slate-900 border border-slate-800 rounded-xl px-3 py-2 text-xs text-white font-mono focus:outline-none"></select>
-        
-        <div class="grid grid-cols-2 gap-2 font-mono">
-          <input type="text" id="expense-concept" placeholder="Concepto (ej: Súper)" required
-            class="bg-slate-900 border border-slate-800 rounded-xl px-3 py-2 text-xs text-white focus:outline-none">
-          <input type="number" step="0.01" id="expense-amount" placeholder="Monto $" required
-            class="bg-slate-900 border border-slate-800 rounded-xl px-3 py-2 text-xs text-white focus:outline-none">
-        </div>
-        
-        <button type="submit" class="w-full bg-rose-600 hover:bg-rose-500 text-white font-black py-2.5 rounded-xl text-xs uppercase font-mono tracking-wider shadow-md active:scale-95 transition">
-          Aplicar Gasto
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;" class="font-mono">
+        <span style="font-size: 11px; font-weight: 700; color: var(--primary);">MIS TARJETAS</span>
+        <button type="button" onclick="openModal('card-modal')" style="background: none; color: var(--primary); font-size: 10px; text-decoration: underline;">
+          + AGREGAR TARJETA
         </button>
+      </div>
+
+      <div id="cards-container"></div>
+
+      <!-- Registrar Gasto -->
+      <form id="expense-form" class="card font-mono">
+        <span style="font-size: 11px; font-weight: 700; color: var(--danger); display: block; margin-bottom: 8px;">REGISTRAR GASTO</span>
+        <select id="expense-card" required></select>
+        <div class="grid-2">
+          <input type="text" id="expense-concept" placeholder="Concepto (ej: Súper)" required>
+          <input type="number" step="0.01" id="expense-amount" placeholder="Monto $" required>
+        </div>
+        <button type="submit" class="btn-danger">Aplicar Gasto</button>
       </form>
 
-      <div>
-        <span class="text-[10px] font-mono uppercase text-slate-500 px-1 block mb-2">Últimos Movimientos</span>
-        <div id="expenses-list" class="space-y-2 font-mono"></div>
+      <div class="font-mono">
+        <span style="font-size: 10px; color: #64748b; display: block; margin-bottom: 6px;">ÚLTIMOS MOVIMIENTOS</span>
+        <div id="expenses-list"></div>
       </div>
     </section>
 
   </main>
 
+  <!-- NAVEGACIÓN INFERIOR (TEXTO PURO, CERO ÍCONOS) -->
+  <nav>
+    <div class="nav-inner font-mono">
+      <button type="button" onclick="switchTab('tasks')" id="nav-tasks" class="nav-btn active">TAREAS</button>
+      <button type="button" onclick="switchTab('diet')" id="nav-diet" class="nav-btn">DIETA</button>
+      <button type="button" onclick="switchTab('gym')" id="nav-gym" class="nav-btn">GYM</button>
+      <button type="button" onclick="switchTab('reminders')" id="nav-reminders" class="nav-btn">KEEP</button>
+      <button type="button" onclick="switchTab('finances')" id="nav-finances" class="nav-btn">TARJETAS</button>
+    </div>
+  </nav>
+
   <!-- MODAL: SINCRONIZACIÓN -->
-  <div id="sync-modal" style="display: none;" onclick="if(event.target === this) closeModal('sync-modal')" class="fixed inset-0 z-50 bg-black/85 items-center justify-center p-4">
-    <div class="themed-card rounded-3xl p-5 w-full max-w-sm space-y-4 font-mono shadow-2xl">
-      <div class="flex justify-between items-center border-b border-white/10 pb-2">
-        <h3 class="text-xs font-black text-[var(--primary)] uppercase">Sincronización Directa</h3>
-        <button type="button" onclick="closeModal('sync-modal')" class="text-slate-400 hover:text-white p-1">✕</button>
+  <div id="sync-modal" class="modal-overlay" style="display: none;" onclick="if(event.target === this) closeModal('sync-modal')">
+    <div class="modal-content font-mono">
+      <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #1e293b; padding-bottom: 8px; margin-bottom: 12px;">
+        <span style="font-size: 12px; font-weight: 800; color: var(--primary);">SINCRONIZACIÓN DE DATOS</span>
+        <button type="button" onclick="closeModal('sync-modal')" class="btn-secondary" style="padding: 2px 8px;">X</button>
       </div>
 
-      <!-- ARCHIVO DIRECTO .JSON -->
-      <div class="space-y-2 bg-slate-900/80 p-3 rounded-2xl border border-white/5">
-        <span class="text-[10px] font-bold text-amber-400 uppercase block">Opción 1: Archivo .JSON (100% Infalible)</span>
-        <p class="text-[11px] text-slate-300 font-sans leading-tight">
-          Descarga tus datos y pásalos a tu otro dispositivo (por Quick Share, WhatsApp o correo):
-        </p>
-        <div class="grid grid-cols-2 gap-2 pt-1">
-          <button type="button" onclick="downloadJSONFile()" class="bg-amber-500 hover:bg-amber-400 text-slate-950 font-black p-2 rounded-xl text-[10px] uppercase shadow-md active:scale-95 transition">
-            ⬇️ Descargar
-          </button>
-
-          <label class="bg-slate-800 hover:bg-slate-700 text-white font-bold p-2 rounded-xl text-[10px] uppercase cursor-pointer text-center flex items-center justify-center active:scale-95 transition">
-            ⬆️ Cargar
-            <input type="file" id="file-import-input" accept=".json" onchange="importJSONFile(event)" class="hidden">
+      <div style="background: #090d16; padding: 10px; border-radius: 12px; border: 1px solid #1e293b; margin-bottom: 12px;">
+        <span style="font-size: 10px; font-weight: 700; color: var(--primary); display: block; margin-bottom: 4px;">OPCIÓN 1: ARCHIVO .JSON (RECOMENDADA)</span>
+        <p style="font-size: 10px; color: #94a3b8; margin-bottom: 8px; font-family: sans-serif;">Descarga tus datos y pásalos a tu otro dispositivo:</p>
+        <div class="grid-2">
+          <button type="button" onclick="downloadJSONFile()" class="btn-primary" style="padding: 8px;">Descargar</button>
+          <label class="btn-secondary" style="display: flex; align-items: center; justify-content: center; cursor: pointer; text-align: center;">
+            Cargar
+            <input type="file" id="file-import-input" accept=".json" onchange="importJSONFile(event)" style="display: none;">
           </label>
         </div>
       </div>
 
-      <!-- COPIAR Y PEGAR TEXTO -->
-      <div class="space-y-2 bg-slate-900/80 p-3 rounded-2xl border border-white/5">
-        <span class="text-[10px] font-bold text-sky-400 uppercase block">Opción 2: Copiar y Pegar Texto</span>
-        <div class="flex gap-2">
-          <button type="button" onclick="copyProgressText()" class="flex-1 bg-slate-800 hover:bg-slate-700 text-slate-200 py-1.5 rounded-xl text-[10px] font-bold active:scale-95 transition">
-            Copiar Datos
-          </button>
-          <button type="button" onclick="restoreFromTextArea()" class="flex-1 bg-sky-500 hover:bg-sky-400 text-slate-950 py-1.5 rounded-xl text-[10px] font-black active:scale-95 transition">
-            Cargar Texto
-          </button>
+      <div style="background: #090d16; padding: 10px; border-radius: 12px; border: 1px solid #1e293b;">
+        <span style="font-size: 10px; font-weight: 700; color: var(--blue); display: block; margin-bottom: 4px;">OPCIÓN 2: COPIAR Y PEGAR TEXTO</span>
+        <div class="grid-2" style="margin-bottom: 8px;">
+          <button type="button" onclick="copyProgressText()" class="btn-secondary">Copiar</button>
+          <button type="button" onclick="restoreFromTextArea()" class="btn-secondary" style="color: var(--blue);">Cargar Texto</button>
         </div>
+        <textarea id="sync-clipboard-area" rows="2" placeholder="Pega el texto aquí..."></textarea>
       </div>
-
-      <textarea id="sync-clipboard-area" rows="2" placeholder="O pega el texto copiado aquí..." 
-        class="w-full bg-slate-900 border border-slate-800 rounded-xl p-2 text-[10px] text-white focus:outline-none"></textarea>
     </div>
   </div>
 
-  <!-- MODAL: IMPORTAR DE GEMINI -->
-  <div id="gemini-import-modal" style="display: none;" onclick="if(event.target === this) closeModal('gemini-import-modal')" class="fixed inset-0 z-50 bg-black/80 items-center justify-center p-4">
-    <div class="themed-card rounded-3xl p-5 w-full max-w-sm space-y-3 font-mono shadow-2xl">
-      <div class="flex justify-between items-center border-b border-white/10 pb-2">
-        <h3 class="text-xs font-black text-sky-400 uppercase">Pegar Dieta de Gemini ✨</h3>
-        <button type="button" onclick="closeModal('gemini-import-modal')" class="text-slate-400 hover:text-white p-1">✕</button>
+  <!-- MODAL: GEMINI DIETA -->
+  <div id="gemini-import-modal" class="modal-overlay" style="display: none;" onclick="if(event.target === this) closeModal('gemini-import-modal')">
+    <div class="modal-content font-mono">
+      <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #1e293b; padding-bottom: 8px; margin-bottom: 12px;">
+        <span style="font-size: 12px; font-weight: 800; color: var(--blue);">IMPORTAR DIETA GEMINI</span>
+        <button type="button" onclick="closeModal('gemini-import-modal')" class="btn-secondary" style="padding: 2px 8px;">X</button>
       </div>
-
-      <p class="text-[11px] text-slate-300 font-sans leading-relaxed">
-        Pega el texto copiado de Gemini/Keep y se rellenará para el <b><span id="import-current-day-label">Lunes</span></b>:
+      <p style="font-size: 11px; color: #94a3b8; margin-bottom: 8px; font-family: sans-serif;">
+        Pega el texto de tu dieta para el <b><span id="import-current-day-label">Lunes</span></b>:
       </p>
-
-      <textarea id="gemini-paste-area" rows="6" placeholder="Pega aquí el texto, por ejemplo:&#10;Desayuno: 3 huevos con espinaca&#10;Colación 1: Manzana con nueces&#10;Comida: Pechuga con arroz..."
-        class="w-full bg-slate-900 border border-slate-700 rounded-xl p-2.5 text-xs text-white focus:outline-none focus:border-sky-400 font-sans"></textarea>
-
-      <div class="flex gap-2 pt-1">
-        <button type="button" onclick="closeModal('gemini-import-modal')" class="flex-1 bg-slate-900 text-slate-400 py-2.5 rounded-xl text-xs">Cancelar</button>
-        <button type="button" onclick="parseGeminiDiet()" class="flex-1 bg-sky-500 hover:bg-sky-400 text-slate-950 font-black py-2.5 rounded-xl text-xs shadow-md">Rellenar</button>
+      <textarea id="gemini-paste-area" rows="6" placeholder="Desayuno: 3 huevos&#10;Colación 1: Manzana&#10;Comida: Pollo con arroz..."></textarea>
+      <div class="grid-2">
+        <button type="button" onclick="closeModal('gemini-import-modal')" class="btn-secondary">Cancelar</button>
+        <button type="button" onclick="parseGeminiDiet()" class="btn-primary" style="background: var(--blue);">Procesar</button>
       </div>
     </div>
   </div>
 
-  <!-- MODAL: ABONO A TARJETA -->
-  <div id="payment-modal" style="display: none;" onclick="if(event.target === this) closeModal('payment-modal')" class="fixed inset-0 z-50 bg-black/80 items-center justify-center p-4">
-    <div class="themed-card rounded-3xl p-5 w-full max-w-sm space-y-4 font-mono shadow-2xl">
-      <div class="flex justify-between items-center border-b border-white/10 pb-2">
-        <h3 class="text-xs font-black text-[var(--primary)] uppercase">💵 ABONAR A TARJETA</h3>
-        <button type="button" onclick="closeModal('payment-modal')" class="text-slate-400 hover:text-white p-1">✕</button>
+  <!-- MODAL: ABONO TARJETA -->
+  <div id="payment-modal" class="modal-overlay" style="display: none;" onclick="if(event.target === this) closeModal('payment-modal')">
+    <div class="modal-content font-mono">
+      <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #1e293b; padding-bottom: 8px; margin-bottom: 12px;">
+        <span style="font-size: 12px; font-weight: 800; color: var(--primary);">ABONAR A TARJETA</span>
+        <button type="button" onclick="closeModal('payment-modal')" class="btn-secondary" style="padding: 2px 8px;">X</button>
+      </div>
+      <p id="pay-card-title" style="font-size: 12px; font-weight: 700; margin-bottom: 4px;">Tarjeta</p>
+      <p style="font-size: 11px; color: #94a3b8; margin-bottom: 10px;">Deuda actual: <b id="pay-card-debt" style="color: var(--danger);">$0.00</b></p>
+      
+      <div class="grid-3" style="margin-bottom: 8px;">
+        <button type="button" onclick="setPaymentAmount(500)" class="btn-secondary">+$500</button>
+        <button type="button" onclick="setPaymentAmount(1000)" class="btn-secondary">+$1,000</button>
+        <button type="button" onclick="setPaymentFullDebt()" class="btn-secondary" style="color: var(--success);">Liquidar</button>
       </div>
 
-      <div class="space-y-1">
-        <p id="pay-card-title" class="text-sm font-bold text-white">Tarjeta</p>
-        <div class="flex justify-between text-xs text-slate-400">
-          <span>Deuda actual:</span>
-          <span id="pay-card-debt" class="text-rose-400 font-bold">$0.00</span>
-        </div>
-      </div>
-
-      <div class="grid grid-cols-3 gap-1.5 text-xs">
-        <button type="button" onclick="setPaymentAmount(500)" class="bg-slate-900 border border-slate-800 py-1.5 rounded-xl hover:border-[var(--primary)]">+$500</button>
-        <button type="button" onclick="setPaymentAmount(1000)" class="bg-slate-900 border border-slate-800 py-1.5 rounded-xl hover:border-[var(--primary)]">+$1,000</button>
-        <button type="button" onclick="setPaymentFullDebt()" class="bg-slate-900 border border-emerald-500/40 text-emerald-300 py-1.5 rounded-xl">Liquidar</button>
-      </div>
-
-      <input type="number" step="0.01" id="pay-amount-input" placeholder="Monto exacto $" 
-        class="w-full bg-slate-900 border border-slate-800 rounded-xl px-3.5 py-2.5 text-xs text-white font-bold focus:outline-none focus:border-[var(--primary)]">
-
-      <div class="flex gap-2 pt-1">
-        <button type="button" onclick="closeModal('payment-modal')" class="flex-1 bg-slate-900 text-slate-400 py-2.5 rounded-xl text-xs">Cancelar</button>
-        <button type="button" onclick="confirmCardPayment()" class="flex-1 bg-[var(--primary)] text-slate-950 font-black py-2.5 rounded-xl text-xs shadow-md">Confirmar</button>
-      </div>
-    </div>
-  </div>
-
-  <!-- MODAL: CAMBIAR TEMA -->
-  <div id="theme-modal" style="display: none;" onclick="if(event.target === this) closeModal('theme-modal')" class="fixed inset-0 z-50 bg-black/80 items-center justify-center p-4">
-    <div class="themed-card rounded-3xl p-5 w-full max-w-sm space-y-4 font-mono shadow-2xl">
-      <div class="flex justify-between items-center border-b border-white/10 pb-2">
-        <h3 class="text-xs font-black text-[var(--primary)] uppercase">Selecciona el Tema</h3>
-        <button type="button" onclick="closeModal('theme-modal')" class="text-slate-400 hover:text-white p-1">✕</button>
-      </div>
-
-      <div class="space-y-2 text-xs font-bold">
-        <button type="button" onclick="setAppTheme('blackbulls')" class="w-full text-left p-3 rounded-xl border border-amber-500/40 bg-black/50 hover:border-amber-400 flex items-center justify-between">
-          <span class="text-amber-400">🐂 Toros Negros (Original)</span>
-          <span class="w-3 h-3 rounded-full bg-amber-400"></span>
-        </button>
-        <button type="button" onclick="setAppTheme('saiyan')" class="w-full text-left p-3 rounded-xl border border-sky-500/40 bg-black/50 hover:border-sky-400 flex items-center justify-between">
-          <span class="text-sky-400">⚡ Dragon Ball / Super Saiyan</span>
-          <span class="w-3 h-3 rounded-full bg-sky-400"></span>
-        </button>
-        <button type="button" onclick="setAppTheme('cyber')" class="w-full text-left p-3 rounded-xl border border-purple-500/40 bg-black/50 hover:border-purple-400 flex items-center justify-between">
-          <span class="text-purple-400">👾 Cyberpunk Neón</span>
-          <span class="w-3 h-3 rounded-full bg-purple-400"></span>
-        </button>
-        <button type="button" onclick="setAppTheme('stealth')" class="w-full text-left p-3 rounded-xl border border-zinc-500/40 bg-black/50 hover:border-zinc-400 flex items-center justify-between">
-          <span class="text-zinc-200">🕶️ Modo Sigilo (Minimal Black)</span>
-          <span class="w-3 h-3 rounded-full bg-zinc-400"></span>
-        </button>
+      <input type="number" step="0.01" id="pay-amount-input" placeholder="Monto exacto $">
+      <div class="grid-2">
+        <button type="button" onclick="closeModal('payment-modal')" class="btn-secondary">Cancelar</button>
+        <button type="button" onclick="confirmCardPayment()" class="btn-primary">Confirmar</button>
       </div>
     </div>
   </div>
 
   <!-- MODAL: AGREGAR TARJETA -->
-  <div id="card-modal" style="display: none;" onclick="if(event.target === this) closeModal('card-modal')" class="fixed inset-0 z-50 bg-black/80 items-center justify-center p-4">
-    <div class="themed-card rounded-3xl p-5 w-full max-w-sm space-y-3 font-mono shadow-2xl">
-      <div class="flex justify-between items-center border-b border-white/10 pb-2">
-        <h3 class="text-xs font-black text-[var(--primary)] uppercase">Vincular Tarjeta</h3>
-        <button type="button" onclick="closeModal('card-modal')" class="text-slate-400 hover:text-white p-1">✕</button>
+  <div id="card-modal" class="modal-overlay" style="display: none;" onclick="if(event.target === this) closeModal('card-modal')">
+    <div class="modal-content font-mono">
+      <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #1e293b; padding-bottom: 8px; margin-bottom: 12px;">
+        <span style="font-size: 12px; font-weight: 800; color: var(--primary);">VINCULAR TARJETA</span>
+        <button type="button" onclick="closeModal('card-modal')" class="btn-secondary" style="padding: 2px 8px;">X</button>
       </div>
 
-      <input type="text" id="card-name" placeholder="Banco o Nombre (ej: Nu, BBVA)" 
-        class="w-full bg-slate-900 border border-slate-800 rounded-xl px-3 py-2 text-xs text-white">
-
-      <select id="card-type" class="w-full bg-slate-900 border border-slate-800 rounded-xl px-3 py-2 text-xs text-white" onchange="toggleCardInputs()">
+      <input type="text" id="card-name" placeholder="Banco o Nombre (ej: Nu, BBVA)">
+      <select id="card-type" onchange="toggleCardInputs()">
         <option value="TDC">Tarjeta de Crédito (TDC)</option>
         <option value="TDD">Tarjeta de Débito (TDD)</option>
       </select>
 
-      <div id="tdc-fields" class="space-y-2">
-        <input type="number" step="0.01" id="card-limit" placeholder="Límite autorizado $" class="w-full bg-slate-900 border border-slate-800 rounded-xl px-3 py-2 text-xs text-white">
-        <div class="grid grid-cols-2 gap-2">
-          <input type="number" id="card-cutoff" placeholder="Día corte (1-31)" class="bg-slate-900 border border-slate-800 rounded-xl px-3 py-2 text-xs text-white">
-          <input type="number" id="card-payday" placeholder="Día pago (1-31)" class="bg-slate-900 border border-slate-800 rounded-xl px-3 py-2 text-xs text-white">
+      <div id="tdc-fields">
+        <input type="number" step="0.01" id="card-limit" placeholder="Límite autorizado $">
+        <div class="grid-2">
+          <input type="number" id="card-cutoff" placeholder="Día corte (1-31)">
+          <input type="number" id="card-payday" placeholder="Día pago (1-31)">
         </div>
       </div>
 
       <div id="tdd-fields" style="display: none;">
-        <input type="number" step="0.01" id="card-balance" placeholder="Saldo actual disponible $" class="w-full bg-slate-900 border border-slate-800 rounded-xl px-3 py-2 text-xs text-white">
+        <input type="number" step="0.01" id="card-balance" placeholder="Saldo actual disponible $">
       </div>
 
-      <div class="flex gap-2 pt-2">
-        <button type="button" onclick="closeModal('card-modal')" class="flex-1 bg-slate-900 text-slate-400 py-2.5 rounded-xl text-xs">Cancelar</button>
-        <button type="button" onclick="addCard()" class="flex-1 bg-[var(--primary)] text-slate-950 font-black py-2.5 rounded-xl text-xs shadow-md">Guardar</button>
+      <div class="grid-2">
+        <button type="button" onclick="closeModal('card-modal')" class="btn-secondary">Cancelar</button>
+        <button type="button" onclick="addCard()" class="btn-primary">Guardar</button>
       </div>
     </div>
   </div>
 
-  <!-- NAVEGACIÓN INFERIOR (5 PESTAÑAS) -->
-  <nav class="fixed bottom-0 left-0 right-0 z-40 bg-[var(--bg-main)] border-t border-[var(--primary-border)] px-2 py-2">
-    <div class="max-w-[430px] mx-auto grid grid-cols-5 gap-1">
-      <button type="button" onclick="switchTab('tasks')" id="nav-tasks" class="flex flex-col items-center py-1 text-[var(--primary)]">
-        <span class="text-sm">📋</span>
-        <span class="text-[8px] font-mono uppercase font-bold tracking-tighter mt-0.5">Tareas</span>
-      </button>
-      <button type="button" onclick="switchTab('diet')" id="nav-diet" class="flex flex-col items-center py-1 text-slate-500 hover:text-slate-300">
-        <span class="text-sm">🥗</span>
-        <span class="text-[8px] font-mono uppercase font-bold tracking-tighter mt-0.5">Dieta</span>
-      </button>
-      <button type="button" onclick="switchTab('gym')" id="nav-gym" class="flex flex-col items-center py-1 text-slate-500 hover:text-slate-300">
-        <span class="text-sm">🏋️</span>
-        <span class="text-[8px] font-mono uppercase font-bold tracking-tighter mt-0.5">Gym</span>
-      </button>
-      <button type="button" onclick="switchTab('reminders')" id="nav-reminders" class="flex flex-col items-center py-1 text-slate-500 hover:text-slate-300">
-        <span class="text-sm">📌</span>
-        <span class="text-[8px] font-mono uppercase font-bold tracking-tighter mt-0.5">Keep</span>
-      </button>
-      <button type="button" onclick="switchTab('finances')" id="nav-finances" class="flex flex-col items-center py-1 text-slate-500 hover:text-slate-300">
-        <span class="text-sm">💳</span>
-        <span class="text-[8px] font-mono uppercase font-bold tracking-tighter mt-0.5">Tarjetas</span>
-      </button>
-    </div>
-  </nav>
-
-  <!-- JAVASCRIPT PROTEGIDO Y DESCONGELADO -->
+  <!-- JAVASCRIPT SEGURO -->
   <script>
-    // CAPTURAR CUALQUIER ERROR OCULTO
-    window.addEventListener('error', function(e) {
-      console.error(e);
-      showToast('Aviso: ' + (e.message || 'Error detectado'), true);
-    });
-
     function showToast(msg, isError = false) {
       const toast = document.getElementById('app-toast');
       if (!toast) return;
       toast.textContent = msg;
-      toast.className = `fixed top-4 left-1/2 -translate-x-1/2 z-50 px-4 py-2.5 rounded-2xl text-xs font-mono font-bold shadow-2xl transition-all duration-300 pointer-events-none opacity-100 ${
-        isError ? 'bg-rose-600 text-white' : 'bg-[var(--primary)] text-slate-950'
-      }`;
-      setTimeout(() => {
-        toast.className = 'fixed top-4 left-1/2 -translate-x-1/2 z-50 px-4 py-2.5 rounded-2xl text-xs font-mono font-bold shadow-2xl transition-all duration-300 pointer-events-none opacity-0';
-      }, 2500);
+      toast.style.background = isError ? 'var(--danger)' : 'var(--primary)';
+      toast.style.color = isError ? '#fff' : '#000';
+      toast.style.opacity = '1';
+      setTimeout(() => { toast.style.opacity = '0'; }, 2200);
     }
 
     function openModal(id) {
@@ -654,14 +658,6 @@
     setInterval(updateClock, 1000);
     updateClock();
 
-    function setAppTheme(themeName) {
-      document.body.setAttribute('data-theme', themeName);
-      localStorage.setItem('cc_theme', themeName);
-      closeModal('theme-modal');
-      showToast('Tema cambiado');
-    }
-    document.body.setAttribute('data-theme', localStorage.getItem('cc_theme') || 'blackbulls');
-
     function safeArray(key) {
       try {
         const item = localStorage.getItem(key);
@@ -703,14 +699,6 @@
       } catch(e) {}
     }
 
-    // BOTÓN DE EMERGENCIA PARA DESCONGELAR Y LIMPIAR
-    function hardResetApp() {
-      if (confirm('¿Deseas reiniciar la memoria interna de la app para descongelarla? (Tus datos no se perderán si descargaste un respaldo)')) {
-        localStorage.clear();
-        location.reload(true);
-      }
-    }
-
     function switchTab(tabId) {
       const tabs = ['tasks', 'diet', 'gym', 'reminders', 'finances'];
       const titles = {
@@ -728,9 +716,9 @@
         const nav = document.getElementById(`nav-${t}`);
         if (nav) {
           if (t === tabId) {
-            nav.className = "flex flex-col items-center py-1 text-[var(--primary)]";
+            nav.classList.add('active');
           } else {
-            nav.className = "flex flex-col items-center py-1 text-slate-500 hover:text-slate-300";
+            nav.classList.remove('active');
           }
         }
       });
@@ -738,7 +726,7 @@
       if (hTitle) hTitle.textContent = titles[tabId] || 'Toros Negros';
     }
 
-    // TAREAS
+    // 1. TAREAS
     document.getElementById('task-form').addEventListener('submit', (e) => {
       e.preventDefault();
       const title = document.getElementById('task-title').value.trim();
@@ -778,37 +766,32 @@
       document.getElementById('stat-rate').textContent = total > 0 ? Math.round((done / total) * 100) + '%' : '100%';
 
       if (appState.tasks.length === 0) {
-        list.innerHTML = `<p class="text-xs text-slate-500 font-mono text-center py-8">No hay tareas registradas.</p>`;
+        list.innerHTML = `<p class="font-mono" style="text-align: center; color: #64748b; font-size: 11px; padding: 24px 0;">NO HAY TAREAS REGISTRADAS</p>`;
         return;
       }
 
       list.innerHTML = appState.tasks.map(t => `
-        <div class="themed-card p-3 rounded-xl flex items-center justify-between ${t.completed ? 'opacity-35' : ''}">
-          <div class="flex items-center gap-3">
-            <input type="checkbox" ${t.completed ? 'checked' : ''} onchange="toggleTask(${t.id})" 
-              class="w-4 h-4 rounded bg-slate-900 border-slate-700 text-amber-500 cursor-pointer">
+        <div class="card" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; ${t.completed ? 'opacity: 0.4;' : ''}">
+          <div style="display: flex; align-items: center; gap: 10px;">
+            <input type="checkbox" ${t.completed ? 'checked' : ''} onchange="toggleTask(${t.id})" style="width: 18px; height: 18px; margin: 0; cursor: pointer;">
             <div>
-              <p class="text-xs font-bold ${t.completed ? 'line-through text-slate-500' : 'text-slate-100'}">${t.title}</p>
-              <div class="flex items-center gap-2 mt-0.5 font-mono text-[10px]">
-                <span class="text-[var(--primary)]">${t.subject}</span>
-                <span class="text-slate-600">•</span>
-                <span class="text-slate-400">Entrega: ${formatToDDMMAA(t.date)}</span>
-              </div>
+              <p style="font-size: 12px; font-weight: 700; ${t.completed ? 'text-decoration: line-through; color: #64748b;' : 'color: #fff;'}">${t.title}</p>
+              <span class="font-mono" style="font-size: 10px; color: var(--primary);">${t.subject} • ${formatToDDMMAA(t.date)}</span>
             </div>
           </div>
-          <button type="button" onclick="deleteTask(${t.id})" class="text-slate-600 hover:text-rose-400 text-xs px-2 py-1">✕</button>
+          <button type="button" onclick="deleteTask(${t.id})" style="background: none; color: #64748b; font-size: 11px; padding: 4px;">X</button>
         </div>
       `).join('');
     }
 
-    // DIETA & PARSER GEMINI
+    // 2. DIETA & 4.5L
     const days = ['Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado', 'Domingo'];
 
     function renderDayCapsules() {
       const container = document.getElementById('diet-day-capsules');
       if (!container) return;
       container.innerHTML = days.map(d => `
-        <button type="button" onclick="selectDietDay('${d}')" class="px-3 py-1.5 rounded-xl text-xs font-mono font-bold whitespace-nowrap ${currentDietDay === d ? 'bg-[var(--primary)] text-slate-950 font-black' : 'bg-slate-900 text-slate-400 border border-slate-800'}">
+        <button type="button" onclick="selectDietDay('${d}')" class="capsule-btn ${currentDietDay === d ? 'active' : ''}">
           ${d}
         </button>
       `).join('');
@@ -894,7 +877,7 @@
       saveDiet();
       closeModal('gemini-import-modal');
       document.getElementById('gemini-paste-area').value = '';
-      showToast(`¡Dieta vinculada para el ${currentDietDay}!`);
+      showToast(`¡Dieta procesada para el ${currentDietDay}!`);
     }
 
     function saveMacros() {
@@ -926,30 +909,14 @@
       const wBar = document.getElementById('water-progress-bar');
       if (wTxt) wTxt.textContent = `${liters}L / 4.50L (${pct}%)`;
       if (wBar) wBar.style.width = `${pct}%`;
-
-      const iconsCont = document.getElementById('water-icons-container');
-      if (!iconsCont) return;
-      let capsules = '';
-      for(let i = 1; i <= 9; i++) {
-        const threshold = i * 2;
-        const isFilled = count >= threshold;
-        const isHalf = count === (threshold - 1);
-
-        capsules += `
-          <div class="flex-1 mx-0.5 h-2 rounded-full border border-sky-400/30 overflow-hidden bg-slate-900/80">
-            <div class="h-full ${isFilled ? 'bg-sky-400' : isHalf ? 'bg-sky-400/50 w-1/2' : 'w-0'} transition-all"></div>
-          </div>
-        `;
-      }
-      iconsCont.innerHTML = capsules;
     }
 
-    // RUTINAS DE GYM
+    // 3. GYM
     function renderGymDayCapsules() {
       const container = document.getElementById('gym-day-capsules');
       if (!container) return;
       container.innerHTML = days.map(d => `
-        <button type="button" onclick="selectGymDay('${d}')" class="px-3 py-1.5 rounded-xl text-xs font-mono font-bold whitespace-nowrap ${currentGymDay === d ? 'bg-[var(--primary)] text-slate-950 font-black' : 'bg-slate-900 text-slate-400 border border-slate-800'}">
+        <button type="button" onclick="selectGymDay('${d}')" class="capsule-btn ${currentGymDay === d ? 'active' : ''}">
           ${d}
         </button>
       `).join('');
@@ -1037,35 +1004,29 @@
       const exercises = appState.gym?.[currentGymDay]?.exercises || [];
 
       if (exercises.length === 0) {
-        list.innerHTML = `<p class="text-xs text-slate-500 font-mono text-center py-6">No hay ejercicios para el ${currentGymDay}.</p>`;
+        list.innerHTML = `<p class="font-mono" style="text-align: center; color: #64748b; font-size: 11px; padding: 20px 0;">NO HAY EJERCICIOS PARA EL ${currentGymDay.toUpperCase()}</p>`;
         return;
       }
 
       list.innerHTML = exercises.map(ex => `
-        <div class="themed-card p-3 rounded-xl flex items-center justify-between font-mono ${ex.completed ? 'opacity-35' : ''}">
-          <div class="flex items-center gap-3">
-            <input type="checkbox" ${ex.completed ? 'checked' : ''} onchange="toggleGymExercise(${ex.id})" 
-              class="w-4 h-4 rounded bg-slate-900 border-slate-700 text-amber-500 cursor-pointer">
+        <div class="card font-mono" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; ${ex.completed ? 'opacity: 0.35;' : ''}">
+          <div style="display: flex; align-items: center; gap: 10px;">
+            <input type="checkbox" ${ex.completed ? 'checked' : ''} onchange="toggleGymExercise(${ex.id})" style="width: 18px; height: 18px; margin: 0; cursor: pointer;">
             <div>
-              <p class="text-xs font-bold ${ex.completed ? 'line-through text-slate-400' : 'text-white'}">${ex.name}</p>
-              <div class="flex items-center gap-2 mt-0.5 text-[10px] text-slate-400">
-                <span class="text-[var(--primary)] font-bold">${ex.sets} series × ${ex.reps} reps</span>
-                <span>•</span>
-                <span class="text-emerald-400 font-bold">Carga: ${ex.weight}</span>
-              </div>
+              <p style="font-size: 12px; font-weight: 700; ${ex.completed ? 'text-decoration: line-through; color: #64748b;' : 'color: #fff;'}">${ex.name}</p>
+              <span style="font-size: 10px; color: var(--primary);">${ex.sets} series x ${ex.reps} reps • ${ex.weight}</span>
             </div>
           </div>
-          <button type="button" onclick="deleteGymExercise(${ex.id})" class="text-slate-600 hover:text-rose-400 text-xs px-2 py-1">✕</button>
+          <button type="button" onclick="deleteGymExercise(${ex.id})" style="background: none; color: #64748b; font-size: 11px;">X</button>
         </div>
       `).join('');
     }
 
-    // NOTAS KEEP
+    // 4. KEEP
     function selectNoteColor(color) {
       selectedNoteColor = color;
-      document.querySelectorAll('.color-dot').forEach(dot => {
-        dot.classList.toggle('border-[var(--primary)]', dot.dataset.color === color);
-        dot.classList.toggle('scale-110', dot.dataset.color === color);
+      document.querySelectorAll('.color-btn').forEach(dot => {
+        dot.style.transform = dot.dataset.color === color ? 'scale(1.2)' : 'scale(1)';
       });
     }
 
@@ -1111,39 +1072,36 @@
       const grid = document.getElementById('keep-notes-grid');
       if (!grid) return;
       if (appState.keepNotes.length === 0) {
-        grid.innerHTML = `<div class="col-span-2 text-center py-10 text-slate-600 font-mono text-xs">Sin notas registradas.</div>`;
+        grid.innerHTML = `<div class="font-mono" style="grid-column: span 2; text-align: center; color: #64748b; font-size: 11px; padding: 24px 0;">SIN NOTAS</div>`;
         return;
       }
 
       const colorThemes = {
-        dark: 'bg-slate-900 border-slate-800 text-slate-200',
-        gold: 'bg-amber-950/70 border-amber-500/40 text-amber-200',
-        emerald: 'bg-emerald-950/70 border-emerald-500/40 text-emerald-200',
-        blue: 'bg-cyan-950/70 border-cyan-500/40 text-cyan-200',
-        rose: 'bg-rose-950/70 border-rose-500/40 text-rose-200'
+        dark: 'background: #090d16; border-color: #1e293b;',
+        gold: 'background: #451a03; border-color: #d97706;',
+        emerald: 'background: #064e3b; border-color: #059669;',
+        blue: 'background: #082f49; border-color: #0284c7;',
+        rose: 'background: #4c0519; border-color: #e11d48;'
       };
 
       grid.innerHTML = appState.keepNotes.map(n => `
-        <div class="rounded-2xl p-3 border ${colorThemes[n.color] || colorThemes.dark} flex flex-col justify-between relative shadow-md">
-          <div>
-            <div class="flex justify-between items-start mb-1.5">
-              ${n.title ? `<h4 class="text-xs font-bold leading-tight line-clamp-2">${n.title}</h4>` : '<span></span>'}
-              <button type="button" onclick="togglePinNote(${n.id})" class="text-xs p-0.5 ml-1 ${n.pinned ? 'text-amber-400' : 'text-slate-500 hover:text-white'}">
-                📌
-              </button>
-            </div>
-            ${n.body ? `<p class="text-[11px] leading-relaxed opacity-90 whitespace-pre-wrap font-sans">${n.body}</p>` : ''}
+        <div class="card" style="${colorThemes[n.color] || colorThemes.dark} margin-bottom: 0;">
+          <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 4px;">
+            <p class="font-mono" style="font-size: 11px; font-weight: 800; color: #fff;">${n.title || ''}</p>
+            <button type="button" onclick="togglePinNote(${n.id})" style="background: none; font-size: 9px; color: ${n.pinned ? 'var(--primary)' : '#64748b'};">
+              ${n.pinned ? '[FIJO]' : 'FIJAR'}
+            </button>
           </div>
-
-          <div class="mt-3 pt-2 border-t border-white/5 flex items-center justify-between text-[9px] font-mono">
-            ${n.alertTime ? `<span class="text-amber-400">⏰ ${formatToDDMMAA(n.alertTime)}</span>` : '<span></span>'}
-            <button type="button" onclick="deleteKeepNote(${n.id})" class="text-slate-500 hover:text-rose-400 text-xs">✕</button>
+          <p style="font-size: 11px; color: #cbd5e1; margin-bottom: 8px; font-family: sans-serif;">${n.body || ''}</p>
+          <div style="display: flex; justify-content: space-between; font-size: 9px; color: #64748b;" class="font-mono">
+            <span>${n.alertTime ? formatToDDMMAA(n.alertTime) : ''}</span>
+            <button type="button" onclick="deleteKeepNote(${n.id})" style="background: none; color: var(--danger);">X</button>
           </div>
         </div>
       `).join('');
     }
 
-    // TARJETAS
+    // 5. TARJETAS
     function toggleCardInputs() {
       const isTDC = document.getElementById('card-type').value === 'TDC';
       document.getElementById('tdc-fields').style.display = isTDC ? 'block' : 'none';
@@ -1170,7 +1128,7 @@
       closeModal('card-modal');
       renderCards();
       populateCardSelect();
-      showToast('Tarjeta vinculada');
+      showToast('Tarjeta agregada');
     }
 
     function deleteCard(id) {
@@ -1232,7 +1190,7 @@
       document.getElementById('total-liquidity-metric').textContent = `$${totalLiquidity.toFixed(2)}`;
 
       if (appState.cards.length === 0) {
-        container.innerHTML = `<div class="themed-card p-6 rounded-2xl text-center text-xs text-slate-500 font-mono">No tienes tarjetas agregadas.</div>`;
+        container.innerHTML = `<div class="card font-mono" style="text-align: center; color: #64748b; font-size: 11px;">NO HAY TARJETAS REGISTRADAS</div>`;
         return;
       }
 
@@ -1244,46 +1202,37 @@
           const usedPct = limit > 0 ? Math.min(100, Math.round((debt / limit) * 100)) : 0;
 
           return `
-            <div class="themed-card rounded-2xl p-4 font-mono shadow-lg">
-              <div class="flex justify-between items-center mb-1">
-                <span class="text-[9px] uppercase px-2 py-0.5 rounded-full bg-[var(--primary)]/20 text-[var(--primary)] font-bold">TDC CRÉDITO</span>
-                <button type="button" onclick="deleteCard(${c.id})" class="text-slate-500 hover:text-rose-400 text-xs">✕</button>
+            <div class="card font-mono" style="border-color: rgba(245,158,11,0.5);">
+              <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
+                <span style="font-size: 9px; color: var(--primary); font-weight: 800;">[TDC CRÉDITO]</span>
+                <button type="button" onclick="deleteCard(${c.id})" style="background: none; color: #64748b; font-size: 11px;">X</button>
               </div>
-              <div class="flex justify-between items-baseline mt-2">
-                <h4 class="text-sm font-black text-white uppercase">${c.name}</h4>
-                <span class="text-[10px] text-slate-400">Límite: $${limit.toFixed(2)}</span>
+              <p style="font-size: 13px; font-weight: 800; color: #fff;">${c.name}</p>
+              <div style="display: flex; justify-content: space-between; font-size: 10px; margin: 6px 0;">
+                <span style="color: var(--danger);">Deuda: $${debt.toFixed(2)}</span>
+                <span style="color: var(--success);">Disp: $${available.toFixed(2)}</span>
               </div>
-              
-              <div class="my-2.5">
-                <div class="flex justify-between text-[10px] mb-1">
-                  <span class="text-rose-400 font-bold">Deuda: $${debt.toFixed(2)}</span>
-                  <span class="text-emerald-400 font-bold">Disponible: $${available.toFixed(2)}</span>
-                </div>
-                <div class="w-full bg-slate-900 h-2 rounded-full overflow-hidden border border-white/5">
-                  <div class="bg-gradient-to-r from-emerald-400 via-amber-400 to-rose-500 h-full transition-all" style="width: ${usedPct}%"></div>
-                </div>
+              <div style="width: 100%; height: 6px; background: #090d16; border-radius: 3px; overflow: hidden; margin-bottom: 8px;">
+                <div style="width: ${usedPct}%; height: 100%; background: var(--danger);"></div>
               </div>
-
-              <div class="flex justify-between items-center text-[10px] text-slate-400 border-t border-white/5 pt-2">
+              <div style="display: flex; justify-content: space-between; align-items: center; font-size: 10px; color: #64748b; border-top: 1px solid #1e293b; padding-top: 6px;">
                 <span>Corte: día ${c.cutoff} • Pago: día ${c.payday}</span>
-                <button type="button" onclick="openPaymentModal(${c.id})" class="text-[var(--primary)] font-black hover:underline">
-                  + Abonar / Pagar
-                </button>
+                <button type="button" onclick="openPaymentModal(${c.id})" style="background: none; color: var(--primary); font-weight: 800;">[+ ABONAR]</button>
               </div>
             </div>
           `;
         } else {
           const balance = Number(c.balance) || 0;
           return `
-            <div class="themed-card rounded-2xl p-4 font-mono shadow-lg">
-              <div class="flex justify-between items-center mb-1">
-                <span class="text-[9px] uppercase px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 font-bold">TDD DÉBITO</span>
-                <button type="button" onclick="deleteCard(${c.id})" class="text-slate-500 hover:text-rose-400 text-xs">✕</button>
+            <div class="card font-mono" style="border-color: rgba(16,185,129,0.5);">
+              <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
+                <span style="font-size: 9px; color: var(--success); font-weight: 800;">[TDD DÉBITO]</span>
+                <button type="button" onclick="deleteCard(${c.id})" style="background: none; color: #64748b; font-size: 11px;">X</button>
               </div>
-              <h4 class="text-sm font-black text-white uppercase mt-2">${c.name}</h4>
-              <div class="my-1.5">
-                <span class="text-[9px] text-slate-400 uppercase">Fondos Disponibles</span>
-                <p class="text-base font-bold text-emerald-400">$${balance.toFixed(2)}</p>
+              <p style="font-size: 13px; font-weight: 800; color: #fff;">${c.name}</p>
+              <div style="margin-top: 6px;">
+                <span style="font-size: 9px; color: #64748b;">SALDO DISPONIBLE:</span>
+                <p style="font-size: 15px; font-weight: 800; color: var(--success);">$${balance.toFixed(2)}</p>
               </div>
             </div>
           `;
@@ -1295,7 +1244,7 @@
       const select = document.getElementById('expense-card');
       if (!select) return;
       if (appState.cards.length === 0) {
-        select.innerHTML = '<option value="">Primero agrega una tarjeta arriba</option>';
+        select.innerHTML = '<option value="">Primero agrega una tarjeta</option>';
         return;
       }
       select.innerHTML = appState.cards.map(c => `
@@ -1339,40 +1288,38 @@
       const list = document.getElementById('expenses-list');
       if (!list) return;
       if (appState.expenses.length === 0) {
-        list.innerHTML = `<p class="text-xs text-slate-500 text-center py-2">Sin gastos registrados.</p>`;
+        list.innerHTML = `<p class="font-mono" style="text-align: center; color: #64748b; font-size: 10px; padding: 12px 0;">SIN GASTOS</p>`;
         return;
       }
       list.innerHTML = appState.expenses.slice(0, 10).map(exp => {
         const card = appState.cards.find(c => c.id === exp.cardId);
-        const cardLabel = card ? `${card.name} [${card.type}]` : 'Desconocida';
+        const cardLabel = card ? `${card.name} [${card.type}]` : 'Tarjeta';
         const amount = Number(exp.amount) || 0;
         return `
-          <div class="themed-card p-2.5 rounded-xl flex justify-between items-center text-xs">
+          <div class="card font-mono" style="display: flex; justify-content: space-between; align-items: center; padding: 8px 12px; margin-bottom: 6px;">
             <div>
-              <p class="font-bold text-slate-200">${exp.concept}</p>
-              <p class="text-[10px] text-slate-500">${cardLabel} • ${exp.dateFormatted}</p>
+              <p style="font-size: 11px; font-weight: 700; color: #fff;">${exp.concept}</p>
+              <span style="font-size: 9px; color: #64748b;">${cardLabel} • ${exp.dateFormatted}</span>
             </div>
-            <span class="font-bold text-rose-400">-$${amount.toFixed(2)}</span>
+            <span style="font-size: 11px; font-weight: 800; color: var(--danger);">-$${amount.toFixed(2)}</span>
           </div>
         `;
       }).join('');
     }
 
-    // ==========================================
-    // SISTEMA DE SINCRONIZACIÓN INFALIBLE (.JSON)
-    // ==========================================
+    // SINCRONIZACIÓN (.JSON / TEXTO)
     function downloadJSONFile() {
       try {
         const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(appState, null, 2));
         const downloadAnchor = document.createElement('a');
         downloadAnchor.setAttribute("href", dataStr);
-        downloadAnchor.setAttribute("download", `toros_negros_${formatToDDMMAA(new Date()).replace(/\//g, '-')}.json`);
+        downloadAnchor.setAttribute("download", `toros_negros_datos.json`);
         document.body.appendChild(downloadAnchor);
         downloadAnchor.click();
         downloadAnchor.remove();
-        showToast('Archivo descargado con éxito');
+        showToast('Archivo descargado');
       } catch(e) {
-        showToast('Error al descargar archivo', true);
+        showToast('Error al descargar', true);
       }
     }
 
@@ -1407,7 +1354,7 @@
       try {
         const jsonStr = JSON.stringify(appState);
         navigator.clipboard.writeText(jsonStr).then(() => {
-          showToast('¡Datos copiados al portapapeles!');
+          showToast('Datos copiados');
           document.getElementById('sync-clipboard-area').value = jsonStr;
         }).catch(() => {
           document.getElementById('sync-clipboard-area').value = jsonStr;
@@ -1434,7 +1381,29 @@
           saveLocal();
           refreshAllUI();
           closeModal('sync-modal');
-          showToast('¡Progreso restaurado con éxito!');
+          showToast('¡Progreso restaurado!');
         }
       } catch(e) {
-        showToast('Formato de texto inválid
+        showToast('Formato de texto inválido', true);
+      }
+    }
+
+    function refreshAllUI() {
+      try {
+        renderTasks();
+        renderDayCapsules();
+        loadDietData();
+        renderGymDayCapsules();
+        loadGymData();
+        renderKeepNotes();
+        renderCards();
+        populateCardSelect();
+        renderExpenses();
+      } catch(e) {}
+    }
+
+    // ARRANQUE LIMPIO
+    refreshAllUI();
+  </script>
+</body>
+</html>
