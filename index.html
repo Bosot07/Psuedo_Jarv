@@ -8,7 +8,7 @@
   <!-- Fuentes: Chakra Petch + Plus Jakarta Sans -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:ital,wght@0,500;0,600;0,700;1,700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 
   <!-- Tailwind CSS -->
   <script src="https://cdn.tailwindcss.com"></script>
@@ -22,8 +22,6 @@
       -webkit-tap-highlight-color: transparent;
       padding-top: env(safe-area-inset-top);
       padding-bottom: env(safe-area-inset-bottom);
-      touch-action: pan-y;
-      overflow-y: auto;
       font-family: 'Plus Jakarta Sans', sans-serif;
     }
 
@@ -32,63 +30,62 @@
       letter-spacing: 0.02em;
     }
 
+    /* TEMAS DE COLOR */
     :root {
       --bg-main: #07090e;
-      --card-bg: rgba(13, 17, 28, 0.90);
+      --card-bg: #0d121f;
       --primary: #f59e0b;
-      --primary-border: rgba(245, 158, 11, 0.35);
+      --primary-border: rgba(245, 158, 11, 0.4);
       --accent: #dc2626;
-      --text-glow: rgba(245, 158, 11, 0.15);
     }
 
     body[data-theme="saiyan"] {
       --bg-main: #050813;
-      --card-bg: rgba(10, 18, 38, 0.92);
+      --card-bg: #091226;
       --primary: #38bdf8;
-      --primary-border: rgba(56, 189, 248, 0.35);
+      --primary-border: rgba(56, 189, 248, 0.4);
       --accent: #fbbf24;
-      --text-glow: rgba(56, 189, 248, 0.20);
     }
 
     body[data-theme="cyber"] {
       --bg-main: #090614;
-      --card-bg: rgba(22, 14, 40, 0.92);
+      --card-bg: #150f28;
       --primary: #c084fc;
-      --primary-border: rgba(192, 132, 252, 0.35);
+      --primary-border: rgba(192, 132, 252, 0.4);
       --accent: #06b6d4;
-      --text-glow: rgba(192, 132, 252, 0.20);
     }
 
     body[data-theme="stealth"] {
       --bg-main: #09090b;
-      --card-bg: rgba(24, 24, 27, 0.92);
+      --card-bg: #18181b;
       --primary: #e4e4e7;
-      --primary-border: rgba(113, 113, 122, 0.35);
+      --primary-border: rgba(113, 113, 122, 0.4);
       --accent: #71717a;
-      --text-glow: rgba(255, 255, 255, 0.05);
     }
 
     .themed-card {
       background: var(--card-bg);
       border: 1px solid var(--primary-border);
-      box-shadow: 0 4px 20px -2px var(--text-glow);
-      backdrop-filter: blur(12px);
-      -webkit-backdrop-filter: blur(12px);
     }
   </style>
 </head>
-<body data-theme="blackbulls" class="bg-[var(--bg-main)] text-slate-100 pb-32 antialiased min-h-screen transition-colors duration-300">
+<body data-theme="blackbulls" class="bg-[var(--bg-main)] text-slate-100 pb-32 antialiased min-h-screen">
+
+  <!-- NOTIFICACIÓN FLOTANTE (REEMPLAZO DE ALERT PARA QUE NUNCA SE TRABE) -->
+  <div id="app-toast" class="fixed top-4 left-1/2 -translate-x-1/2 z-50 px-4 py-2.5 rounded-2xl text-xs font-mono font-bold shadow-2xl opacity-0 pointer-events-none transition-all duration-300">
+    Notificación
+  </div>
 
   <!-- ENCABEZADO -->
-  <header class="sticky top-0 z-40 bg-[var(--bg-main)]/95 backdrop-blur-xl border-b border-[var(--primary-border)] px-4 py-2.5 transition-colors">
+  <header class="sticky top-0 z-40 bg-[var(--bg-main)] border-b border-[var(--primary-border)] px-4 py-2.5">
     <div class="max-w-[430px] mx-auto flex items-center justify-between">
       
-      <!-- Insignia Toros Negros CON FONDO BLANCO / PLATA DE ALTO CONTRASTE -->
+      <!-- Insignia Toros Negros con Fondo Claro -->
       <div class="flex items-center gap-2.5">
-        <div class="w-9 h-9 rounded-xl bg-gradient-to-b from-white via-slate-100 to-slate-200 border-2 border-[var(--primary)] p-0.5 flex items-center justify-center shadow-lg shadow-[var(--primary)]/20">
-          <img id="app-logo" src="logo.png?v=6" 
+        <div class="w-9 h-9 rounded-xl bg-white border-2 border-[var(--primary)] p-0.5 flex items-center justify-center shadow-md">
+          <img id="app-logo" src="logo.png?v=7" 
                onerror="this.onerror=null; this.src='https://assets.stickpng.com/images/628c85c2bbec114743bed4bd.png'" 
-               alt="Toros Negros" class="w-full h-full object-contain filter drop-shadow-sm">
+               alt="Toros Negros" class="w-full h-full object-contain">
         </div>
         <div>
           <span class="text-[9px] font-mono font-bold tracking-wider text-[var(--primary)] uppercase block leading-tight">TOROS NEGROS • HQ</span>
@@ -96,13 +93,13 @@
         </div>
       </div>
 
-      <!-- Herramientas -->
+      <!-- Botones de Acción -->
       <div class="flex items-center gap-1.5 font-mono">
-        <button onclick="openModal('theme-modal')" title="Cambiar Tema" class="p-1.5 rounded-lg bg-slate-900 border border-[var(--primary-border)] text-[var(--primary)] text-xs">
+        <button type="button" onclick="openModal('theme-modal')" class="p-1.5 rounded-lg bg-slate-900 border border-[var(--primary-border)] text-[var(--primary)] text-xs active:scale-95 transition">
           <i data-lucide="palette" class="w-3.5 h-3.5"></i>
         </button>
 
-        <button onclick="openModal('sync-modal')" title="Sincronizar" class="flex items-center gap-1 bg-slate-900 border border-[var(--primary-border)] text-[var(--primary)] px-2 py-1 rounded-lg text-[10px] font-bold">
+        <button type="button" onclick="openModal('sync-modal')" class="flex items-center gap-1 bg-slate-900 border border-[var(--primary-border)] text-[var(--primary)] px-2 py-1 rounded-lg text-[10px] font-bold active:scale-95 transition">
           <i data-lucide="cloud" class="w-3 h-3"></i>
           <span id="sync-btn-label">SYNC</span>
         </button>
@@ -116,7 +113,7 @@
     </div>
   </header>
 
-  <!-- CONTENEDOR PRINCIPAL CALIBRADO S24 ULTRA -->
+  <!-- CONTENEDOR PRINCIPAL S24 ULTRA -->
   <main class="max-w-[430px] mx-auto px-4 pt-4 space-y-4">
 
     <!-- ========================================== -->
@@ -144,22 +141,22 @@
           <span class="text-[10px] text-slate-500">FORMATO DD/MM/AA</span>
         </div>
         <input type="text" id="task-title" placeholder="Nombre de la entrega o examen" required
-          class="w-full bg-slate-900 border border-slate-700/70 rounded-xl px-3.5 py-2.5 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-[var(--primary)]">
+          class="w-full bg-slate-900 border border-slate-800 rounded-xl px-3.5 py-2.5 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-[var(--primary)]">
         
         <div class="grid grid-cols-2 gap-2">
           <input type="text" id="task-subject" placeholder="Materia" required
-            class="bg-slate-900 border border-slate-700/70 rounded-xl px-3 py-2 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-[var(--primary)]">
+            class="bg-slate-900 border border-slate-800 rounded-xl px-3 py-2 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-[var(--primary)]">
           <input type="date" id="task-date" required
-            class="bg-slate-900 border border-slate-700/70 rounded-xl px-3 py-2 text-xs text-white font-mono focus:outline-none focus:border-[var(--primary)]">
+            class="bg-slate-900 border border-slate-800 rounded-xl px-3 py-2 text-xs text-white font-mono focus:outline-none focus:border-[var(--primary)]">
         </div>
 
         <div class="flex gap-2 font-mono">
-          <select id="task-priority" class="bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-xs text-slate-300 focus:outline-none flex-1">
+          <select id="task-priority" class="bg-slate-900 border border-slate-800 rounded-xl px-3 py-2 text-xs text-slate-300 focus:outline-none flex-1">
             <option value="normal">Prioridad Normal</option>
             <option value="high">Prioridad Alta</option>
             <option value="low">Prioridad Baja</option>
           </select>
-          <button type="submit" class="bg-[var(--primary)] text-slate-950 font-black px-4 py-2 rounded-xl text-xs uppercase font-mono transition shadow-md">
+          <button type="submit" class="bg-[var(--primary)] text-slate-950 font-black px-4 py-2 rounded-xl text-xs uppercase font-mono shadow-md">
             Añadir
           </button>
         </div>
@@ -169,23 +166,23 @@
     </section>
 
     <!-- ========================================== -->
-    <!-- 2. PESTAÑA: DIETA & IMPORTADOR DE GEMINI   -->
+    <!-- 2. PESTAÑA: DIETA & AGUA 4.5L              -->
     <!-- ========================================== -->
     <section id="tab-diet" style="display: none;" class="space-y-4">
       <div class="flex gap-1.5 overflow-x-auto pb-1" id="diet-day-capsules"></div>
 
-      <!-- BOTÓN VINCULADOR GEMINI / KEEP -->
+      <!-- BOTÓN VINCULAR GEMINI -->
       <div class="themed-card p-3 rounded-2xl flex items-center justify-between">
         <div>
           <span class="text-xs font-bold text-white block font-mono">Importar de Keep / Gemini</span>
           <span class="text-[10px] text-slate-400">Pega el texto copiado de tu asistente</span>
         </div>
-        <button onclick="openModal('gemini-import-modal')" class="bg-gradient-to-r from-sky-500 to-indigo-600 hover:opacity-90 text-white font-bold px-3 py-1.5 rounded-xl text-xs font-mono flex items-center gap-1.5 shadow-md">
+        <button type="button" onclick="openModal('gemini-import-modal')" class="bg-gradient-to-r from-sky-500 to-indigo-600 text-white font-bold px-3 py-1.5 rounded-xl text-xs font-mono flex items-center gap-1.5 shadow-md active:scale-95 transition">
           <i data-lucide="sparkles" class="w-3.5 h-3.5"></i> Pegar Dieta
         </button>
       </div>
 
-      <!-- Hidratación Táctica 4.5 Litros -->
+      <!-- Hidratación 4.5 Litros -->
       <div class="themed-card p-3.5 rounded-2xl space-y-2.5">
         <div class="flex justify-between items-center text-xs font-mono font-bold">
           <span class="text-[var(--primary)] flex items-center gap-1.5">
@@ -195,20 +192,20 @@
         </div>
 
         <div class="w-full bg-slate-900 h-2.5 rounded-full overflow-hidden border border-white/5 p-0.5">
-          <div id="water-progress-bar" class="bg-gradient-to-r from-sky-400 to-[var(--primary)] h-full w-0 rounded-full transition-all duration-300 shadow-sm"></div>
+          <div id="water-progress-bar" class="bg-gradient-to-r from-sky-400 to-[var(--primary)] h-full w-0 rounded-full transition-all duration-300"></div>
         </div>
 
         <div class="flex justify-between items-center pt-0.5" id="water-icons-container"></div>
 
         <div class="flex items-center justify-between pt-1 font-mono text-xs">
-          <button onclick="changeWater(-1)" class="bg-slate-900 border border-slate-800 text-slate-400 px-3 py-1.5 rounded-xl font-bold hover:text-white">
+          <button type="button" onclick="changeWater(-1)" class="bg-slate-900 border border-slate-800 text-slate-400 px-3 py-1.5 rounded-xl font-bold active:scale-95">
             -250ml
           </button>
           <div class="flex gap-1.5">
-            <button onclick="changeWater(1)" class="bg-slate-900 border border-[var(--primary-border)] text-[var(--primary)] px-3 py-1.5 rounded-xl font-bold">
+            <button type="button" onclick="changeWater(1)" class="bg-slate-900 border border-[var(--primary-border)] text-[var(--primary)] px-3 py-1.5 rounded-xl font-bold active:scale-95">
               +250ml
             </button>
-            <button onclick="changeWater(2)" class="bg-[var(--primary)] text-slate-950 font-black px-3.5 py-1.5 rounded-xl shadow-md">
+            <button type="button" onclick="changeWater(2)" class="bg-[var(--primary)] text-slate-950 font-black px-3.5 py-1.5 rounded-xl shadow-md active:scale-95">
               +500ml
             </button>
           </div>
@@ -266,7 +263,7 @@
             class="w-full bg-slate-900/70 border border-slate-800 rounded-xl p-2 text-xs text-white focus:outline-none"></textarea>
         </div>
 
-        <button onclick="saveDiet()" class="w-full bg-[var(--primary)] text-slate-950 font-black py-2.5 rounded-xl text-xs uppercase font-mono tracking-wider transition shadow-md">
+        <button type="button" onclick="saveDiet()" class="w-full bg-[var(--primary)] text-slate-950 font-black py-2.5 rounded-xl text-xs uppercase font-mono tracking-wider shadow-md active:scale-95 transition">
           Guardar Menú del Día
         </button>
       </div>
@@ -296,27 +293,27 @@
         </div>
 
         <input type="text" id="gym-ex-name" placeholder="Nombre (ej: Press Banca Plano)" required
-          class="w-full bg-slate-900 border border-slate-700/70 rounded-xl px-3 py-2 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-[var(--primary)]">
+          class="w-full bg-slate-900 border border-slate-800 rounded-xl px-3 py-2 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-[var(--primary)]">
 
         <div class="grid grid-cols-3 gap-2">
           <div>
             <label class="text-[9px] text-slate-400 block mb-0.5">Series</label>
             <input type="text" id="gym-ex-sets" placeholder="4" required
-              class="w-full bg-slate-900 border border-slate-700/70 rounded-xl px-2 py-1.5 text-xs text-center text-white focus:outline-none">
+              class="w-full bg-slate-900 border border-slate-800 rounded-xl px-2 py-1.5 text-xs text-center text-white focus:outline-none">
           </div>
           <div>
             <label class="text-[9px] text-slate-400 block mb-0.5">Reps</label>
             <input type="text" id="gym-ex-reps" placeholder="10-12" required
-              class="w-full bg-slate-900 border border-slate-700/70 rounded-xl px-2 py-1.5 text-xs text-center text-white focus:outline-none">
+              class="w-full bg-slate-900 border border-slate-800 rounded-xl px-2 py-1.5 text-xs text-center text-white focus:outline-none">
           </div>
           <div>
             <label class="text-[9px] text-slate-400 block mb-0.5">Peso</label>
             <input type="text" id="gym-ex-weight" placeholder="60 kg"
-              class="w-full bg-slate-900 border border-slate-700/70 rounded-xl px-2 py-1.5 text-xs text-center text-white focus:outline-none">
+              class="w-full bg-slate-900 border border-slate-800 rounded-xl px-2 py-1.5 text-xs text-center text-white focus:outline-none">
           </div>
         </div>
 
-        <button type="submit" class="w-full bg-[var(--primary)] text-slate-950 font-black py-2 rounded-xl text-xs uppercase transition shadow-md">
+        <button type="submit" class="w-full bg-[var(--primary)] text-slate-950 font-black py-2 rounded-xl text-xs uppercase shadow-md active:scale-95 transition">
           Añadir a la Rutina
         </button>
       </form>
@@ -348,7 +345,7 @@
             <button type="button" onclick="selectNoteColor('blue')" class="w-5 h-5 rounded-full bg-cyan-950 border border-cyan-400 color-dot" data-color="blue"></button>
             <button type="button" onclick="selectNoteColor('rose')" class="w-5 h-5 rounded-full bg-rose-950 border border-rose-500 color-dot" data-color="rose"></button>
           </div>
-          <button onclick="createKeepNote()" class="bg-[var(--primary)] text-slate-950 font-black px-3.5 py-1.5 rounded-xl text-xs font-mono shadow-md">
+          <button type="button" onclick="createKeepNote()" class="bg-[var(--primary)] text-slate-950 font-black px-3.5 py-1.5 rounded-xl text-xs font-mono shadow-md active:scale-95 transition">
             Guardar
           </button>
         </div>
@@ -377,7 +374,7 @@
           <span class="text-[11px] font-bold text-[var(--primary)] uppercase tracking-wider flex items-center gap-1">
             <i data-lucide="credit-card" class="w-3.5 h-3.5"></i> MIS TARJETAS
           </span>
-          <button onclick="openModal('card-modal')" class="text-xs text-[var(--primary)] hover:underline font-bold">
+          <button type="button" onclick="openModal('card-modal')" class="text-xs text-[var(--primary)] hover:underline font-bold">
             + AGREGAR TARJETA
           </button>
         </div>
@@ -398,7 +395,7 @@
             class="bg-slate-900 border border-slate-800 rounded-xl px-3 py-2 text-xs text-white focus:outline-none">
         </div>
         
-        <button type="submit" class="w-full bg-rose-600 hover:bg-rose-500 text-white font-black py-2.5 rounded-xl text-xs uppercase font-mono tracking-wider transition shadow-md">
+        <button type="submit" class="w-full bg-rose-600 hover:bg-rose-500 text-white font-black py-2.5 rounded-xl text-xs uppercase font-mono tracking-wider shadow-md active:scale-95 transition">
           Aplicar Gasto
         </button>
       </form>
@@ -412,21 +409,21 @@
   </main>
 
   <!-- ========================================== -->
-  <!-- MODALES DE CONTROL                         -->
+  <!-- MODALES DE CONTROL (CIERRE TÁCTIL BLINDADO)-->
   <!-- ========================================== -->
 
-  <!-- MODAL NUEVO: IMPORTAR DIETA DESDE GEMINI / KEEP -->
-  <div id="gemini-import-modal" style="display: none;" class="fixed inset-0 z-50 bg-black/85 backdrop-blur-md items-center justify-center p-4">
+  <!-- MODAL: IMPORTAR DE GEMINI -->
+  <div id="gemini-import-modal" style="display: none;" onclick="if(event.target === this) closeModal('gemini-import-modal')" class="fixed inset-0 z-50 bg-black/80 flex items-center justify-center p-4">
     <div class="themed-card rounded-3xl p-5 w-full max-w-sm space-y-3 font-mono shadow-2xl">
       <div class="flex justify-between items-center border-b border-white/10 pb-2">
         <h3 class="text-xs font-black text-sky-400 uppercase flex items-center gap-1.5">
           <i data-lucide="sparkles" class="w-4 h-4"></i> Pegar Dieta de Gemini
         </h3>
-        <button onclick="closeModal('gemini-import-modal')" class="text-slate-400 hover:text-white p-1">✕</button>
+        <button type="button" onclick="closeModal('gemini-import-modal')" class="text-slate-400 hover:text-white p-1">✕</button>
       </div>
 
       <p class="text-[11px] text-slate-300 font-sans leading-relaxed">
-        Pega el texto de tu dieta (de Gemini o Keep) y se asignará automáticamente a las 5 comidas de <b><span id="import-current-day-label">Lunes</span></b>:
+        Pega el texto copiado de Gemini/Keep y se rellenará para el <b><span id="import-current-day-label">Lunes</span></b>:
       </p>
 
       <textarea id="gemini-paste-area" rows="6" placeholder="Pega aquí el texto, por ejemplo:&#10;Desayuno: 3 huevos con espinaca&#10;Colación 1: Manzana con nueces&#10;Comida: Pechuga con arroz..."
@@ -434,59 +431,58 @@
 
       <div class="flex gap-2 pt-1">
         <button type="button" onclick="closeModal('gemini-import-modal')" class="flex-1 bg-slate-900 text-slate-400 py-2.5 rounded-xl text-xs">Cancelar</button>
-        <button type="button" onclick="parseGeminiDiet()" class="flex-1 bg-sky-500 hover:bg-sky-400 text-slate-950 font-black py-2.5 rounded-xl text-xs shadow-md">Procesar y Rellenar</button>
+        <button type="button" onclick="parseGeminiDiet()" class="flex-1 bg-sky-500 hover:bg-sky-400 text-slate-950 font-black py-2.5 rounded-xl text-xs shadow-md">Rellenar</button>
       </div>
     </div>
   </div>
 
-  <!-- MODAL: SINCRONIZACIÓN NUBE REPARADA (JSONBLOB) -->
-  <div id="sync-modal" style="display: none;" class="fixed inset-0 z-50 bg-black/85 backdrop-blur-md items-center justify-center p-4">
+  <!-- MODAL: SINCRONIZACIÓN EN LA NUBE -->
+  <div id="sync-modal" style="display: none;" onclick="if(event.target === this) closeModal('sync-modal')" class="fixed inset-0 z-50 bg-black/80 flex items-center justify-center p-4">
     <div class="themed-card rounded-3xl p-5 w-full max-w-sm space-y-4 font-mono shadow-2xl">
       <div class="flex justify-between items-center border-b border-white/10 pb-2">
         <h3 class="text-xs font-black text-[var(--primary)] uppercase flex items-center gap-1.5">
           <i data-lucide="refresh-cw" class="w-4 h-4"></i> Sincronizar PC & Celular
         </h3>
-        <button onclick="closeModal('sync-modal')" class="text-slate-400 hover:text-white p-1">✕</button>
+        <button type="button" onclick="closeModal('sync-modal')" class="text-slate-400 hover:text-white p-1">✕</button>
       </div>
 
       <p class="text-[11px] text-slate-300 leading-relaxed font-sans">
-        1. En el dispositivo con tus datos, presiona <b>"Subir y Crear Código"</b>.<br>
-        2. En el otro dispositivo, escribe ese código y presiona <b>"Descargar Datos"</b>.
+        Presiona <b>Subir y Guardar</b> en tu celular para generar tu código corto de 8 caracteres. Luego escribe ese código en tu PC y dale a <b>Descargar</b>.
       </p>
 
       <div class="space-y-1.5">
         <label class="text-[10px] text-slate-400 uppercase">Código de Nube Compartido:</label>
         <div class="flex gap-1.5">
-          <input type="text" id="sync-code-input" placeholder="Ej: 1234abcd..." 
-            class="flex-1 bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-xs text-[var(--primary)] font-bold focus:outline-none">
+          <input type="text" id="sync-code-input" placeholder="Ej: 7f3a9e1b" 
+            class="flex-1 bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-xs text-[var(--primary)] font-bold focus:outline-none font-mono">
           <button type="button" onclick="saveSyncCode()" class="bg-slate-800 text-slate-200 px-3 py-2 rounded-xl text-xs font-bold">Fijar</button>
         </div>
       </div>
 
       <div class="grid grid-cols-2 gap-2 pt-2 border-t border-white/10">
-        <button type="button" onclick="uploadToCloud()" class="bg-emerald-600 hover:bg-emerald-500 text-white p-2.5 rounded-xl text-[11px] font-bold shadow-md">
-          ⬆️ Subir y Guardar
+        <button type="button" onclick="uploadToCloud()" class="bg-emerald-600 hover:bg-emerald-500 text-white p-2.5 rounded-xl text-[11px] font-bold shadow-md active:scale-95 transition">
+          ⬆️ Subir a Nube
         </button>
-        <button type="button" onclick="downloadFromCloud()" class="bg-sky-600 hover:bg-sky-500 text-white p-2.5 rounded-xl text-[11px] font-bold shadow-md">
-          ⬇️ Descargar Datos
+        <button type="button" onclick="downloadFromCloud()" class="bg-sky-600 hover:bg-sky-500 text-white p-2.5 rounded-xl text-[11px] font-bold shadow-md active:scale-95 transition">
+          ⬇️ Descargar
         </button>
       </div>
 
       <div class="pt-2 border-t border-white/5 flex justify-between items-center text-[10px]">
-        <button type="button" onclick="exportDataString()" class="text-slate-400 hover:text-white underline">Copiar Respaldo Manual</button>
+        <button type="button" onclick="exportDataString()" class="text-slate-400 hover:text-white underline">Copiar Respaldo</button>
         <button type="button" onclick="importDataString()" class="text-slate-400 hover:text-white underline">Pegar Respaldo</button>
       </div>
     </div>
   </div>
 
   <!-- MODAL: ABONO A TARJETA -->
-  <div id="payment-modal" style="display: none;" class="fixed inset-0 z-50 bg-black/85 backdrop-blur-md items-center justify-center p-4">
+  <div id="payment-modal" style="display: none;" onclick="if(event.target === this) closeModal('payment-modal')" class="fixed inset-0 z-50 bg-black/80 flex items-center justify-center p-4">
     <div class="themed-card rounded-3xl p-5 w-full max-w-sm space-y-4 font-mono shadow-2xl">
       <div class="flex justify-between items-center border-b border-white/10 pb-2">
         <h3 class="text-xs font-black text-[var(--primary)] uppercase flex items-center gap-1.5">
           <i data-lucide="dollar-sign" class="w-4 h-4"></i> ABONAR A TARJETA
         </h3>
-        <button onclick="closeModal('payment-modal')" class="text-slate-400 hover:text-white p-1">✕</button>
+        <button type="button" onclick="closeModal('payment-modal')" class="text-slate-400 hover:text-white p-1">✕</button>
       </div>
 
       <div class="space-y-1">
@@ -503,7 +499,7 @@
         <button type="button" onclick="setPaymentFullDebt()" class="bg-slate-900 border border-emerald-500/40 text-emerald-300 py-1.5 rounded-xl">Liquidar</button>
       </div>
 
-      <input type="number" step="0.01" id="pay-amount-input" placeholder="Monto exacto a abonar $" 
+      <input type="number" step="0.01" id="pay-amount-input" placeholder="Monto exacto $" 
         class="w-full bg-slate-900 border border-slate-800 rounded-xl px-3.5 py-2.5 text-xs text-white font-bold focus:outline-none focus:border-[var(--primary)]">
 
       <div class="flex gap-2 pt-1">
@@ -514,11 +510,11 @@
   </div>
 
   <!-- MODAL: CAMBIAR TEMA -->
-  <div id="theme-modal" style="display: none;" class="fixed inset-0 z-50 bg-black/85 backdrop-blur-md items-center justify-center p-4">
+  <div id="theme-modal" style="display: none;" onclick="if(event.target === this) closeModal('theme-modal')" class="fixed inset-0 z-50 bg-black/80 flex items-center justify-center p-4">
     <div class="themed-card rounded-3xl p-5 w-full max-w-sm space-y-4 font-mono shadow-2xl">
       <div class="flex justify-between items-center border-b border-white/10 pb-2">
         <h3 class="text-xs font-black text-[var(--primary)] uppercase">Selecciona el Tema</h3>
-        <button onclick="closeModal('theme-modal')" class="text-slate-400 hover:text-white p-1">✕</button>
+        <button type="button" onclick="closeModal('theme-modal')" class="text-slate-400 hover:text-white p-1">✕</button>
       </div>
 
       <div class="space-y-2 text-xs font-bold">
@@ -543,11 +539,11 @@
   </div>
 
   <!-- MODAL: AGREGAR TARJETA -->
-  <div id="card-modal" style="display: none;" class="fixed inset-0 z-50 bg-black/85 backdrop-blur-md items-center justify-center p-4">
+  <div id="card-modal" style="display: none;" onclick="if(event.target === this) closeModal('card-modal')" class="fixed inset-0 z-50 bg-black/80 flex items-center justify-center p-4">
     <div class="themed-card rounded-3xl p-5 w-full max-w-sm space-y-3 font-mono shadow-2xl">
       <div class="flex justify-between items-center border-b border-white/10 pb-2">
         <h3 class="text-xs font-black text-[var(--primary)] uppercase">Vincular Tarjeta</h3>
-        <button onclick="closeModal('card-modal')" class="text-slate-400 hover:text-white p-1">✕</button>
+        <button type="button" onclick="closeModal('card-modal')" class="text-slate-400 hover:text-white p-1">✕</button>
       </div>
 
       <input type="text" id="card-name" placeholder="Banco o Nombre (ej: Nu, BBVA)" 
@@ -578,40 +574,55 @@
   </div>
 
   <!-- NAVEGACIÓN INFERIOR (5 PESTAÑAS) -->
-  <nav class="fixed bottom-0 left-0 right-0 z-40 bg-[var(--bg-main)]/95 backdrop-blur-2xl border-t border-[var(--primary-border)] px-2 py-2">
+  <nav class="fixed bottom-0 left-0 right-0 z-40 bg-[var(--bg-main)] border-t border-[var(--primary-border)] px-2 py-2">
     <div class="max-w-[430px] mx-auto grid grid-cols-5 gap-1">
-      <button onclick="switchTab('tasks')" id="nav-tasks" class="flex flex-col items-center py-1 text-[var(--primary)]">
+      <button type="button" onclick="switchTab('tasks')" id="nav-tasks" class="flex flex-col items-center py-1 text-[var(--primary)]">
         <i data-lucide="check-square" class="w-4 h-4 mb-1"></i>
         <span class="text-[8px] font-mono uppercase font-bold tracking-tighter">Tareas</span>
       </button>
-      <button onclick="switchTab('diet')" id="nav-diet" class="flex flex-col items-center py-1 text-slate-500 hover:text-slate-300">
+      <button type="button" onclick="switchTab('diet')" id="nav-diet" class="flex flex-col items-center py-1 text-slate-500 hover:text-slate-300">
         <i data-lucide="utensils" class="w-4 h-4 mb-1"></i>
         <span class="text-[8px] font-mono uppercase font-bold tracking-tighter">Dieta</span>
       </button>
-      <button onclick="switchTab('gym')" id="nav-gym" class="flex flex-col items-center py-1 text-slate-500 hover:text-slate-300">
+      <button type="button" onclick="switchTab('gym')" id="nav-gym" class="flex flex-col items-center py-1 text-slate-500 hover:text-slate-300">
         <i data-lucide="dumbbell" class="w-4 h-4 mb-1"></i>
         <span class="text-[8px] font-mono uppercase font-bold tracking-tighter">Gym</span>
       </button>
-      <button onclick="switchTab('reminders')" id="nav-reminders" class="flex flex-col items-center py-1 text-slate-500 hover:text-slate-300">
+      <button type="button" onclick="switchTab('reminders')" id="nav-reminders" class="flex flex-col items-center py-1 text-slate-500 hover:text-slate-300">
         <i data-lucide="sticky-note" class="w-4 h-4 mb-1"></i>
         <span class="text-[8px] font-mono uppercase font-bold tracking-tighter">Keep</span>
       </button>
-      <button onclick="switchTab('finances')" id="nav-finances" class="flex flex-col items-center py-1 text-slate-500 hover:text-slate-300">
+      <button type="button" onclick="switchTab('finances')" id="nav-finances" class="flex flex-col items-center py-1 text-slate-500 hover:text-slate-300">
         <i data-lucide="credit-card" class="w-4 h-4 mb-1"></i>
         <span class="text-[8px] font-mono uppercase font-bold tracking-tighter">Tarjetas</span>
       </button>
     </div>
   </nav>
 
-  <!-- JAVASCRIPT -->
+  <!-- JAVASCRIPT SIN BLOQUEOS NI ALERTAS -->
   <script>
+    // SISTEMA DE NOTIFICACIÓN FLOTANTE (TOAST)
+    function showToast(msg, isError = false) {
+      const toast = document.getElementById('app-toast');
+      if (!toast) return;
+      toast.textContent = msg;
+      toast.className = `fixed top-4 left-1/2 -translate-x-1/2 z-50 px-4 py-2.5 rounded-2xl text-xs font-mono font-bold shadow-2xl transition-all duration-300 pointer-events-none opacity-100 ${
+        isError ? 'bg-rose-600 text-white' : 'bg-[var(--primary)] text-slate-950'
+      }`;
+      setTimeout(() => {
+        toast.className += ' opacity-0 pointer-events-none';
+      }, 2400);
+    }
+
     function openModal(id) {
       const el = document.getElementById(id);
       if (el) el.style.display = 'flex';
       if (id === 'gemini-import-modal') {
-        document.getElementById('import-current-day-label').textContent = currentDietDay;
+        const lbl = document.getElementById('import-current-day-label');
+        if (lbl) lbl.textContent = currentDietDay;
       }
     }
+
     function closeModal(id) {
       const el = document.getElementById(id);
       if (el) el.style.display = 'none';
@@ -642,8 +653,10 @@
 
     function updateClock() {
       const now = new Date();
-      document.getElementById('hud-date').textContent = formatToDDMMAA(now);
-      document.getElementById('hud-clock').textContent = now.toTimeString().substring(0, 5);
+      const dEl = document.getElementById('hud-date');
+      const cEl = document.getElementById('hud-clock');
+      if (dEl) dEl.textContent = formatToDDMMAA(now);
+      if (cEl) cEl.textContent = now.toTimeString().substring(0, 5);
     }
     setInterval(updateClock, 1000);
     updateClock();
@@ -652,25 +665,34 @@
       document.body.setAttribute('data-theme', themeName);
       localStorage.setItem('cc_theme', themeName);
       closeModal('theme-modal');
+      showToast('Tema cambiado');
     }
     document.body.setAttribute('data-theme', localStorage.getItem('cc_theme') || 'blackbulls');
 
-    function safeJSON(key, fallback) {
+    // LECTURA DEFENSIVA DE DATOS
+    function safeArray(key) {
       try {
         const item = localStorage.getItem(key);
-        return item ? JSON.parse(item) : fallback;
-      } catch(e) {
-        return fallback;
-      }
+        const parsed = item ? JSON.parse(item) : [];
+        return Array.isArray(parsed) ? parsed : [];
+      } catch(e) { return []; }
+    }
+
+    function safeObject(key) {
+      try {
+        const item = localStorage.getItem(key);
+        const parsed = item ? JSON.parse(item) : {};
+        return (parsed && typeof parsed === 'object' && !Array.isArray(parsed)) ? parsed : {};
+      } catch(e) { return {}; }
     }
 
     let appState = {
-      tasks: safeJSON('cc_tasks', []),
-      diet: safeJSON('cc_diet', {}),
-      gym: safeJSON('cc_gym', {}),
-      keepNotes: safeJSON('cc_keep_notes', []),
-      cards: safeJSON('cc_cards', []),
-      expenses: safeJSON('cc_expenses', [])
+      tasks: safeArray('cc_tasks'),
+      diet: safeObject('cc_diet'),
+      gym: safeObject('cc_gym'),
+      keepNotes: safeArray('cc_keep_notes'),
+      cards: safeArray('cc_cards'),
+      expenses: safeArray('cc_expenses')
     };
 
     let selectedNoteColor = 'dark';
@@ -679,12 +701,14 @@
     let activePayingCardId = null;
 
     function saveLocal() {
-      localStorage.setItem('cc_tasks', JSON.stringify(appState.tasks));
-      localStorage.setItem('cc_diet', JSON.stringify(appState.diet));
-      localStorage.setItem('cc_gym', JSON.stringify(appState.gym));
-      localStorage.setItem('cc_keep_notes', JSON.stringify(appState.keepNotes));
-      localStorage.setItem('cc_cards', JSON.stringify(appState.cards));
-      localStorage.setItem('cc_expenses', JSON.stringify(appState.expenses));
+      try {
+        localStorage.setItem('cc_tasks', JSON.stringify(appState.tasks));
+        localStorage.setItem('cc_diet', JSON.stringify(appState.diet));
+        localStorage.setItem('cc_gym', JSON.stringify(appState.gym));
+        localStorage.setItem('cc_keep_notes', JSON.stringify(appState.keepNotes));
+        localStorage.setItem('cc_cards', JSON.stringify(appState.cards));
+        localStorage.setItem('cc_expenses', JSON.stringify(appState.expenses));
+      } catch(e) {}
     }
 
     function switchTab(tabId) {
@@ -710,7 +734,8 @@
           }
         }
       });
-      document.getElementById('header-title').textContent = titles[tabId];
+      const hTitle = document.getElementById('header-title');
+      if (hTitle) hTitle.textContent = titles[tabId] || 'Toros Negros';
     }
 
     // TAREAS
@@ -725,6 +750,7 @@
       saveLocal();
       e.target.reset();
       renderTasks();
+      showToast('Tarea agregada');
     });
 
     function toggleTask(id) {
@@ -737,10 +763,12 @@
       appState.tasks = appState.tasks.filter(t => t.id !== id);
       saveLocal();
       renderTasks();
+      showToast('Tarea eliminada');
     }
 
     function renderTasks() {
       const list = document.getElementById('tasks-list');
+      if (!list) return;
       const pending = appState.tasks.filter(t => !t.completed).length;
       const done = appState.tasks.filter(t => t.completed).length;
       const total = appState.tasks.length;
@@ -768,18 +796,19 @@
               </div>
             </div>
           </div>
-          <button onclick="deleteTask(${t.id})" class="text-slate-600 hover:text-rose-400 text-xs px-2 py-1">✕</button>
+          <button type="button" onclick="deleteTask(${t.id})" class="text-slate-600 hover:text-rose-400 text-xs px-2 py-1">✕</button>
         </div>
       `).join('');
     }
 
-    // DIETA & PARSER DE GEMINI/KEEP
+    // DIETA & PARSER GEMINI
     const days = ['Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado', 'Domingo'];
 
     function renderDayCapsules() {
       const container = document.getElementById('diet-day-capsules');
+      if (!container) return;
       container.innerHTML = days.map(d => `
-        <button onclick="selectDietDay('${d}')" class="px-3 py-1.5 rounded-xl text-xs font-mono font-bold whitespace-nowrap ${currentDietDay === d ? 'bg-[var(--primary)] text-slate-950 font-black' : 'bg-slate-900 text-slate-400 border border-slate-800'}">
+        <button type="button" onclick="selectDietDay('${d}')" class="px-3 py-1.5 rounded-xl text-xs font-mono font-bold whitespace-nowrap ${currentDietDay === d ? 'bg-[var(--primary)] text-slate-950 font-black' : 'bg-slate-900 text-slate-400 border border-slate-800'}">
           ${d}
         </button>
       `).join('');
@@ -792,6 +821,7 @@
     }
 
     function loadDietData() {
+      if (!appState.diet || typeof appState.diet !== 'object') appState.diet = {};
       const data = appState.diet[currentDietDay] || { desayuno: '', colacion1: '', comida: '', colacion2: '', cena: '', water: 0, calories: '', protein: '', carbs: '' };
       document.getElementById('diet-desayuno').value = data.desayuno || '';
       document.getElementById('diet-colacion1').value = data.colacion1 || '';
@@ -805,6 +835,7 @@
     }
 
     function saveDiet() {
+      if (!appState.diet || typeof appState.diet !== 'object') appState.diet = {};
       appState.diet[currentDietDay] = {
         ...(appState.diet[currentDietDay] || {}),
         desayuno: document.getElementById('diet-desayuno').value,
@@ -814,13 +845,12 @@
         cena: document.getElementById('diet-cena').value,
       };
       saveLocal();
-      alert(`Menú de ${currentDietDay} guardado.`);
+      showToast(`Menú de ${currentDietDay} guardado`);
     }
 
-    // PARSER INTELIGENTE DE TEXTO DESDE GEMINI / KEEP
     function parseGeminiDiet() {
       const raw = document.getElementById('gemini-paste-area').value;
-      if (!raw.trim()) return alert('Pega el texto de tu dieta primero.');
+      if (!raw.trim()) return showToast('Pega el texto de tu dieta primero', true);
 
       const lines = raw.split('\n');
       let currentSection = '';
@@ -847,7 +877,6 @@
         }
       });
 
-      // Si no detectó encabezados, distribuye las líneas
       if (!parsed.desayuno && !parsed.comida && lines.length >= 3) {
         parsed.desayuno = lines[0] || '';
         parsed.colacion1 = lines[1] || '';
@@ -865,10 +894,11 @@
       saveDiet();
       closeModal('gemini-import-modal');
       document.getElementById('gemini-paste-area').value = '';
-      alert(`¡Dieta de Gemini vinculada y guardada para el ${currentDietDay}!`);
+      showToast(`¡Dieta vinculada para el ${currentDietDay}!`);
     }
 
     function saveMacros() {
+      if (!appState.diet || typeof appState.diet !== 'object') appState.diet = {};
       appState.diet[currentDietDay] = {
         ...(appState.diet[currentDietDay] || {}),
         calories: document.getElementById('macro-calories').value,
@@ -879,6 +909,7 @@
     }
 
     function changeWater(delta) {
+      if (!appState.diet || typeof appState.diet !== 'object') appState.diet = {};
       const current = (appState.diet[currentDietDay]?.water || 0) + delta;
       const finalWater = Math.max(0, Math.min(24, current));
       appState.diet[currentDietDay] = { ...(appState.diet[currentDietDay] || {}), water: finalWater };
@@ -891,10 +922,13 @@
       const targetLiters = 4.5;
       const pct = Math.min(100, Math.round(((count * 0.25) / targetLiters) * 100));
 
-      document.getElementById('water-count-text').textContent = `${liters}L / 4.50L (${pct}%)`;
-      document.getElementById('water-progress-bar').style.width = `${pct}%`;
+      const wTxt = document.getElementById('water-count-text');
+      const wBar = document.getElementById('water-progress-bar');
+      if (wTxt) wTxt.textContent = `${liters}L / 4.50L (${pct}%)`;
+      if (wBar) wBar.style.width = `${pct}%`;
 
       const iconsCont = document.getElementById('water-icons-container');
+      if (!iconsCont) return;
       let capsules = '';
       for(let i = 1; i <= 9; i++) {
         const threshold = i * 2;
@@ -913,8 +947,9 @@
     // RUTINAS DE GYM
     function renderGymDayCapsules() {
       const container = document.getElementById('gym-day-capsules');
+      if (!container) return;
       container.innerHTML = days.map(d => `
-        <button onclick="selectGymDay('${d}')" class="px-3 py-1.5 rounded-xl text-xs font-mono font-bold whitespace-nowrap ${currentGymDay === d ? 'bg-[var(--primary)] text-slate-950 font-black' : 'bg-slate-900 text-slate-400 border border-slate-800'}">
+        <button type="button" onclick="selectGymDay('${d}')" class="px-3 py-1.5 rounded-xl text-xs font-mono font-bold whitespace-nowrap ${currentGymDay === d ? 'bg-[var(--primary)] text-slate-950 font-black' : 'bg-slate-900 text-slate-400 border border-slate-800'}">
           ${d}
         </button>
       `).join('');
@@ -927,12 +962,15 @@
     }
 
     function loadGymData() {
+      if (!appState.gym || typeof appState.gym !== 'object') appState.gym = {};
       const dayData = appState.gym[currentGymDay] || { focus: '', exercises: [] };
-      document.getElementById('gym-focus').value = dayData.focus || '';
+      const fInput = document.getElementById('gym-focus');
+      if (fInput) fInput.value = dayData.focus || '';
       renderGymExercises();
     }
 
     function saveGymFocus() {
+      if (!appState.gym || typeof appState.gym !== 'object') appState.gym = {};
       const focusText = document.getElementById('gym-focus').value.trim();
       if (!appState.gym[currentGymDay]) {
         appState.gym[currentGymDay] = { focus: '', exercises: [] };
@@ -948,6 +986,7 @@
       const reps = document.getElementById('gym-ex-reps').value.trim();
       const weight = document.getElementById('gym-ex-weight').value.trim();
 
+      if (!appState.gym || typeof appState.gym !== 'object') appState.gym = {};
       if (!appState.gym[currentGymDay]) {
         appState.gym[currentGymDay] = { focus: '', exercises: [] };
       }
@@ -964,10 +1003,11 @@
       saveLocal();
       e.target.reset();
       renderGymExercises();
+      showToast('Ejercicio añadido');
     });
 
     function toggleGymExercise(id) {
-      if (!appState.gym[currentGymDay]) return;
+      if (!appState.gym?.[currentGymDay]) return;
       appState.gym[currentGymDay].exercises = appState.gym[currentGymDay].exercises.map(ex => 
         ex.id === id ? { ...ex, completed: !ex.completed } : ex
       );
@@ -976,22 +1016,25 @@
     }
 
     function deleteGymExercise(id) {
-      if (!appState.gym[currentGymDay]) return;
+      if (!appState.gym?.[currentGymDay]) return;
       appState.gym[currentGymDay].exercises = appState.gym[currentGymDay].exercises.filter(ex => ex.id !== id);
       saveLocal();
       renderGymExercises();
+      showToast('Ejercicio eliminado');
     }
 
     function resetGymChecks() {
-      if (!appState.gym[currentGymDay]) return;
+      if (!appState.gym?.[currentGymDay]) return;
       appState.gym[currentGymDay].exercises = appState.gym[currentGymDay].exercises.map(ex => ({ ...ex, completed: false }));
       saveLocal();
       renderGymExercises();
+      showToast('Casillas reiniciadas');
     }
 
     function renderGymExercises() {
       const list = document.getElementById('gym-exercises-list');
-      const exercises = appState.gym[currentGymDay]?.exercises || [];
+      if (!list) return;
+      const exercises = appState.gym?.[currentGymDay]?.exercises || [];
 
       if (exercises.length === 0) {
         list.innerHTML = `<p class="text-xs text-slate-500 font-mono text-center py-6">No hay ejercicios para el ${currentGymDay}.</p>`;
@@ -1012,7 +1055,7 @@
               </div>
             </div>
           </div>
-          <button onclick="deleteGymExercise(${ex.id})" class="text-slate-600 hover:text-rose-400 text-xs px-2 py-1">✕</button>
+          <button type="button" onclick="deleteGymExercise(${ex.id})" class="text-slate-600 hover:text-rose-400 text-xs px-2 py-1">✕</button>
         </div>
       `).join('');
     }
@@ -1031,7 +1074,7 @@
       const body = document.getElementById('note-body').value.trim();
       const alertTime = document.getElementById('note-alert').value;
 
-      if(!title && !body) return;
+      if (!title && !body) return;
 
       appState.keepNotes.unshift({
         id: Date.now(),
@@ -1047,6 +1090,7 @@
       document.getElementById('note-body').value = '';
       document.getElementById('note-alert').value = '';
       renderKeepNotes();
+      showToast('Nota guardada');
     }
 
     function togglePinNote(id) {
@@ -1060,10 +1104,12 @@
       appState.keepNotes = appState.keepNotes.filter(n => n.id !== id);
       saveLocal();
       renderKeepNotes();
+      showToast('Nota eliminada');
     }
 
     function renderKeepNotes() {
       const grid = document.getElementById('keep-notes-grid');
+      if (!grid) return;
       if (appState.keepNotes.length === 0) {
         grid.innerHTML = `<div class="col-span-2 text-center py-10 text-slate-600 font-mono text-xs">Sin notas registradas.</div>`;
         return;
@@ -1082,22 +1128,22 @@
           <div>
             <div class="flex justify-between items-start mb-1.5">
               ${n.title ? `<h4 class="text-xs font-bold leading-tight line-clamp-2">${n.title}</h4>` : '<span></span>'}
-              <button onclick="togglePinNote(${n.id})" class="text-xs p-0.5 ml-1 ${n.pinned ? 'text-amber-400' : 'text-slate-500 hover:text-white'}">
+              <button type="button" onclick="togglePinNote(${n.id})" class="text-xs p-0.5 ml-1 ${n.pinned ? 'text-amber-400' : 'text-slate-500 hover:text-white'}">
                 📌
               </button>
             </div>
-            ${n.body ? `<p class="text-[11px] leading-relaxed opacity-90 whitespace-pre-wrap">${n.body}</p>` : ''}
+            ${n.body ? `<p class="text-[11px] leading-relaxed opacity-90 whitespace-pre-wrap font-sans">${n.body}</p>` : ''}
           </div>
 
           <div class="mt-3 pt-2 border-t border-white/5 flex items-center justify-between text-[9px] font-mono">
             ${n.alertTime ? `<span class="text-amber-400">⏰ ${formatToDDMMAA(n.alertTime)}</span>` : '<span></span>'}
-            <button onclick="deleteKeepNote(${n.id})" class="text-slate-500 hover:text-rose-400 text-xs">✕</button>
+            <button type="button" onclick="deleteKeepNote(${n.id})" class="text-slate-500 hover:text-rose-400 text-xs">✕</button>
           </div>
         </div>
       `).join('');
     }
 
-    // TARJETAS Y ABONOS
+    // TARJETAS Y FINANZAS
     function toggleCardInputs() {
       const isTDC = document.getElementById('card-type').value === 'TDC';
       document.getElementById('tdc-fields').style.display = isTDC ? 'block' : 'none';
@@ -1108,7 +1154,7 @@
       const name = document.getElementById('card-name').value.trim();
       const type = document.getElementById('card-type').value;
 
-      if(!name) return alert('Ingresa el nombre de la tarjeta');
+      if (!name) return showToast('Ingresa el nombre de la tarjeta', true);
 
       if (type === 'TDC') {
         const limit = parseFloat(document.getElementById('card-limit').value) || 0;
@@ -1124,20 +1170,20 @@
       closeModal('card-modal');
       renderCards();
       populateCardSelect();
+      showToast('Tarjeta vinculada');
     }
 
     function deleteCard(id) {
-      if(confirm('¿Eliminar esta tarjeta?')) {
-        appState.cards = appState.cards.filter(c => c.id !== id);
-        saveLocal();
-        renderCards();
-        populateCardSelect();
-      }
+      appState.cards = appState.cards.filter(c => c.id !== id);
+      saveLocal();
+      renderCards();
+      populateCardSelect();
+      showToast('Tarjeta eliminada');
     }
 
     function openPaymentModal(cardId) {
       const card = appState.cards.find(c => c.id === cardId);
-      if(!card) return;
+      if (!card) return;
       activePayingCardId = cardId;
       document.getElementById('pay-card-title').textContent = `${card.name} (TDC)`;
       document.getElementById('pay-card-debt').textContent = `$${(Number(card.debt) || 0).toFixed(2)}`;
@@ -1151,15 +1197,15 @@
 
     function setPaymentFullDebt() {
       const card = appState.cards.find(c => c.id === activePayingCardId);
-      if(card) document.getElementById('pay-amount-input').value = Number(card.debt) || 0;
+      if (card) document.getElementById('pay-amount-input').value = Number(card.debt) || 0;
     }
 
     function confirmCardPayment() {
       const amount = parseFloat(document.getElementById('pay-amount-input').value);
-      if(!amount || isNaN(amount) || amount <= 0) return alert('Ingresa un monto válido.');
+      if (!amount || isNaN(amount) || amount <= 0) return showToast('Ingresa un monto válido', true);
 
       appState.cards = appState.cards.map(c => {
-        if(c.id === activePayingCardId) {
+        if (c.id === activePayingCardId) {
           c.debt = Math.max(0, (Number(c.debt) || 0) - amount);
         }
         return c;
@@ -1168,20 +1214,293 @@
       saveLocal();
       closeModal('payment-modal');
       renderCards();
+      showToast(`Abono de $${amount.toFixed(2)} registrado`);
     }
 
     function renderCards() {
       const container = document.getElementById('cards-container');
+      if (!container) return;
       let totalDebt = 0;
       let totalLiquidity = 0;
 
       appState.cards.forEach(c => {
-        if(c.type === 'TDC') totalDebt += (Number(c.debt) || 0);
-        if(c.type === 'TDD') totalLiquidity += (Number(c.balance) || 0);
+        if (c.type === 'TDC') totalDebt += (Number(c.debt) || 0);
+        if (c.type === 'TDD') totalLiquidity += (Number(c.balance) || 0);
       });
 
       document.getElementById('total-debt-metric').textContent = `$${totalDebt.toFixed(2)}`;
       document.getElementById('total-liquidity-metric').textContent = `$${totalLiquidity.toFixed(2)}`;
 
       if (appState.cards.length === 0) {
-        container.innerHTML = `<div class="theme
+        container.innerHTML = `<div class="themed-card p-6 rounded-2xl text-center text-xs text-slate-500 font-mono">No tienes tarjetas agregadas.</div>`;
+        return;
+      }
+
+      container.innerHTML = appState.cards.map(c => {
+        if (c.type === 'TDC') {
+          const limit = Number(c.limit) || 0;
+          const debt = Number(c.debt) || 0;
+          const available = Math.max(0, limit - debt);
+          const usedPct = limit > 0 ? Math.min(100, Math.round((debt / limit) * 100)) : 0;
+
+          return `
+            <div class="themed-card rounded-2xl p-4 font-mono shadow-lg">
+              <div class="flex justify-between items-center mb-1">
+                <span class="text-[9px] uppercase px-2 py-0.5 rounded-full bg-[var(--primary)]/20 text-[var(--primary)] font-bold">TDC CRÉDITO</span>
+                <button type="button" onclick="deleteCard(${c.id})" class="text-slate-500 hover:text-rose-400 text-xs">✕</button>
+              </div>
+              <div class="flex justify-between items-baseline mt-2">
+                <h4 class="text-sm font-black text-white uppercase">${c.name}</h4>
+                <span class="text-[10px] text-slate-400">Límite: $${limit.toFixed(2)}</span>
+              </div>
+              
+              <div class="my-2.5">
+                <div class="flex justify-between text-[10px] mb-1">
+                  <span class="text-rose-400 font-bold">Deuda: $${debt.toFixed(2)}</span>
+                  <span class="text-emerald-400 font-bold">Disponible: $${available.toFixed(2)}</span>
+                </div>
+                <div class="w-full bg-slate-900 h-2 rounded-full overflow-hidden border border-white/5">
+                  <div class="bg-gradient-to-r from-emerald-400 via-amber-400 to-rose-500 h-full transition-all" style="width: ${usedPct}%"></div>
+                </div>
+              </div>
+
+              <div class="flex justify-between items-center text-[10px] text-slate-400 border-t border-white/5 pt-2">
+                <span>Corte: día ${c.cutoff} • Pago: día ${c.payday}</span>
+                <button type="button" onclick="openPaymentModal(${c.id})" class="text-[var(--primary)] font-black hover:underline">
+                  + Abonar / Pagar
+                </button>
+              </div>
+            </div>
+          `;
+        } else {
+          const balance = Number(c.balance) || 0;
+          return `
+            <div class="themed-card rounded-2xl p-4 font-mono shadow-lg">
+              <div class="flex justify-between items-center mb-1">
+                <span class="text-[9px] uppercase px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 font-bold">TDD DÉBITO</span>
+                <button type="button" onclick="deleteCard(${c.id})" class="text-slate-500 hover:text-rose-400 text-xs">✕</button>
+              </div>
+              <h4 class="text-sm font-black text-white uppercase mt-2">${c.name}</h4>
+              <div class="my-1.5">
+                <span class="text-[9px] text-slate-400 uppercase">Fondos Disponibles</span>
+                <p class="text-base font-bold text-emerald-400">$${balance.toFixed(2)}</p>
+              </div>
+            </div>
+          `;
+        }
+      }).join('');
+    }
+
+    function populateCardSelect() {
+      const select = document.getElementById('expense-card');
+      if (!select) return;
+      if (appState.cards.length === 0) {
+        select.innerHTML = '<option value="">Primero agrega una tarjeta arriba</option>';
+        return;
+      }
+      select.innerHTML = appState.cards.map(c => `
+        <option value="${c.id}">${c.name} (${c.type})</option>
+      `).join('');
+    }
+
+    document.getElementById('expense-form').addEventListener('submit', (e) => {
+      e.preventDefault();
+      const cardId = parseInt(document.getElementById('expense-card').value);
+      const concept = document.getElementById('expense-concept').value.trim();
+      const amount = parseFloat(document.getElementById('expense-amount').value);
+
+      if (!cardId || isNaN(amount)) return;
+
+      appState.cards = appState.cards.map(c => {
+        if (c.id === cardId) {
+          if (c.type === 'TDC') c.debt = (Number(c.debt) || 0) + amount;
+          if (c.type === 'TDD') c.balance = (Number(c.balance) || 0) - amount;
+        }
+        return c;
+      });
+
+      appState.expenses.unshift({
+        id: Date.now(),
+        cardId,
+        concept,
+        amount,
+        dateFormatted: formatToDDMMAA(new Date())
+      });
+
+      saveLocal();
+      e.target.reset();
+      renderCards();
+      populateCardSelect();
+      renderExpenses();
+      showToast('Gasto registrado');
+    });
+
+    function renderExpenses() {
+      const list = document.getElementById('expenses-list');
+      if (!list) return;
+      if (appState.expenses.length === 0) {
+        list.innerHTML = `<p class="text-xs text-slate-500 text-center py-2">Sin gastos registrados.</p>`;
+        return;
+      }
+      list.innerHTML = appState.expenses.slice(0, 10).map(exp => {
+        const card = appState.cards.find(c => c.id === exp.cardId);
+        const cardLabel = card ? `${card.name} [${card.type}]` : 'Desconocida';
+        const amount = Number(exp.amount) || 0;
+        return `
+          <div class="themed-card p-2.5 rounded-xl flex justify-between items-center text-xs">
+            <div>
+              <p class="font-bold text-slate-200">${exp.concept}</p>
+              <p class="text-[10px] text-slate-500">${cardLabel} • ${exp.dateFormatted}</p>
+            </div>
+            <span class="font-bold text-rose-400">-$${amount.toFixed(2)}</span>
+          </div>
+        `;
+      }).join('');
+    }
+
+    // ==========================================
+    // SINCRONIZACIÓN NUBE DIRECTA
+    // ==========================================
+    let syncCode = localStorage.getItem('cc_sync_code') || '';
+    if (syncCode) {
+      const sLbl = document.getElementById('sync-btn-label');
+      const sInp = document.getElementById('sync-code-input');
+      if (sLbl) sLbl.textContent = syncCode.slice(0, 8);
+      if (sInp) sInp.value = syncCode;
+    }
+
+    function saveSyncCode() {
+      const code = document.getElementById('sync-code-input').value.trim();
+      if (!code) return;
+      syncCode = code;
+      localStorage.setItem('cc_sync_code', syncCode);
+      const sLbl = document.getElementById('sync-btn-label');
+      if (sLbl) sLbl.textContent = syncCode.slice(0, 8);
+      showToast(`Código fijado: ${syncCode}`);
+    }
+
+    async function uploadToCloud() {
+      showToast('Subiendo datos...');
+      try {
+        const payloadData = JSON.stringify(appState);
+
+        // Si ya hay código, actualizamos
+        if (syncCode) {
+          const putRes = await fetch(`https://api.npoint.io/${syncCode}`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: payloadData
+          });
+          if (putRes.ok) {
+            return showToast(`¡Actualizado en la nube! Código: ${syncCode}`);
+          }
+        }
+
+        // Crear nuevo
+        const createRes = await fetch('https://api.npoint.io', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: payloadData
+        });
+
+        const json = await createRes.json();
+        if (json && json.id) {
+          syncCode = json.id;
+          localStorage.setItem('cc_sync_code', syncCode);
+          document.getElementById('sync-code-input').value = syncCode;
+          document.getElementById('sync-btn-label').textContent = syncCode.slice(0, 8);
+          showToast(`¡Código creado: ${syncCode}!`);
+        } else {
+          showToast('Error al crear código en la nube', true);
+        }
+      } catch (e) {
+        showToast('Error de conexión a la nube', true);
+      }
+    }
+
+    async function downloadFromCloud() {
+      const codeToUse = document.getElementById('sync-code-input').value.trim() || syncCode;
+      if (!codeToUse) return showToast('Escribe tu código primero', true);
+
+      showToast('Descargando...');
+      try {
+        const res = await fetch(`https://api.npoint.io/${codeToUse}`);
+        if (!res.ok) return showToast('No se encontraron datos con ese código', true);
+
+        const data = await res.json();
+        if (data && typeof data === 'object') {
+          appState.tasks = Array.isArray(data.tasks) ? data.tasks : [];
+          appState.diet = (data.diet && typeof data.diet === 'object') ? data.diet : {};
+          appState.gym = (data.gym && typeof data.gym === 'object') ? data.gym : {};
+          appState.keepNotes = Array.isArray(data.keepNotes) ? data.keepNotes : [];
+          appState.cards = Array.isArray(data.cards) ? data.cards : [];
+          appState.expenses = Array.isArray(data.expenses) ? data.expenses : [];
+
+          syncCode = codeToUse;
+          localStorage.setItem('cc_sync_code', syncCode);
+          document.getElementById('sync-btn-label').textContent = syncCode.slice(0, 8);
+          saveLocal();
+          refreshAllUI();
+          closeModal('sync-modal');
+          showToast('¡Datos descargados con éxito!');
+        } else {
+          showToast('Formato de datos no válido', true);
+        }
+      } catch (e) {
+        showToast('Error al descargar de la nube', true);
+      }
+    }
+
+    function exportDataString() {
+      try {
+        const str = btoa(unescape(encodeURIComponent(JSON.stringify(appState))));
+        navigator.clipboard.writeText(str);
+        showToast('Respaldo copiado al portapapeles');
+      } catch(e) {
+        showToast('Error al copiar', true);
+      }
+    }
+
+    function importDataString() {
+      const code = prompt('Pega aquí el código de respaldo copiado:');
+      if (code) {
+        try {
+          const parsed = JSON.parse(decodeURIComponent(escape(atob(code))));
+          if (parsed && typeof parsed === 'object') {
+            appState.tasks = Array.isArray(parsed.tasks) ? parsed.tasks : [];
+            appState.diet = parsed.diet || {};
+            appState.gym = parsed.gym || {};
+            appState.keepNotes = Array.isArray(parsed.keepNotes) ? parsed.keepNotes : [];
+            appState.cards = Array.isArray(parsed.cards) ? parsed.cards : [];
+            appState.expenses = Array.isArray(parsed.expenses) ? parsed.expenses : [];
+            saveLocal();
+            refreshAllUI();
+            closeModal('sync-modal');
+            showToast('¡Respaldo restaurado!');
+          }
+        } catch(e) {
+          showToast('Código inválido', true);
+        }
+      }
+    }
+
+    function refreshAllUI() {
+      try {
+        renderTasks();
+        renderDayCapsules();
+        loadDietData();
+        renderGymDayCapsules();
+        loadGymData();
+        renderKeepNotes();
+        renderCards();
+        populateCardSelect();
+        renderExpenses();
+        if (window.lucide) lucide.createIcons();
+      } catch(e) {}
+    }
+
+    // ARRANQUE SEGURO
+    refreshAllUI();
+  </script>
+</body>
+</html>
