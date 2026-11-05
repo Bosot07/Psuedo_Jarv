@@ -38,7 +38,8 @@
       color: var(--text);
       font-family: 'Plus Jakarta Sans', sans-serif;
       padding-top: env(safe-area-inset-top);
-      padding-bottom: calc(env(safe-area-inset-bottom) + 80px);
+      /* Subimos el margen inferior para que nada quede tapado */
+      padding-bottom: calc(env(safe-area-inset-bottom) + 115px);
       -webkit-tap-highlight-color: transparent;
     }
 
@@ -154,9 +155,10 @@
       left: 0;
       right: 0;
       z-index: 40;
-      background: #07090e;
+      background: rgba(7, 9, 14, 0.98);
       border-top: 1px solid var(--border);
-      padding: 8px 4px;
+      /* Agregamos 22px extra abajo para despegar los botones del borde */
+      padding: 10px 6px calc(env(safe-area-inset-bottom) + 22px) 6px;
     }
     .nav-inner {
       max-width: 430px;
@@ -168,13 +170,13 @@
     .nav-btn {
       background: transparent;
       color: var(--muted);
-      padding: 8px 2px;
-      border-radius: 8px;
-      font-size: 10px;
+      padding: 10px 4px;
+      border-radius: 10px;
+      font-size: 11px;
       text-transform: uppercase;
       font-weight: 700;
       text-align: center;
-    }
+    
     .nav-btn.active {
       color: var(--primary);
       background: rgba(245, 158, 11, 0.1);
