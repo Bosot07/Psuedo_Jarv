@@ -15,39 +15,41 @@
       -webkit-tap-highlight-color: transparent;
       padding-top: env(safe-area-inset-top);
       padding-bottom: env(safe-area-inset-bottom);
+      touch-action: pan-y;
+      overflow-y: auto;
     }
 
     /* SISTEMA DE TEMAS */
     :root {
       --bg-main: #07090e;
-      --card-bg: rgba(13, 17, 28, 0.88);
+      --card-bg: rgba(13, 17, 28, 0.90);
       --primary: #f59e0b;       /* Oro Toros Negros */
       --primary-border: rgba(245, 158, 11, 0.35);
       --accent: #dc2626;        /* Carmesí */
-      --text-glow: rgba(245, 158, 11, 0.2);
+      --text-glow: rgba(245, 158, 11, 0.15);
     }
 
     body[data-theme="saiyan"] {
       --bg-main: #050813;
-      --card-bg: rgba(10, 18, 38, 0.90);
+      --card-bg: rgba(10, 18, 38, 0.92);
       --primary: #38bdf8;       /* Azul Ki */
       --primary-border: rgba(56, 189, 248, 0.35);
       --accent: #fbbf24;        /* Oro Saiyan */
-      --text-glow: rgba(56, 189, 248, 0.25);
+      --text-glow: rgba(56, 189, 248, 0.20);
     }
 
     body[data-theme="cyber"] {
       --bg-main: #090614;
-      --card-bg: rgba(22, 14, 40, 0.90);
+      --card-bg: rgba(22, 14, 40, 0.92);
       --primary: #c084fc;       /* Violeta */
       --primary-border: rgba(192, 132, 252, 0.35);
       --accent: #06b6d4;        /* Cian */
-      --text-glow: rgba(192, 132, 252, 0.25);
+      --text-glow: rgba(192, 132, 252, 0.20);
     }
 
     body[data-theme="stealth"] {
       --bg-main: #09090b;
-      --card-bg: rgba(24, 24, 27, 0.90);
+      --card-bg: rgba(24, 24, 27, 0.92);
       --primary: #e4e4e7;       /* Plata / Gris */
       --primary-border: rgba(113, 113, 122, 0.35);
       --accent: #71717a;
@@ -58,26 +60,23 @@
       background: var(--card-bg);
       border: 1px solid var(--primary-border);
       box-shadow: 0 4px 20px -2px var(--text-glow);
-      backdrop-filter: blur(14px);
-      -webkit-backdrop-filter: blur(14px);
-    }
-    .themed-border {
-      border-color: var(--primary-border);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
     }
   </style>
 </head>
 <body data-theme="blackbulls" class="bg-[var(--bg-main)] text-slate-100 font-sans pb-32 antialiased min-h-screen transition-colors duration-300">
 
-  <!-- ENCABEZADO OPTIMIZADO PARA S24 ULTRA (412-440PX) -->
+  <!-- ENCABEZADO -->
   <header class="sticky top-0 z-40 bg-[var(--bg-main)]/95 backdrop-blur-xl border-b border-[var(--primary-border)] px-4 py-2.5 transition-colors">
     <div class="max-w-[430px] mx-auto flex items-center justify-between">
       
-      <!-- Insignia Toros Negros (Imagen Oficial) -->
+      <!-- Insignia Toros Negros -->
       <div class="flex items-center gap-2.5">
         <div class="w-9 h-9 rounded-xl bg-black/60 border border-[var(--primary-border)] p-1 flex items-center justify-center shadow-md">
-          <img id="app-logo" src="logo.png" 
+          <img id="app-logo" src="logo.png?v=3" 
                onerror="this.onerror=null; this.src='https://assets.stickpng.com/images/628c85c2bbec114743bed4bd.png'" 
-               alt="Insignia Toros Negros" class="w-full h-full object-contain">
+               alt="Toros Negros" class="w-full h-full object-contain">
         </div>
         <div>
           <span class="text-[9px] font-mono font-bold tracking-wider text-[var(--primary)] uppercase block leading-tight">TOROS NEGROS • HQ</span>
@@ -85,20 +84,17 @@
         </div>
       </div>
 
-      <!-- Herramientas: Temas, Sincronización y Reloj DD/MM/AA -->
+      <!-- Herramientas -->
       <div class="flex items-center gap-1.5 font-mono">
-        <!-- Botón Cambiar Tema -->
-        <button onclick="toggleThemeModal()" title="Cambiar Tema" class="p-1.5 rounded-lg bg-slate-900 border border-[var(--primary-border)] text-[var(--primary)] text-xs">
+        <button onclick="openModal('theme-modal')" title="Cambiar Tema" class="p-1.5 rounded-lg bg-slate-900 border border-[var(--primary-border)] text-[var(--primary)] text-xs">
           <i data-lucide="palette" class="w-3.5 h-3.5"></i>
         </button>
 
-        <!-- Botón Sincronización Nube -->
-        <button onclick="toggleSyncModal()" title="Sincronizar Celular y PC" class="flex items-center gap-1 bg-slate-900 border border-[var(--primary-border)] text-[var(--primary)] px-2 py-1 rounded-lg text-[10px] font-bold">
+        <button onclick="openModal('sync-modal')" title="Sincronizar" class="flex items-center gap-1 bg-slate-900 border border-[var(--primary-border)] text-[var(--primary)] px-2 py-1 rounded-lg text-[10px] font-bold">
           <i data-lucide="cloud" class="w-3 h-3"></i>
           <span id="sync-btn-label">SYNC</span>
         </button>
 
-        <!-- Fecha DD/MM/AA -->
         <div class="bg-slate-900 border border-slate-800 px-2 py-0.5 rounded-lg text-right text-[10px]">
           <span id="hud-date" class="text-[var(--primary)] font-bold block leading-none">--/--/--</span>
           <span id="hud-clock" class="text-[9px] text-slate-400">00:00</span>
@@ -115,7 +111,6 @@
     <!-- 1. PESTAÑA: TAREAS ESCOLARES               -->
     <!-- ========================================== -->
     <section id="tab-tasks" class="space-y-4">
-      <!-- Estadísticas Rápidas -->
       <div class="grid grid-cols-3 gap-2 font-mono text-center">
         <div class="themed-card p-2.5 rounded-2xl">
           <span class="text-[9px] text-slate-400 block uppercase">Pendientes</span>
@@ -131,20 +126,19 @@
         </div>
       </div>
 
-      <!-- Formulario Tarea -->
       <form id="task-form" class="themed-card p-4 rounded-2xl space-y-3">
         <div class="flex justify-between items-center text-xs font-mono font-bold text-[var(--primary)]">
           <span>+ REGISTRAR ASIGNACIÓN</span>
           <span class="text-[10px] text-slate-500">FORMATO DD/MM/AA</span>
         </div>
         <input type="text" id="task-title" placeholder="Nombre de la entrega o examen" required
-          class="w-full bg-slate-900/90 border border-slate-700/70 rounded-xl px-3.5 py-2.5 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-[var(--primary)]">
+          class="w-full bg-slate-900 border border-slate-700/70 rounded-xl px-3.5 py-2.5 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-[var(--primary)]">
         
         <div class="grid grid-cols-2 gap-2">
           <input type="text" id="task-subject" placeholder="Materia" required
-            class="bg-slate-900/90 border border-slate-700/70 rounded-xl px-3 py-2 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-[var(--primary)]">
+            class="bg-slate-900 border border-slate-700/70 rounded-xl px-3 py-2 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-[var(--primary)]">
           <input type="date" id="task-date" required
-            class="bg-slate-900/90 border border-slate-700/70 rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-[var(--primary)]">
+            class="bg-slate-900 border border-slate-700/70 rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-[var(--primary)]">
         </div>
 
         <div class="flex gap-2">
@@ -153,20 +147,19 @@
             <option value="high">Prioridad Alta</option>
             <option value="low">Prioridad Baja</option>
           </select>
-          <button type="submit" class="bg-[var(--primary)] hover:opacity-90 text-slate-950 font-black px-4 py-2 rounded-xl text-xs uppercase font-mono transition">
+          <button type="submit" class="bg-[var(--primary)] text-slate-950 font-black px-4 py-2 rounded-xl text-xs uppercase font-mono transition">
             Añadir
           </button>
         </div>
       </form>
 
-      <!-- Lista -->
       <div id="tasks-list" class="space-y-2"></div>
     </section>
 
     <!-- ========================================== -->
     <!-- 2. PESTAÑA: DIETA & 2 COLACIONES           -->
     <!-- ========================================== -->
-    <section id="tab-diet" class="hidden space-y-4">
+    <section id="tab-diet" style="display: none;" class="space-y-4">
       <div class="flex gap-1.5 overflow-x-auto pb-1" id="diet-day-capsules"></div>
 
       <!-- Hidratación -->
@@ -189,7 +182,7 @@
         </div>
       </div>
 
-      <!-- Macros rápidos -->
+      <!-- Macros -->
       <div class="themed-card p-3 rounded-2xl grid grid-cols-3 gap-2 text-center font-mono">
         <div>
           <span class="text-[9px] text-slate-400 block uppercase">Calorías</span>
@@ -247,9 +240,9 @@
     </section>
 
     <!-- ========================================== -->
-    <!-- 3. PESTAÑA: NOTAS KEEP (2 COLUMNAS)        -->
+    <!-- 3. PESTAÑA: NOTAS KEEP                     -->
     <!-- ========================================== -->
-    <section id="tab-reminders" class="hidden space-y-4">
+    <section id="tab-reminders" style="display: none;" class="space-y-4">
       <div class="themed-card p-4 rounded-2xl space-y-3">
         <input type="text" id="note-title" placeholder="Título..." 
           class="w-full bg-transparent text-sm font-bold text-white placeholder-slate-500 focus:outline-none">
@@ -276,14 +269,13 @@
         </div>
       </div>
 
-      <!-- Cuadrícula Estilo Google Keep -->
       <div id="keep-notes-grid" class="grid grid-cols-2 gap-2.5 items-start"></div>
     </section>
 
     <!-- ========================================== -->
     <!-- 4. PESTAÑA: TARJETAS (TDC Y TDD)           -->
     <!-- ========================================== -->
-    <section id="tab-finances" class="hidden space-y-4">
+    <section id="tab-finances" style="display: none;" class="space-y-4">
       <div class="themed-card p-4 rounded-2xl space-y-3 font-mono">
         <div class="flex justify-between items-center text-xs">
           <span class="text-slate-400">PASIVO TOTAL (DEUDAS TDC):</span>
@@ -300,7 +292,7 @@
           <span class="text-[11px] font-bold text-[var(--primary)] uppercase tracking-wider flex items-center gap-1">
             <i data-lucide="credit-card" class="w-3.5 h-3.5"></i> MIS TARJETAS
           </span>
-          <button onclick="toggleCardModal()" class="text-xs text-[var(--primary)] hover:underline font-bold">
+          <button onclick="openModal('card-modal')" class="text-xs text-[var(--primary)] hover:underline font-bold">
             + AGREGAR TARJETA
           </button>
         </div>
@@ -335,15 +327,17 @@
   </main>
 
   <!-- ==================================================== -->
-  <!-- MODAL NUEVO: RECUADRO DE ABONO A TARJETA DE CRÉDITO -->
+  <!-- MODALES CON PROTECCIÓN CONTRA CONGELAMIENTO          -->
   <!-- ==================================================== -->
-  <div id="payment-modal" class="hidden fixed inset-0 z-50 bg-black/85 backdrop-blur-md flex items-center justify-center p-4">
+
+  <!-- MODAL: ABONO A TARJETA -->
+  <div id="payment-modal" style="display: none;" class="fixed inset-0 z-50 bg-black/85 backdrop-blur-md items-center justify-center p-4">
     <div class="themed-card rounded-3xl p-5 w-full max-w-sm space-y-4 font-mono shadow-2xl">
       <div class="flex justify-between items-center border-b border-white/10 pb-2">
         <h3 class="text-xs font-black text-[var(--primary)] uppercase flex items-center gap-1.5">
           <i data-lucide="dollar-sign" class="w-4 h-4"></i> ABONAR A TARJETA
         </h3>
-        <button onclick="closePaymentModal()" class="text-slate-400 hover:text-white">✕</button>
+        <button onclick="closeModal('payment-modal')" class="text-slate-400 hover:text-white p-1">✕</button>
       </div>
 
       <div class="space-y-1">
@@ -354,45 +348,44 @@
         </div>
       </div>
 
-      <!-- Atajos rápidos -->
       <div class="grid grid-cols-3 gap-1.5 text-xs">
-        <button onclick="setPaymentAmount(500)" class="bg-slate-900 border border-slate-800 py-1.5 rounded-xl hover:border-[var(--primary)]">+$500</button>
-        <button onclick="setPaymentAmount(1000)" class="bg-slate-900 border border-slate-800 py-1.5 rounded-xl hover:border-[var(--primary)]">+$1,000</button>
-        <button onclick="setPaymentFullDebt()" class="bg-slate-900 border border-emerald-500/40 text-emerald-300 py-1.5 rounded-xl">Liquidar</button>
+        <button type="button" onclick="setPaymentAmount(500)" class="bg-slate-900 border border-slate-800 py-1.5 rounded-xl hover:border-[var(--primary)]">+$500</button>
+        <button type="button" onclick="setPaymentAmount(1000)" class="bg-slate-900 border border-slate-800 py-1.5 rounded-xl hover:border-[var(--primary)]">+$1,000</button>
+        <button type="button" onclick="setPaymentFullDebt()" class="bg-slate-900 border border-emerald-500/40 text-emerald-300 py-1.5 rounded-xl">Liquidar</button>
       </div>
 
       <input type="number" step="0.01" id="pay-amount-input" placeholder="Monto exacto a abonar $" 
         class="w-full bg-slate-900 border border-slate-800 rounded-xl px-3.5 py-2.5 text-xs text-white font-bold focus:outline-none focus:border-[var(--primary)]">
 
       <div class="flex gap-2 pt-1">
-        <button onclick="closePaymentModal()" class="flex-1 bg-slate-900 text-slate-400 py-2.5 rounded-xl text-xs">Cancelar</button>
-        <button onclick="confirmCardPayment()" class="flex-1 bg-[var(--primary)] text-slate-950 font-black py-2.5 rounded-xl text-xs">Confirmar Abono</button>
+        <button type="button" onclick="closeModal('payment-modal')" class="flex-1 bg-slate-900 text-slate-400 py-2.5 rounded-xl text-xs">Cancelar</button>
+        <button type="button" onclick="confirmCardPayment()" class="flex-1 bg-[var(--primary)] text-slate-950 font-black py-2.5 rounded-xl text-xs">Confirmar</button>
       </div>
     </div>
   </div>
 
   <!-- MODAL: CAMBIAR TEMA -->
-  <div id="theme-modal" class="hidden fixed inset-0 z-50 bg-black/85 backdrop-blur-md flex items-center justify-center p-4">
+  <div id="theme-modal" style="display: none;" class="fixed inset-0 z-50 bg-black/85 backdrop-blur-md items-center justify-center p-4">
     <div class="themed-card rounded-3xl p-5 w-full max-w-sm space-y-4 font-mono shadow-2xl">
       <div class="flex justify-between items-center border-b border-white/10 pb-2">
         <h3 class="text-xs font-black text-[var(--primary)] uppercase">Selecciona el Tema</h3>
-        <button onclick="toggleThemeModal()" class="text-slate-400 hover:text-white">✕</button>
+        <button onclick="closeModal('theme-modal')" class="text-slate-400 hover:text-white p-1">✕</button>
       </div>
 
       <div class="space-y-2 text-xs font-bold">
-        <button onclick="setAppTheme('blackbulls')" class="w-full text-left p-3 rounded-xl border border-amber-500/40 bg-black/50 hover:border-amber-400 flex items-center justify-between">
+        <button type="button" onclick="setAppTheme('blackbulls')" class="w-full text-left p-3 rounded-xl border border-amber-500/40 bg-black/50 hover:border-amber-400 flex items-center justify-between">
           <span class="text-amber-400">🐂 Toros Negros (Original)</span>
           <span class="w-3 h-3 rounded-full bg-amber-400"></span>
         </button>
-        <button onclick="setAppTheme('saiyan')" class="w-full text-left p-3 rounded-xl border border-sky-500/40 bg-black/50 hover:border-sky-400 flex items-center justify-between">
+        <button type="button" onclick="setAppTheme('saiyan')" class="w-full text-left p-3 rounded-xl border border-sky-500/40 bg-black/50 hover:border-sky-400 flex items-center justify-between">
           <span class="text-sky-400">⚡ Dragon Ball / Super Saiyan</span>
           <span class="w-3 h-3 rounded-full bg-sky-400"></span>
         </button>
-        <button onclick="setAppTheme('cyber')" class="w-full text-left p-3 rounded-xl border border-purple-500/40 bg-black/50 hover:border-purple-400 flex items-center justify-between">
+        <button type="button" onclick="setAppTheme('cyber')" class="w-full text-left p-3 rounded-xl border border-purple-500/40 bg-black/50 hover:border-purple-400 flex items-center justify-between">
           <span class="text-purple-400">👾 Cyberpunk Neón</span>
           <span class="w-3 h-3 rounded-full bg-purple-400"></span>
         </button>
-        <button onclick="setAppTheme('stealth')" class="w-full text-left p-3 rounded-xl border border-zinc-500/40 bg-black/50 hover:border-zinc-400 flex items-center justify-between">
+        <button type="button" onclick="setAppTheme('stealth')" class="w-full text-left p-3 rounded-xl border border-zinc-500/40 bg-black/50 hover:border-zinc-400 flex items-center justify-between">
           <span class="text-zinc-200">🕶️ Modo Sigilo (Minimal Black)</span>
           <span class="w-3 h-3 rounded-full bg-zinc-400"></span>
         </button>
@@ -400,14 +393,14 @@
     </div>
   </div>
 
-  <!-- MODAL: SINCRONIZACIÓN NUBE REPARADA (REST API + TRANSFERENCIA) -->
-  <div id="sync-modal" class="hidden fixed inset-0 z-50 bg-black/85 backdrop-blur-md flex items-center justify-center p-4">
+  <!-- MODAL: SINCRONIZACIÓN NUBE -->
+  <div id="sync-modal" style="display: none;" class="fixed inset-0 z-50 bg-black/85 backdrop-blur-md items-center justify-center p-4">
     <div class="themed-card rounded-3xl p-5 w-full max-w-sm space-y-4 font-mono shadow-2xl">
       <div class="flex justify-between items-center border-b border-white/10 pb-2">
         <h3 class="text-xs font-black text-[var(--primary)] uppercase flex items-center gap-1.5">
           <i data-lucide="refresh-cw" class="w-4 h-4"></i> Sincronizar PC & Celular
         </h3>
-        <button onclick="toggleSyncModal()" class="text-slate-400 hover:text-white">✕</button>
+        <button onclick="closeModal('sync-modal')" class="text-slate-400 hover:text-white p-1">✕</button>
       </div>
 
       <p class="text-[11px] text-slate-300 leading-relaxed">
@@ -419,34 +412,32 @@
         <div class="flex gap-1.5">
           <input type="text" id="sync-code-input" placeholder="Ej: TORO-12345" 
             class="flex-1 bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-xs text-[var(--primary)] font-bold focus:outline-none">
-          <button onclick="saveSyncCode()" class="bg-[var(--primary)] text-slate-950 px-3 py-2 rounded-xl text-xs font-black">Conectar</button>
+          <button type="button" onclick="saveSyncCode()" class="bg-[var(--primary)] text-slate-950 px-3 py-2 rounded-xl text-xs font-black">Conectar</button>
         </div>
       </div>
 
-      <!-- Acciones de Sincronización -->
       <div class="grid grid-cols-2 gap-2 pt-2 border-t border-white/10">
-        <button onclick="uploadToCloud()" class="bg-slate-900 border border-emerald-500/40 text-emerald-400 p-2 rounded-xl text-[11px] font-bold hover:bg-emerald-950/40">
+        <button type="button" onclick="uploadToCloud()" class="bg-slate-900 border border-emerald-500/40 text-emerald-400 p-2 rounded-xl text-[11px] font-bold hover:bg-emerald-950/40">
           ⬆️ Subir a la Nube
         </button>
-        <button onclick="downloadFromCloud()" class="bg-slate-900 border border-sky-500/40 text-sky-400 p-2 rounded-xl text-[11px] font-bold hover:bg-sky-950/40">
+        <button type="button" onclick="downloadFromCloud()" class="bg-slate-900 border border-sky-500/40 text-sky-400 p-2 rounded-xl text-[11px] font-bold hover:bg-sky-950/40">
           ⬇️ Descargar Datos
         </button>
       </div>
 
-      <!-- Alternativa rápida por texto si no hay conexión -->
       <div class="pt-2 border-t border-white/5 flex justify-between items-center text-[10px]">
-        <button onclick="exportDataString()" class="text-slate-400 hover:text-white underline">Copiar Respaldo Manual</button>
-        <button onclick="importDataString()" class="text-slate-400 hover:text-white underline">Pegar Respaldo Manual</button>
+        <button type="button" onclick="exportDataString()" class="text-slate-400 hover:text-white underline">Copiar Respaldo</button>
+        <button type="button" onclick="importDataString()" class="text-slate-400 hover:text-white underline">Pegar Respaldo</button>
       </div>
     </div>
   </div>
 
-  <!-- MODAL: VINCULAR TARJETA -->
-  <div id="card-modal" class="hidden fixed inset-0 z-50 bg-black/85 backdrop-blur-md flex items-center justify-center p-4">
+  <!-- MODAL: AGREGAR TARJETA -->
+  <div id="card-modal" style="display: none;" class="fixed inset-0 z-50 bg-black/85 backdrop-blur-md items-center justify-center p-4">
     <div class="themed-card rounded-3xl p-5 w-full max-w-sm space-y-3 font-mono shadow-2xl">
       <div class="flex justify-between items-center border-b border-white/10 pb-2">
         <h3 class="text-xs font-black text-[var(--primary)] uppercase">Vincular Tarjeta</h3>
-        <button onclick="toggleCardModal()" class="text-slate-400 hover:text-white">✕</button>
+        <button onclick="closeModal('card-modal')" class="text-slate-400 hover:text-white p-1">✕</button>
       </div>
 
       <input type="text" id="card-name" placeholder="Banco o Nombre (ej: Nu, BBVA)" 
@@ -465,13 +456,13 @@
         </div>
       </div>
 
-      <div id="tdd-fields" class="hidden">
+      <div id="tdd-fields" style="display: none;">
         <input type="number" step="0.01" id="card-balance" placeholder="Saldo actual disponible $" class="w-full bg-slate-900 border border-slate-800 rounded-xl px-3 py-2 text-xs text-white">
       </div>
 
       <div class="flex gap-2 pt-2">
-        <button onclick="toggleCardModal()" class="flex-1 bg-slate-900 text-slate-400 py-2.5 rounded-xl text-xs">Cancelar</button>
-        <button onclick="addCard()" class="flex-1 bg-[var(--primary)] text-slate-950 font-black py-2.5 rounded-xl text-xs">Guardar</button>
+        <button type="button" onclick="closeModal('card-modal')" class="flex-1 bg-slate-900 text-slate-400 py-2.5 rounded-xl text-xs">Cancelar</button>
+        <button type="button" onclick="addCard()" class="flex-1 bg-[var(--primary)] text-slate-950 font-black py-2.5 rounded-xl text-xs">Guardar</button>
       </div>
     </div>
   </div>
@@ -498,33 +489,42 @@
     </div>
   </nav>
 
-  <!-- JAVASCRIPT -->
+  <!-- JAVASCRIPT SEGURO -->
   <script>
-    lucide.createIcons();
-
-    /* ==================================================== */
-    /* FORMATEADOR ESTRICTO DD/MM/AA                        */
-    /* ==================================================== */
-    function formatToDDMMAA(dateInput) {
-      if (!dateInput) return '--/--/--';
-      if (typeof dateInput === 'string' && dateInput.includes('-')) {
-        const parts = dateInput.split('T')[0].split('-');
-        if (parts.length === 3) {
-          const dd = parts[2].padStart(2, '0');
-          const mm = parts[1].padStart(2, '0');
-          const aa = parts[0].slice(-2);
-          return `${dd}/${mm}/${aa}`;
-        }
-      }
-      const d = new Date(dateInput);
-      if (isNaN(d.getTime())) return dateInput;
-      const dd = String(d.getDate()).padStart(2, '0');
-      const mm = String(d.getMonth() + 1).padStart(2, '0');
-      const aa = String(d.getFullYear()).slice(-2);
-      return `${dd}/${mm}/${aa}`;
+    // CONTROL INFALIBLE DE MODALES (SIN CAPAS INVISIBLES)
+    function openModal(id) {
+      const el = document.getElementById(id);
+      if (el) el.style.display = 'flex';
+    }
+    function closeModal(id) {
+      const el = document.getElementById(id);
+      if (el) el.style.display = 'none';
     }
 
-    // Actualizar reloj y fecha en el encabezado
+    // FORMATEADOR ESTRICTO DD/MM/AA
+    function formatToDDMMAA(dateInput) {
+      if (!dateInput) return '--/--/--';
+      try {
+        if (typeof dateInput === 'string' && dateInput.includes('-')) {
+          const parts = dateInput.split('T')[0].split('-');
+          if (parts.length === 3) {
+            const dd = String(parts[2]).padStart(2, '0');
+            const mm = String(parts[1]).padStart(2, '0');
+            const aa = String(parts[0]).slice(-2);
+            return `${dd}/${mm}/${aa}`;
+          }
+        }
+        const d = new Date(dateInput);
+        if (isNaN(d.getTime())) return String(dateInput);
+        const dd = String(d.getDate()).padStart(2, '0');
+        const mm = String(d.getMonth() + 1).padStart(2, '0');
+        const aa = String(d.getFullYear()).slice(-2);
+        return `${dd}/${mm}/${aa}`;
+      } catch(e) {
+        return '--/--/--';
+      }
+    }
+
     function updateClock() {
       const now = new Date();
       document.getElementById('hud-date').textContent = formatToDDMMAA(now);
@@ -533,30 +533,30 @@
     setInterval(updateClock, 1000);
     updateClock();
 
-    /* ==================================================== */
-    /* GESTIÓN DE TEMAS                                     */
-    /* ==================================================== */
+    // TEMAS
     function setAppTheme(themeName) {
       document.body.setAttribute('data-theme', themeName);
       localStorage.setItem('cc_theme', themeName);
-      toggleThemeModal();
+      closeModal('theme-modal');
     }
-    const savedTheme = localStorage.getItem('cc_theme') || 'blackbulls';
-    document.body.setAttribute('data-theme', savedTheme);
+    document.body.setAttribute('data-theme', localStorage.getItem('cc_theme') || 'blackbulls');
 
-    function toggleThemeModal() {
-      document.getElementById('theme-modal').classList.toggle('hidden');
+    // LECTURA SEGURA DE LOCALSTORAGE
+    function safeJSON(key, fallback) {
+      try {
+        const item = localStorage.getItem(key);
+        return item ? JSON.parse(item) : fallback;
+      } catch(e) {
+        return fallback;
+      }
     }
 
-    /* ==================================================== */
-    /* ESTADO LOCAL                                         */
-    /* ==================================================== */
     let appState = {
-      tasks: JSON.parse(localStorage.getItem('cc_tasks')) || [],
-      diet: JSON.parse(localStorage.getItem('cc_diet')) || {},
-      keepNotes: JSON.parse(localStorage.getItem('cc_keep_notes')) || [],
-      cards: JSON.parse(localStorage.getItem('cc_cards')) || [],
-      expenses: JSON.parse(localStorage.getItem('cc_expenses')) || []
+      tasks: safeJSON('cc_tasks', []),
+      diet: safeJSON('cc_diet', {}),
+      keepNotes: safeJSON('cc_keep_notes', []),
+      cards: safeJSON('cc_cards', []),
+      expenses: safeJSON('cc_expenses', [])
     };
 
     let selectedNoteColor = 'dark';
@@ -571,127 +571,33 @@
       localStorage.setItem('cc_expenses', JSON.stringify(appState.expenses));
     }
 
-    /* ==================================================== */
-    /* SINCRONIZACIÓN REPARADA (CLOUD REST + TOKEN)         */
-    /* ==================================================== */
-    let syncCode = localStorage.getItem('cc_sync_code') || '';
-    if (syncCode) {
-      document.getElementById('sync-btn-label').textContent = syncCode.slice(0, 8);
-    }
-
-    function toggleSyncModal() {
-      document.getElementById('sync-modal').classList.toggle('hidden');
-      if (syncCode) document.getElementById('sync-code-input').value = syncCode;
-    }
-
-    function saveSyncCode() {
-      const code = document.getElementById('sync-code-input').value.trim().toUpperCase();
-      if (!code) return;
-      syncCode = code;
-      localStorage.setItem('cc_sync_code', syncCode);
-      document.getElementById('sync-btn-label').textContent = syncCode.slice(0, 8);
-      alert(`Código "${syncCode}" guardado.`);
-    }
-
-    // Subir a la nube
-    async function uploadToCloud() {
-      if (!syncCode) {
-        syncCode = 'TORO-' + Math.random().toString(36).substring(2, 8).toUpperCase();
-        localStorage.setItem('cc_sync_code', syncCode);
-        document.getElementById('sync-code-input').value = syncCode;
-        document.getElementById('sync-btn-label').textContent = syncCode.slice(0, 8);
-      }
-
-      try {
-        const res = await fetch(`https://api.restful-api.dev/objects`, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            name: 'TOROS_SYNC_' + syncCode,
-            data: { payload: JSON.stringify(appState), updatedAt: Date.now() }
-          })
-        });
-        const json = await res.json();
-        if (json.id) {
-          localStorage.setItem('cc_cloud_id_' + syncCode, json.id);
-          alert(`¡Datos subidos con éxito!\nTu código de sincronización es: ${syncCode}`);
-        }
-      } catch (e) {
-        alert('Error al conectar con la nube. Revisa tu conexión a internet.');
-      }
-    }
-
-    // Descargar desde la nube
-    async function downloadFromCloud() {
-      if (!syncCode) return alert('Primero ingresa tu código de sincronización.');
-      const cloudId = localStorage.getItem('cc_cloud_id_' + syncCode);
-      
-      if (!cloudId) {
-        return alert('No hay un respaldo previo asociado a este código en este navegador. Primero sube los datos desde el otro dispositivo o usa la opción "Copiar Respaldo Manual".');
-      }
-
-      try {
-        const res = await fetch(`https://api.restful-api.dev/objects/${cloudId}`);
-        const json = await res.json();
-        if (json.data && json.data.payload) {
-          appState = JSON.parse(json.data.payload);
-          saveLocal();
-          refreshAllUI();
-          alert('¡Sincronización completada! Todos tus datos se han actualizado.');
-          toggleSyncModal();
-        }
-      } catch (e) {
-        alert('No se pudo descargar el respaldo. Verifica el código.');
-      }
-    }
-
-    // Transferencia manual directa (infalible)
-    function exportDataString() {
-      const str = btoa(unescape(encodeURIComponent(JSON.stringify(appState))));
-      navigator.clipboard.writeText(str);
-      alert('¡Código copiado al portapapeles! Puedes pegarlo en tu otro dispositivo en "Pegar Respaldo Manual".');
-    }
-
-    function importDataString() {
-      const str = prompt('Pega aquí el código que copiaste de tu otro dispositivo:');
-      if (str) {
-        try {
-          const parsed = JSON.parse(decodeURIComponent(escape(atob(str))));
-          appState = parsed;
-          saveLocal();
-          refreshAllUI();
-          alert('¡Datos restaurados con éxito!');
-        } catch (e) {
-          alert('Código inválido.');
-        }
-      }
-    }
-
-    // NAVEGACIÓN ENTRE PESTAÑAS
+    // NAVEGACIÓN
     function switchTab(tabId) {
       const tabs = ['tasks', 'diet', 'reminders', 'finances'];
       const titles = {
         tasks: 'Misiones Escolares',
-        diet: 'Plan de Nutrición (5 Comidas)',
+        diet: 'Plan de Nutrición',
         reminders: 'Notas y Avisos',
         finances: 'Tarjetas y Finanzas'
       };
 
       tabs.forEach(t => {
-        document.getElementById(`tab-${t}`).classList.toggle('hidden', t !== tabId);
+        const el = document.getElementById(`tab-${t}`);
+        if (el) el.style.display = (t === tabId) ? 'block' : 'none';
+
         const nav = document.getElementById(`nav-${t}`);
-        if(t === tabId) {
-          nav.className = "flex flex-col items-center py-1 text-[var(--primary)]";
-        } else {
-          nav.className = "flex flex-col items-center py-1 text-slate-500 hover:text-slate-300";
+        if (nav) {
+          if (t === tabId) {
+            nav.className = "flex flex-col items-center py-1 text-[var(--primary)]";
+          } else {
+            nav.className = "flex flex-col items-center py-1 text-slate-500 hover:text-slate-300";
+          }
         }
       });
       document.getElementById('header-title').textContent = titles[tabId];
     }
 
-    /* ==================================================== */
-    /* 1. TAREAS                                            */
-    /* ==================================================== */
+    // TAREAS
     document.getElementById('task-form').addEventListener('submit', (e) => {
       e.preventDefault();
       const title = document.getElementById('task-title').value.trim();
@@ -728,46 +634,36 @@
       document.getElementById('stat-rate').textContent = total > 0 ? Math.round((done / total) * 100) + '%' : '100%';
 
       if (appState.tasks.length === 0) {
-        list.innerHTML = `<p class="text-xs text-slate-500 font-mono text-center py-8">No hay tareas pendientes.</p>`;
+        list.innerHTML = `<p class="text-xs text-slate-500 font-mono text-center py-8">No hay tareas registradas.</p>`;
         return;
       }
 
-      list.innerHTML = appState.tasks.map(t => {
-        const priorityColors = {
-          high: 'border-l-rose-500 text-rose-400 bg-rose-500/10',
-          normal: 'border-l-[var(--primary)] text-[var(--primary)] bg-[var(--primary)]/10',
-          low: 'border-l-slate-600 text-slate-400 bg-slate-600/10'
-        };
-
-        return `
-          <div class="themed-card p-3 rounded-xl flex items-center justify-between border-l-4 ${priorityColors[t.priority] || 'border-l-[var(--primary)]'} ${t.completed ? 'opacity-35' : ''}">
-            <div class="flex items-center gap-3">
-              <input type="checkbox" ${t.completed ? 'checked' : ''} onchange="toggleTask(${t.id})" 
-                class="w-4 h-4 rounded bg-slate-900 border-slate-700 text-amber-500 focus:ring-0 cursor-pointer">
-              <div>
-                <p class="text-xs font-bold ${t.completed ? 'line-through text-slate-500' : 'text-slate-100'}">${t.title}</p>
-                <div class="flex items-center gap-2 mt-0.5 font-mono text-[10px]">
-                  <span class="text-[var(--primary)]">${t.subject}</span>
-                  <span class="text-slate-600">•</span>
-                  <span class="text-slate-400">Entrega: ${formatToDDMMAA(t.date)}</span>
-                </div>
+      list.innerHTML = appState.tasks.map(t => `
+        <div class="themed-card p-3 rounded-xl flex items-center justify-between ${t.completed ? 'opacity-35' : ''}">
+          <div class="flex items-center gap-3">
+            <input type="checkbox" ${t.completed ? 'checked' : ''} onchange="toggleTask(${t.id})" 
+              class="w-4 h-4 rounded bg-slate-900 border-slate-700 text-amber-500 cursor-pointer">
+            <div>
+              <p class="text-xs font-bold ${t.completed ? 'line-through text-slate-500' : 'text-slate-100'}">${t.title}</p>
+              <div class="flex items-center gap-2 mt-0.5 font-mono text-[10px]">
+                <span class="text-[var(--primary)]">${t.subject}</span>
+                <span class="text-slate-600">•</span>
+                <span class="text-slate-400">Entrega: ${formatToDDMMAA(t.date)}</span>
               </div>
             </div>
-            <button onclick="deleteTask(${t.id})" class="text-slate-600 hover:text-rose-400 text-xs px-2 py-1">✕</button>
           </div>
-        `;
-      }).join('');
+          <button onclick="deleteTask(${t.id})" class="text-slate-600 hover:text-rose-400 text-xs px-2 py-1">✕</button>
+        </div>
+      `).join('');
     }
 
-    /* ==================================================== */
-    /* 2. DIETA (5 COMIDAS)                                 */
-    /* ==================================================== */
+    // DIETA
     const days = ['Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado', 'Domingo'];
 
     function renderDayCapsules() {
       const container = document.getElementById('diet-day-capsules');
       container.innerHTML = days.map(d => `
-        <button onclick="selectDietDay('${d}')" class="px-3 py-1.5 rounded-xl text-xs font-mono font-bold transition whitespace-nowrap ${currentDietDay === d ? 'bg-[var(--primary)] text-slate-950 font-black' : 'bg-slate-900 text-slate-400 border border-slate-800'}">
+        <button onclick="selectDietDay('${d}')" class="px-3 py-1.5 rounded-xl text-xs font-mono font-bold whitespace-nowrap ${currentDietDay === d ? 'bg-[var(--primary)] text-slate-950 font-black' : 'bg-slate-900 text-slate-400 border border-slate-800'}">
           ${d}
         </button>
       `).join('');
@@ -802,7 +698,7 @@
         cena: document.getElementById('diet-cena').value,
       };
       saveLocal();
-      alert(`Menú de ${currentDietDay} guardado con éxito.`);
+      alert(`Menú de ${currentDietDay} guardado.`);
     }
 
     function saveMacros() {
@@ -836,9 +732,7 @@
       iconsCont.innerHTML = dots;
     }
 
-    /* ==================================================== */
-    /* 3. NOTAS GOOGLE KEEP                                 */
-    /* ==================================================== */
+    // NOTAS KEEP
     function selectNoteColor(color) {
       selectedNoteColor = color;
       document.querySelectorAll('.color-dot').forEach(dot => {
@@ -918,17 +812,11 @@
       `).join('');
     }
 
-    /* ==================================================== */
-    /* 4. TARJETAS Y RECUADRO DE ABONO                     */
-    /* ==================================================== */
-    function toggleCardModal() {
-      document.getElementById('card-modal').classList.toggle('hidden');
-    }
-
+    // TARJETAS Y ABONOS
     function toggleCardInputs() {
       const isTDC = document.getElementById('card-type').value === 'TDC';
-      document.getElementById('tdc-fields').classList.toggle('hidden', !isTDC);
-      document.getElementById('tdd-fields').classList.toggle('hidden', isTDC);
+      document.getElementById('tdc-fields').style.display = isTDC ? 'block' : 'none';
+      document.getElementById('tdd-fields').style.display = isTDC ? 'none' : 'block';
     }
 
     function addCard() {
@@ -948,7 +836,7 @@
       }
 
       saveLocal();
-      toggleCardModal();
+      closeModal('card-modal');
       renderCards();
       populateCardSelect();
     }
@@ -962,20 +850,14 @@
       }
     }
 
-    /* RECUADRO MODAL DE ABONO */
     function openPaymentModal(cardId) {
       const card = appState.cards.find(c => c.id === cardId);
       if(!card) return;
       activePayingCardId = cardId;
       document.getElementById('pay-card-title').textContent = `${card.name} (TDC)`;
-      document.getElementById('pay-card-debt').textContent = `$${card.debt.toFixed(2)}`;
+      document.getElementById('pay-card-debt').textContent = `$${(Number(card.debt) || 0).toFixed(2)}`;
       document.getElementById('pay-amount-input').value = '';
-      document.getElementById('payment-modal').classList.remove('hidden');
-    }
-
-    function closePaymentModal() {
-      document.getElementById('payment-modal').classList.add('hidden');
-      activePayingCardId = null;
+      openModal('payment-modal');
     }
 
     function setPaymentAmount(amount) {
@@ -984,7 +866,7 @@
 
     function setPaymentFullDebt() {
       const card = appState.cards.find(c => c.id === activePayingCardId);
-      if(card) document.getElementById('pay-amount-input').value = card.debt;
+      if(card) document.getElementById('pay-amount-input').value = Number(card.debt) || 0;
     }
 
     function confirmCardPayment() {
@@ -993,15 +875,14 @@
 
       appState.cards = appState.cards.map(c => {
         if(c.id === activePayingCardId) {
-          c.debt = Math.max(0, c.debt - amount);
+          c.debt = Math.max(0, (Number(c.debt) || 0) - amount);
         }
         return c;
       });
 
       saveLocal();
-      closePaymentModal();
+      closeModal('payment-modal');
       renderCards();
-      alert(`Abono de $${amount.toFixed(2)} registrado correctamente.`);
     }
 
     function renderCards() {
@@ -1010,8 +891,8 @@
       let totalLiquidity = 0;
 
       appState.cards.forEach(c => {
-        if(c.type === 'TDC') totalDebt += c.debt;
-        if(c.type === 'TDD') totalLiquidity += c.balance;
+        if(c.type === 'TDC') totalDebt += (Number(c.debt) || 0);
+        if(c.type === 'TDD') totalLiquidity += (Number(c.balance) || 0);
       });
 
       document.getElementById('total-debt-metric').textContent = `$${totalDebt.toFixed(2)}`;
@@ -1024,8 +905,11 @@
 
       container.innerHTML = appState.cards.map(c => {
         if (c.type === 'TDC') {
-          const available = Math.max(0, c.limit - c.debt);
-          const usedPct = Math.min(100, Math.round((c.debt / (c.limit || 1)) * 100));
+          const limit = Number(c.limit) || 0;
+          const debt = Number(c.debt) || 0;
+          const available = Math.max(0, limit - debt);
+          const usedPct = limit > 0 ? Math.min(100, Math.round((debt / limit) * 100)) : 0;
+
           return `
             <div class="themed-card rounded-2xl p-4 font-mono shadow-lg">
               <div class="flex justify-between items-center mb-1">
@@ -1034,12 +918,12 @@
               </div>
               <div class="flex justify-between items-baseline mt-2">
                 <h4 class="text-sm font-black text-white uppercase">${c.name}</h4>
-                <span class="text-[10px] text-slate-400">Límite: $${c.limit.toFixed(2)}</span>
+                <span class="text-[10px] text-slate-400">Límite: $${limit.toFixed(2)}</span>
               </div>
               
               <div class="my-2.5">
                 <div class="flex justify-between text-[10px] mb-1">
-                  <span class="text-rose-400 font-bold">Deuda: $${c.debt.toFixed(2)}</span>
+                  <span class="text-rose-400 font-bold">Deuda: $${debt.toFixed(2)}</span>
                   <span class="text-emerald-400 font-bold">Disponible: $${available.toFixed(2)}</span>
                 </div>
                 <div class="w-full bg-slate-900 h-2 rounded-full overflow-hidden border border-white/5">
@@ -1056,6 +940,7 @@
             </div>
           `;
         } else {
+          const balance = Number(c.balance) || 0;
           return `
             <div class="themed-card rounded-2xl p-4 font-mono shadow-lg">
               <div class="flex justify-between items-center mb-1">
@@ -1065,7 +950,7 @@
               <h4 class="text-sm font-black text-white uppercase mt-2">${c.name}</h4>
               <div class="my-1.5">
                 <span class="text-[9px] text-slate-400 uppercase">Fondos Disponibles</span>
-                <p class="text-base font-bold text-emerald-400">$${c.balance.toFixed(2)}</p>
+                <p class="text-base font-bold text-emerald-400">$${balance.toFixed(2)}</p>
               </div>
             </div>
           `;
@@ -1094,8 +979,8 @@
 
       appState.cards = appState.cards.map(c => {
         if(c.id === cardId) {
-          if(c.type === 'TDC') c.debt += amount;
-          if(c.type === 'TDD') c.balance -= amount;
+          if(c.type === 'TDC') c.debt = (Number(c.debt) || 0) + amount;
+          if(c.type === 'TDD') c.balance = (Number(c.balance) || 0) - amount;
         }
         return c;
       });
@@ -1112,4 +997,130 @@
       e.target.reset();
       renderCards();
       populateCardSelect();
-    
+      renderExpenses();
+    });
+
+    function renderExpenses() {
+      const list = document.getElementById('expenses-list');
+      if (appState.expenses.length === 0) {
+        list.innerHTML = `<p class="text-xs text-slate-500 text-center py-2">Sin gastos registrados.</p>`;
+        return;
+      }
+      list.innerHTML = appState.expenses.slice(0, 10).map(exp => {
+        const card = appState.cards.find(c => c.id === exp.cardId);
+        const cardLabel = card ? `${card.name} [${card.type}]` : 'Desconocida';
+        const amount = Number(exp.amount) || 0;
+        return `
+          <div class="themed-card p-2.5 rounded-xl flex justify-between items-center text-xs">
+            <div>
+              <p class="font-bold text-slate-200">${exp.concept}</p>
+              <p class="text-[10px] text-slate-500">${cardLabel} • ${exp.dateFormatted}</p>
+            </div>
+            <span class="font-bold text-rose-400">-$${amount.toFixed(2)}</span>
+          </div>
+        `;
+      }).join('');
+    }
+
+    // SINCRONIZACIÓN
+    let syncCode = localStorage.getItem('cc_sync_code') || '';
+    if (syncCode) {
+      document.getElementById('sync-btn-label').textContent = syncCode.slice(0, 8);
+    }
+
+    function saveSyncCode() {
+      const code = document.getElementById('sync-code-input').value.trim().toUpperCase();
+      if (!code) return;
+      syncCode = code;
+      localStorage.setItem('cc_sync_code', syncCode);
+      document.getElementById('sync-btn-label').textContent = syncCode.slice(0, 8);
+      alert(`Código "${syncCode}" guardado.`);
+    }
+
+    async function uploadToCloud() {
+      if (!syncCode) {
+        syncCode = 'TORO-' + Math.random().toString(36).substring(2, 8).toUpperCase();
+        localStorage.setItem('cc_sync_code', syncCode);
+        document.getElementById('sync-code-input').value = syncCode;
+        document.getElementById('sync-btn-label').textContent = syncCode.slice(0, 8);
+      }
+
+      try {
+        const res = await fetch(`https://api.restful-api.dev/objects`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            name: 'TOROS_SYNC_' + syncCode,
+            data: { payload: JSON.stringify(appState), updatedAt: Date.now() }
+          })
+        });
+        const json = await res.json();
+        if (json.id) {
+          localStorage.setItem('cc_cloud_id_' + syncCode, json.id);
+          alert(`¡Datos subidos!\nCódigo: ${syncCode}`);
+        }
+      } catch (e) {
+        alert('Error al conectar con la nube.');
+      }
+    }
+
+    async function downloadFromCloud() {
+      if (!syncCode) return alert('Ingresa tu código primero.');
+      const cloudId = localStorage.getItem('cc_cloud_id_' + syncCode);
+      if (!cloudId) return alert('No se encontró respaldo previo en este navegador con ese código.');
+
+      try {
+        const res = await fetch(`https://api.restful-api.dev/objects/${cloudId}`);
+        const json = await res.json();
+        if (json.data && json.data.payload) {
+          appState = JSON.parse(json.data.payload);
+          saveLocal();
+          refreshAllUI();
+          alert('¡Sincronización completada!');
+          closeModal('sync-modal');
+        }
+      } catch (e) {
+        alert('Error al descargar datos.');
+      }
+    }
+
+    function exportDataString() {
+      const str = btoa(unescape(encodeURIComponent(JSON.stringify(appState))));
+      navigator.clipboard.writeText(str);
+      alert('Respaldo copiado al portapapeles.');
+    }
+
+    function importDataString() {
+      const str = prompt('Pega el código de respaldo aquí:');
+      if (str) {
+        try {
+          appState = JSON.parse(decodeURIComponent(escape(atob(str))));
+          saveLocal();
+          refreshAllUI();
+          alert('¡Datos restaurados!');
+        } catch (e) {
+          alert('Código inválido.');
+        }
+      }
+    }
+
+    // ARRANQUE SEGURO
+    function refreshAllUI() {
+      try {
+        renderTasks();
+        renderDayCapsules();
+        loadDietData();
+        renderKeepNotes();
+        renderCards();
+        populateCardSelect();
+        renderExpenses();
+        lucide.createIcons();
+      } catch(e) {
+        console.error("Error al refrescar UI", e);
+      }
+    }
+
+    refreshAllUI();
+  </script>
+</body>
+</html>
