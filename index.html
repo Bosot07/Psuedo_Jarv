@@ -314,7 +314,7 @@
     <div class="header-inner">
       <div style="display: flex; align-items: center; gap: 8px;">
         <div class="logo-box">
-          <img id="app-logo" src="logo.png?v=45" 
+          <img id="app-logo" src="logo.png?v=50" 
                onerror="this.onerror=null; this.src='https://assets.stickpng.com/images/628c85c2bbec114743bed4bd.png'" 
                alt="Toros Negros">
         </div>
@@ -545,7 +545,7 @@
 
       <div id="cards-container"></div>
 
-      <!-- SECCIÓN B: GASTOS MENSUALES FIJOS & SUSCRIPCIONES (NUEVO) -->
+      <!-- SECCIÓN B: GASTOS MENSUALES FIJOS & SUSCRIPCIONES -->
       <div style="display: flex; justify-content: space-between; align-items: center; margin: 14px 0 8px 0;" class="font-mono">
         <span style="font-size: 11px; font-weight: 700; color: var(--blue);">GASTOS MENSUALES FIJOS</span>
         <div style="display: flex; gap: 8px;">
@@ -590,9 +590,7 @@
     </div>
   </nav>
 
-  <!-- ========================================== -->
-  <!-- MODAL: AGREGAR GASTO MENSUAL FIJO (NUEVO)  -->
-  <!-- ========================================== -->
+  <!-- MODAL: AGREGAR GASTO FIJO -->
   <div id="fixed-expense-modal" class="modal-overlay" style="display: none;" onclick="if(event.target === this) closeModal('fixed-expense-modal')">
     <div class="modal-content font-mono">
       <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #1e293b; padding-bottom: 8px; margin-bottom: 12px;">
@@ -741,13 +739,23 @@
           Tu app está vinculada con tu proyecto <b>Ultron Force</b> de Google. Todo lo que hagas se sincroniza solo.
         </p>
 
+        <!-- ACCIONES DE SINCRONIZACIÓN MANUAL INMEDIATA -->
+        <div class="grid-2" style="margin-bottom: 12px;">
+          <button type="button" onclick="pushToCloudDirect(true)" class="btn-primary" style="padding: 8px; font-size: 10px;">
+            ⬆ FORZAR SUBIR
+          </button>
+          <button type="button" onclick="pullFromCloudDirect(false, true)" class="btn-secondary" style="border-color: var(--primary); color: var(--primary); padding: 8px; font-size: 10px;">
+            ⬇ FORZAR BAJAR
+          </button>
+        </div>
+
         <label style="font-size: 9px; color: var(--primary); display: block; margin-bottom: 4px;">URL DE TU FIREBASE:</label>
         <input type="text" id="firebase-url-input" class="font-mono" style="font-size: 10px; margin-bottom: 8px;">
 
         <label style="font-size: 9px; color: #64748b; display: block; margin-bottom: 4px;">CLAVE COMPARTIDA:</label>
         <input type="text" id="sync-key-input" class="font-mono" style="margin-bottom: 10px;">
 
-        <button type="button" onclick="saveAndEnableAutoSync()" class="btn-primary" style="padding: 9px;">Actualizar Conexión</button>
+        <button type="button" onclick="saveAndEnableAutoSync()" class="btn-primary" style="padding: 9px;">Actualizar Parámetros</button>
       </div>
 
       <div style="background: #090d16; padding: 10px; border-radius: 12px; border: 1px solid #1e293b;">
@@ -942,16 +950,16 @@
       } catch(e) { return {}; }
     }
 
-    // ESTADO PRINCIPAL
+    // ESTADO PRINCIPAL (SIN BLOQUEO DE RELOJ)
     let appState = {
-      updatedAt: Number(localStorage.getItem('cc_updated_at')) || Date.now(),
+      updatedAt: Number(localStorage.getItem('cc_updated_at')) || 0,
       tasks: safeArray('cc_tasks'),
       diet: safeObject('cc_diet'),
       gym: safeObject('cc_gym'),
       keepNotes: safeArray('cc_keep_notes'),
       cards: safeArray('cc_cards'),
       expenses: safeArray('cc_expenses'),
-      fixedExpenses: safeArray('cc_fixed_expenses'), // GASTOS FIJOS
+      fixedExpenses: safeArray('cc_fixed_expenses'),
       notifs: safeObject('cc_notifs')
     };
 
@@ -1142,7 +1150,7 @@
     setInterval(checkScheduledAlerts, 60000);
 
     // ==========================================
-    // MOTOR DE AUTO-SYNC FIREBASE
+    // MOTOR DE AUTO-SYNC FIREBASE (BLINDADO)
     // ==========================================
     function updateSyncIndicator(label, color = null) {
       const ind = document.getElementById('sync-status-indicator');
@@ -1173,23 +1181,22 @@
       closeModal('sync-modal');
       showToast(`Conectado a Firebase: ${autoSyncKey}`);
       
-      pushToCloudDirect();
-      pullFromCloudDirect(false);
+      pushToCloudDirect(true);
     }
 
     function triggerAutoPush() {
       updateSyncIndicator('SYNC [⬆]', 'var(--primary)');
       clearTimeout(autoSyncPushTimeout);
       autoSyncPushTimeout = setTimeout(() => {
-        pushToCloudDirect();
+        pushToCloudDirect(false);
       }, 1000);
     }
 
-    async function pushToCloudDirect() {
+    async function pushToCloudDirect(showUserToast = false) {
       if (!firebaseUrl || !autoSyncKey) return;
       try {
         const payload = {
-          updatedAt: appState.updatedAt,
+          updatedAt: Date.now(),
           tasks: appState.tasks,
           diet: appState.diet,
           gym: appState.gym,
@@ -1207,39 +1214,53 @@
         });
 
         if (res.ok) {
+          appState.updatedAt = payload.updatedAt;
+          localStorage.setItem('cc_updated_at', appState.updatedAt);
           updateSyncIndicator('SYNC [AUTO 🟢]', 'var(--success)');
+          if (showUserToast) showToast('¡Datos subidos a Firebase con éxito!');
+        } else {
+          updateSyncIndicator('SYNC [ERROR]', 'var(--danger)');
         }
       } catch(e) {
         updateSyncIndicator('SYNC [ERROR]', 'var(--danger)');
       }
     }
 
-    async function pullFromCloudDirect(silent = true) {
+    async function pullFromCloudDirect(silent = true, force = false) {
       if (!firebaseUrl || !autoSyncKey) return;
       try {
         const res = await fetch(`${firebaseUrl}/sync/${autoSyncKey}.json`);
         if (!res.ok) return;
 
         const remoteState = await res.json();
-        if (remoteState && remoteState.updatedAt && remoteState.updatedAt > (appState.updatedAt || 0)) {
-          appState.updatedAt = remoteState.updatedAt;
-          appState.tasks = Array.isArray(remoteState.tasks) ? remoteState.tasks : [];
-          appState.diet = remoteState.diet || {};
-          appState.gym = remoteState.gym || {};
-          appState.keepNotes = Array.isArray(remoteState.keepNotes) ? remoteState.keepNotes : [];
-          appState.cards = Array.isArray(remoteState.cards) ? remoteState.cards : [];
-          appState.expenses = Array.isArray(remoteState.expenses) ? remoteState.expenses : [];
-          appState.fixedExpenses = Array.isArray(remoteState.fixedExpenses) ? remoteState.fixedExpenses : [];
-          if (remoteState.notifs) appState.notifs = remoteState.notifs;
+        // Si forzamos la descarga o si los datos cambiaron
+        if (remoteState && typeof remoteState === 'object') {
+          const remoteTime = Number(remoteState.updatedAt) || 0;
+          const localTime = Number(appState.updatedAt) || 0;
 
-          saveLocal(false);
-          refreshAllUI();
-          if (!silent) showToast('¡Datos sincronizados en vivo!');
+          if (force || remoteTime !== localTime) {
+            appState.updatedAt = remoteTime;
+            appState.tasks = Array.isArray(remoteState.tasks) ? remoteState.tasks : [];
+            appState.diet = remoteState.diet || {};
+            appState.gym = remoteState.gym || {};
+            appState.keepNotes = Array.isArray(remoteState.keepNotes) ? remoteState.keepNotes : [];
+            appState.cards = Array.isArray(remoteState.cards) ? remoteState.cards : [];
+            appState.expenses = Array.isArray(remoteState.expenses) ? remoteState.expenses : [];
+            appState.fixedExpenses = Array.isArray(remoteState.fixedExpenses) ? remoteState.fixedExpenses : [];
+            if (remoteState.notifs) appState.notifs = remoteState.notifs;
+
+            saveLocal(false);
+            refreshAllUI();
+            if (!silent || force) showToast('¡Datos sincronizados desde Firebase!');
+          }
         }
         updateSyncIndicator('SYNC [AUTO 🟢]', 'var(--success)');
-      } catch(e) {}
+      } catch(e) {
+        updateSyncIndicator('SYNC [ERROR]', 'var(--danger)');
+      }
     }
 
+    // DISPARADORES AL ENTRAR O TOCAR
     document.addEventListener('visibilitychange', () => {
       if (!document.hidden && autoSyncActive) {
         pullFromCloudDirect(true);
@@ -1254,7 +1275,7 @@
     });
     setInterval(() => {
       if (autoSyncActive && !document.hidden) pullFromCloudDirect(true);
-    }, 15000);
+    }, 12000);
 
     function hardResetApp() {
       if (confirm('¿Deseas reiniciar la memoria interna de la app para descongelarla? (Tus datos están a salvo en Firebase)')) {
@@ -1790,9 +1811,7 @@
       showToast(`Abono de $${amount.toFixed(2)} registrado`);
     }
 
-    // ==========================================
-    // LÓGICA DE GASTOS FIJOS MENSUALES
-    // ==========================================
+    // GASTOS FIJOS
     function populateFixedCardSelect() {
       const select = document.getElementById('fixed-card-select');
       if (!select) return;
@@ -1850,7 +1869,7 @@
         appState.fixedExpenses = appState.fixedExpenses.map(fe => ({ ...fe, paid: false }));
         saveLocal();
         renderFixedExpenses();
-        showToast('Gastos fijos reiniciados para el nuevo mes');
+        showToast('Gastos fijos reiniciados');
       }
     }
 
