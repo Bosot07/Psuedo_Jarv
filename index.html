@@ -24,7 +24,6 @@
   <link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
 
   <style>
-    /* SISTEMA DE TEMAS VISUALES DINÁMICOS */
     :root {
       --bg: #07090e;
       --card: #0d121f;
@@ -174,7 +173,7 @@
       width: 100%;
     }
 
-    /* INPUTS */
+    /* INPUTS & TEXTAREAS ADAPTABLES */
     input, select, textarea {
       width: 100%;
       background: #090d16;
@@ -189,6 +188,15 @@
     }
     input:focus, select:focus, textarea:focus {
       border-color: var(--primary);
+    }
+
+    textarea {
+      resize: none;
+      overflow-y: hidden;
+      min-height: 48px;
+      line-height: 1.5;
+      field-sizing: content;
+      display: block;
     }
 
     .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
@@ -306,7 +314,7 @@
     <div class="header-inner">
       <div style="display: flex; align-items: center; gap: 8px;">
         <div class="logo-box">
-          <img id="app-logo" src="logo.png?v=35" 
+          <img id="app-logo" src="logo.png?v=45" 
                onerror="this.onerror=null; this.src='https://assets.stickpng.com/images/628c85c2bbec114743bed4bd.png'" 
                alt="Toros Negros">
         </div>
@@ -317,12 +325,10 @@
       </div>
 
       <div style="display: flex; align-items: center; gap: 5px;">
-        <!-- BOTÓN DE CONFIGURACIÓN UNIFICADO -->
         <button type="button" onclick="openModal('config-modal')" class="btn-secondary font-mono" style="color: var(--primary); padding: 5px 8px; font-size: 10px;">
           CONFIG
         </button>
 
-        <!-- BOTÓN SYNC FIREBASE -->
         <button type="button" onclick="openModal('sync-modal')" id="sync-status-indicator" class="btn-secondary font-mono" style="font-weight: 800; color: var(--success); padding: 5px 8px; font-size: 10px;">
           SYNC [AUTO 🟢]
         </button>
@@ -427,30 +433,30 @@
         </div>
       </div>
 
-      <!-- 5 Comidas -->
+      <!-- 5 Comidas con Auto-Ajuste de Altura -->
       <div class="card" style="border-left: 3px solid var(--primary);">
         <span class="font-mono" style="font-size: 11px; font-weight: 700; color: var(--primary); display: block; margin-bottom: 4px;">01 • DESAYUNO</span>
-        <textarea id="diet-desayuno" rows="2" placeholder="Desayuno..."></textarea>
+        <textarea id="diet-desayuno" placeholder="Desayuno..." oninput="autoResizeTextarea(this)"></textarea>
       </div>
 
       <div class="card" style="border-left: 3px solid var(--success);">
         <span class="font-mono" style="font-size: 11px; font-weight: 700; color: var(--success); display: block; margin-bottom: 4px;">02 • COLACIÓN MATUTINA (SNACK 1)</span>
-        <textarea id="diet-colacion1" rows="2" placeholder="Snack 1..."></textarea>
+        <textarea id="diet-colacion1" placeholder="Snack 1..." oninput="autoResizeTextarea(this)"></textarea>
       </div>
 
       <div class="card" style="border-left: 3px solid var(--blue);">
         <span class="font-mono" style="font-size: 11px; font-weight: 700; color: var(--blue); display: block; margin-bottom: 4px;">03 • ALMUERZO / COMIDA</span>
-        <textarea id="diet-comida" rows="2" placeholder="Comida principal..."></textarea>
+        <textarea id="diet-comida" placeholder="Comida principal..." oninput="autoResizeTextarea(this)"></textarea>
       </div>
 
       <div class="card" style="border-left: 3px solid #a855f7;">
         <span class="font-mono" style="font-size: 11px; font-weight: 700; color: #a855f7; display: block; margin-bottom: 4px;">04 • COLACIÓN VESPERTINA (SNACK 2)</span>
-        <textarea id="diet-colacion2" rows="2" placeholder="Snack 2..."></textarea>
+        <textarea id="diet-colacion2" placeholder="Snack 2..." oninput="autoResizeTextarea(this)"></textarea>
       </div>
 
       <div class="card" style="border-left: 3px solid var(--danger);">
         <span class="font-mono" style="font-size: 11px; font-weight: 700; color: var(--danger); display: block; margin-bottom: 4px;">05 • CENA</span>
-        <textarea id="diet-cena" rows="2" placeholder="Cena..."></textarea>
+        <textarea id="diet-cena" placeholder="Cena..." oninput="autoResizeTextarea(this)"></textarea>
       </div>
 
       <button type="button" onclick="saveDiet()" class="btn-primary" style="margin-bottom: 12px;">Guardar Menú del Día</button>
@@ -486,7 +492,7 @@
     <section id="tab-reminders" style="display: none;">
       <div class="card font-mono">
         <input type="text" id="note-title" placeholder="Título de la nota..." style="font-weight: 700;">
-        <textarea id="note-body" rows="2" placeholder="Escribe tu apunte aquí..."></textarea>
+        <textarea id="note-body" placeholder="Escribe tu apunte aquí..." oninput="autoResizeTextarea(this)"></textarea>
         
         <div style="margin-bottom: 8px;">
           <input type="datetime-local" id="note-alert" style="font-size: 11px;">
@@ -507,21 +513,31 @@
       <div id="keep-notes-grid" class="grid-2"></div>
     </section>
 
-    <!-- 5. TARJETAS Y FINANZAS -->
+    <!-- 5. TARJETAS, FINANZAS & GASTOS FIJOS -->
     <section id="tab-finances" style="display: none;">
+      <!-- BALANCE GLOBAL -->
       <div class="card font-mono" style="padding: 10px;">
         <div style="display: flex; justify-content: space-between; font-size: 11px; margin-bottom: 4px;">
           <span style="color: #64748b;">DEUDA TOTAL (TDC):</span>
           <span id="total-debt-metric" style="color: var(--danger); font-weight: 800;">$0.00</span>
         </div>
-        <div style="display: flex; justify-content: space-between; font-size: 11px;">
+        <div style="display: flex; justify-content: space-between; font-size: 11px; margin-bottom: 4px;">
           <span style="color: #64748b;">DISPONIBLE DÉBITO (TDD):</span>
           <span id="total-liquidity-metric" style="color: var(--success); font-weight: 800;">$0.00</span>
         </div>
+        <div style="display: flex; justify-content: space-between; font-size: 11px; border-top: 1px solid #1e293b; padding-top: 4px; margin-top: 4px;">
+          <span style="color: #64748b;">TOTAL FIJO MENSUAL:</span>
+          <span id="total-fixed-metric" style="color: var(--blue); font-weight: 800;">$0.00</span>
+        </div>
+        <div style="display: flex; justify-content: space-between; font-size: 10px; color: #64748b;">
+          <span>PENDIENTE ESTE MES:</span>
+          <span id="pending-fixed-metric" style="color: var(--primary); font-weight: 800;">$0.00</span>
+        </div>
       </div>
 
+      <!-- SECCIÓN A: MIS TARJETAS -->
       <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;" class="font-mono">
-        <span style="font-size: 11px; font-weight: 700; color: var(--primary);">MIS TARJETAS</span>
+        <span style="font-size: 11px; font-weight: 700; color: var(--primary);">MIS TARJETAS (TDC Y TDD)</span>
         <button type="button" onclick="openModal('card-modal')" style="background: none; color: var(--primary); font-size: 10px; text-decoration: underline;">
           + AGREGAR TARJETA
         </button>
@@ -529,9 +545,24 @@
 
       <div id="cards-container"></div>
 
-      <!-- Registrar Gasto -->
-      <form id="expense-form" class="card font-mono">
-        <span style="font-size: 11px; font-weight: 700; color: var(--danger); display: block; margin-bottom: 8px;">REGISTRAR GASTO</span>
+      <!-- SECCIÓN B: GASTOS MENSUALES FIJOS & SUSCRIPCIONES (NUEVO) -->
+      <div style="display: flex; justify-content: space-between; align-items: center; margin: 14px 0 8px 0;" class="font-mono">
+        <span style="font-size: 11px; font-weight: 700; color: var(--blue);">GASTOS MENSUALES FIJOS</span>
+        <div style="display: flex; gap: 8px;">
+          <button type="button" onclick="resetFixedPaidStatus()" style="background: none; color: #64748b; font-size: 9px; text-decoration: underline;">
+            Reiniciar Mes
+          </button>
+          <button type="button" onclick="openModal('fixed-expense-modal')" style="background: none; color: var(--blue); font-size: 10px; text-decoration: underline;">
+            + AGREGAR FIJO
+          </button>
+        </div>
+      </div>
+
+      <div id="fixed-expenses-container"></div>
+
+      <!-- SECCIÓN C: REGISTRAR GASTO DIARIO -->
+      <form id="expense-form" class="card font-mono" style="margin-top: 14px;">
+        <span style="font-size: 11px; font-weight: 700; color: var(--danger); display: block; margin-bottom: 8px;">REGISTRAR GASTO DEL DÍA</span>
         <select id="expense-card" required></select>
         <div class="grid-2">
           <input type="text" id="expense-concept" placeholder="Concepto (ej: Súper)" required>
@@ -560,8 +591,33 @@
   </nav>
 
   <!-- ========================================== -->
-  <!-- MODAL UNIFICADO: CONFIGURACIÓN GENERAL     -->
+  <!-- MODAL: AGREGAR GASTO MENSUAL FIJO (NUEVO)  -->
   <!-- ========================================== -->
+  <div id="fixed-expense-modal" class="modal-overlay" style="display: none;" onclick="if(event.target === this) closeModal('fixed-expense-modal')">
+    <div class="modal-content font-mono">
+      <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #1e293b; padding-bottom: 8px; margin-bottom: 12px;">
+        <span style="font-size: 12px; font-weight: 800; color: var(--blue);">NUEVO GASTO FIJO / SUSCRIPCIÓN</span>
+        <button type="button" onclick="closeModal('fixed-expense-modal')" class="btn-secondary" style="padding: 2px 8px;">X</button>
+      </div>
+
+      <input type="text" id="fixed-concept" placeholder="Concepto (ej: Spotify, Despensa, Renta)">
+      
+      <div class="grid-2">
+        <input type="number" step="0.01" id="fixed-amount" placeholder="Monto mensual $">
+        <input type="number" id="fixed-payday" placeholder="Día cobro (1-31)">
+      </div>
+
+      <label style="font-size: 9px; color: #64748b; display: block; margin-bottom: 4px;">MÉTODO / TARJETA ASOCIADA:</label>
+      <select id="fixed-card-select"></select>
+
+      <div class="grid-2" style="margin-top: 8px;">
+        <button type="button" onclick="closeModal('fixed-expense-modal')" class="btn-secondary">Cancelar</button>
+        <button type="button" onclick="addFixedExpense()" class="btn-primary" style="background: var(--blue);">Guardar Fijo</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL: CONFIGURACIÓN GENERAL -->
   <div id="config-modal" class="modal-overlay" style="display: none;" onclick="if(event.target === this) closeModal('config-modal')">
     <div class="modal-content font-mono">
       <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #1e293b; padding-bottom: 8px; margin-bottom: 12px;">
@@ -569,10 +625,10 @@
         <button type="button" onclick="closeModal('config-modal')" class="btn-secondary" style="padding: 2px 8px;">X</button>
       </div>
 
-      <!-- SECCIÓN 1: SELECCIÓN DE TEMAS -->
+      <!-- SECCIÓN 1: TEMAS VISUALES -->
       <div style="background: #090d16; padding: 10px; border-radius: 12px; border: 1px solid #1e293b; margin-bottom: 12px;">
         <span style="font-size: 10px; color: var(--primary); font-weight: 800; display: block; margin-bottom: 8px;">
-          🎨 TEMAS VISUALES
+          TEMAS VISUALES
         </span>
         <div style="display: flex; flex-direction: column; gap: 6px;">
           <button type="button" onclick="setAppTheme('blackbulls')" class="btn-secondary" style="text-align: left; border-left: 3px solid #f59e0b; color: #f59e0b;">
@@ -593,7 +649,7 @@
       <!-- SECCIÓN 2: AVISOS Y NOTIFICACIONES -->
       <div style="background: #090d16; padding: 10px; border-radius: 12px; border: 1px solid #1e293b; margin-bottom: 12px;">
         <span style="font-size: 10px; color: var(--primary); font-weight: 800; display: block; margin-bottom: 6px;">
-          🔔 AVISOS Y NOTIFICACIONES
+          AVISOS Y NOTIFICACIONES
         </span>
 
         <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; font-size: 9px;">
@@ -610,9 +666,8 @@
           </button>
         </div>
 
-        <!-- Agua -->
         <label style="font-size: 9px; color: var(--blue); font-weight: 700; display: block; margin-bottom: 2px;">
-          💧 AVISO DE AGUA (META 4.5L)
+          AVISO DE AGUA (META 4.5L)
         </label>
         <select id="notif-water-interval" style="margin-bottom: 8px;">
           <option value="1">Cada 1 Hora</option>
@@ -621,9 +676,8 @@
           <option value="0">Desactivado</option>
         </select>
 
-        <!-- Gym -->
         <label style="font-size: 9px; color: var(--primary); font-weight: 700; display: block; margin-bottom: 2px;">
-          🏋️ ALERTA DIARIA PARA EL GYM
+          ALERTA DIARIA PARA EL GYM
         </label>
         <div class="grid-2" style="margin-bottom: 8px;">
           <input type="time" id="notif-gym-time" value="18:00" style="margin-bottom: 0;">
@@ -633,9 +687,8 @@
           </select>
         </div>
 
-        <!-- Tarjetas -->
         <label style="font-size: 9px; color: var(--danger); font-weight: 700; display: block; margin-bottom: 2px;">
-          💳 FECHAS DE PAGO DE TARJETAS (TDC)
+          FECHAS DE PAGO DE TARJETAS (TDC)
         </label>
         <select id="notif-cards-days" style="margin-bottom: 8px;">
           <option value="3">3 días antes y el día del pago</option>
@@ -644,9 +697,8 @@
           <option value="-1">Desactivado</option>
         </select>
 
-        <!-- Tareas -->
         <label style="font-size: 9px; color: var(--success); font-weight: 700; display: block; margin-bottom: 2px;">
-          📋 AVISO MATUTINO DE TAREAS HOY
+          AVISO MATUTINO DE TAREAS HOY
         </label>
         <div class="grid-2" style="margin-bottom: 10px;">
           <input type="time" id="notif-tasks-time" value="08:00" style="margin-bottom: 0;">
@@ -798,6 +850,19 @@
       setTimeout(() => { toast.style.opacity = '0'; }, 2200);
     }
 
+    function autoResizeTextarea(el) {
+      if (!el) return;
+      el.style.height = 'auto';
+      el.style.height = Math.max(48, el.scrollHeight) + 'px';
+    }
+
+    function resizeAllDietTextareas() {
+      ['diet-desayuno', 'diet-colacion1', 'diet-comida', 'diet-colacion2', 'diet-cena'].forEach(id => {
+        const el = document.getElementById(id);
+        if (el) autoResizeTextarea(el);
+      });
+    }
+
     function openModal(id) {
       const el = document.getElementById(id);
       if (el) el.style.display = 'flex';
@@ -810,6 +875,9 @@
       }
       if (id === 'config-modal') {
         updateConfigModalUI();
+      }
+      if (id === 'fixed-expense-modal') {
+        populateFixedCardSelect();
       }
     }
 
@@ -851,7 +919,6 @@
     setInterval(updateClock, 1000);
     updateClock();
 
-    // APLICAR TEMA
     function setAppTheme(themeName) {
       document.body.setAttribute('data-theme', themeName);
       localStorage.setItem('cc_theme', themeName);
@@ -884,10 +951,10 @@
       keepNotes: safeArray('cc_keep_notes'),
       cards: safeArray('cc_cards'),
       expenses: safeArray('cc_expenses'),
+      fixedExpenses: safeArray('cc_fixed_expenses'), // GASTOS FIJOS
       notifs: safeObject('cc_notifs')
     };
 
-    // Ajustes por defecto de notificaciones
     if (!appState.notifs.waterInterval && appState.notifs.waterInterval !== 0) appState.notifs.waterInterval = 2;
     if (appState.notifs.gymEnabled === undefined) appState.notifs.gymEnabled = true;
     if (!appState.notifs.gymTime) appState.notifs.gymTime = "18:00";
@@ -916,6 +983,7 @@
         localStorage.setItem('cc_keep_notes', JSON.stringify(appState.keepNotes));
         localStorage.setItem('cc_cards', JSON.stringify(appState.cards));
         localStorage.setItem('cc_expenses', JSON.stringify(appState.expenses));
+        localStorage.setItem('cc_fixed_expenses', JSON.stringify(appState.fixedExpenses));
         localStorage.setItem('cc_notifs', JSON.stringify(appState.notifs));
 
         if (shouldPush && autoSyncActive) {
@@ -1004,7 +1072,6 @@
       showToast('Configuración de avisos guardada');
     }
 
-    // REVISOR AUTOMÁTICO DE RECORDATORIOS
     function checkScheduledAlerts() {
       if (Notification.permission !== 'granted') return;
       const now = new Date();
@@ -1013,7 +1080,7 @@
       const todayStr = now.toISOString().split('T')[0];
       const todayDayNum = now.getDate();
 
-      // 1. AVISO DE AGUA
+      // 1. Agua
       const wInt = appState.notifs.waterInterval;
       if (wInt > 0 && currentHour >= 8 && currentHour <= 22) {
         const lastCheck = appState.notifs.lastWaterCheck || 0;
@@ -1028,7 +1095,7 @@
         }
       }
 
-      // 2. AVISO DE GYM
+      // 2. Gym
       if (appState.notifs.gymEnabled && currentTimeStr === appState.notifs.gymTime) {
         if (appState.notifs.lastGymAlertDate !== todayStr) {
           appState.notifs.lastGymAlertDate = todayStr;
@@ -1038,7 +1105,7 @@
         }
       }
 
-      // 3. AVISO DE TAREAS
+      // 3. Tareas
       if (appState.notifs.tasksEnabled && currentTimeStr === appState.notifs.tasksTime) {
         if (appState.notifs.lastTasksAlertDate !== todayStr) {
           appState.notifs.lastTasksAlertDate = todayStr;
@@ -1050,7 +1117,7 @@
         }
       }
 
-      // 4. AVISO DE TARJETAS
+      // 4. Tarjetas
       const cDays = appState.notifs.cardsDays;
       if (cDays >= 0 && currentHour === 10) {
         if (appState.notifs.lastCardsAlertDate !== todayStr) {
@@ -1129,6 +1196,7 @@
           keepNotes: appState.keepNotes,
           cards: appState.cards,
           expenses: appState.expenses,
+          fixedExpenses: appState.fixedExpenses,
           notifs: appState.notifs
         };
 
@@ -1161,6 +1229,7 @@
           appState.keepNotes = Array.isArray(remoteState.keepNotes) ? remoteState.keepNotes : [];
           appState.cards = Array.isArray(remoteState.cards) ? remoteState.cards : [];
           appState.expenses = Array.isArray(remoteState.expenses) ? remoteState.expenses : [];
+          appState.fixedExpenses = Array.isArray(remoteState.fixedExpenses) ? remoteState.fixedExpenses : [];
           if (remoteState.notifs) appState.notifs = remoteState.notifs;
 
           saveLocal(false);
@@ -1187,7 +1256,6 @@
       if (autoSyncActive && !document.hidden) pullFromCloudDirect(true);
     }, 15000);
 
-    // MANTENIMIENTO
     function hardResetApp() {
       if (confirm('¿Deseas reiniciar la memoria interna de la app para descongelarla? (Tus datos están a salvo en Firebase)')) {
         localStorage.clear();
@@ -1195,7 +1263,6 @@
       }
     }
 
-    // RESPALDO EN ARCHIVO
     function downloadJSONFile() {
       try {
         const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(appState, null, 2));
@@ -1226,6 +1293,7 @@
             appState.keepNotes = Array.isArray(parsed.keepNotes) ? parsed.keepNotes : [];
             appState.cards = Array.isArray(parsed.cards) ? parsed.cards : [];
             appState.expenses = Array.isArray(parsed.expenses) ? parsed.expenses : [];
+            appState.fixedExpenses = Array.isArray(parsed.fixedExpenses) ? parsed.fixedExpenses : [];
             if (parsed.notifs) appState.notifs = parsed.notifs;
             saveLocal(true);
             refreshAllUI();
@@ -1262,6 +1330,10 @@
       });
       const hTitle = document.getElementById('header-title');
       if (hTitle) hTitle.textContent = titles[tabId] || 'Toros Negros';
+
+      if (tabId === 'diet') {
+        setTimeout(resizeAllDietTextareas, 50);
+      }
     }
 
     // 1. TAREAS
@@ -1353,6 +1425,8 @@
       document.getElementById('macro-protein').value = data.protein || '';
       document.getElementById('macro-carbs').value = data.carbs || '';
       renderWaterUI(data.water || 0);
+
+      setTimeout(resizeAllDietTextareas, 20);
     }
 
     function saveDiet() {
@@ -1412,6 +1486,7 @@
       document.getElementById('diet-colacion2').value = parsed.colacion2.trim();
       document.getElementById('diet-cena').value = parsed.cena.trim();
 
+      resizeAllDietTextareas();
       saveDiet();
       closeModal('gemini-import-modal');
       document.getElementById('gemini-paste-area').value = '';
@@ -1639,7 +1714,7 @@
       `).join('');
     }
 
-    // 5. TARJETAS
+    // 5. TARJETAS, FINANZAS & GASTOS FIJOS
     function toggleCardInputs() {
       const isTDC = document.getElementById('card-type').value === 'TDC';
       document.getElementById('tdc-fields').style.display = isTDC ? 'block' : 'none';
@@ -1666,6 +1741,7 @@
       closeModal('card-modal');
       renderCards();
       populateCardSelect();
+      populateFixedCardSelect();
       showToast('Tarjeta agregada');
     }
 
@@ -1674,6 +1750,7 @@
       saveLocal();
       renderCards();
       populateCardSelect();
+      populateFixedCardSelect();
       showToast('Tarjeta eliminada');
     }
 
@@ -1711,6 +1788,118 @@
       closeModal('payment-modal');
       renderCards();
       showToast(`Abono de $${amount.toFixed(2)} registrado`);
+    }
+
+    // ==========================================
+    // LÓGICA DE GASTOS FIJOS MENSUALES
+    // ==========================================
+    function populateFixedCardSelect() {
+      const select = document.getElementById('fixed-card-select');
+      if (!select) return;
+      let opts = '<option value="efectivo">Efectivo / Cuenta Externa</option>';
+      appState.cards.forEach(c => {
+        opts += `<option value="${c.id}">${c.name} [${c.type}]</option>`;
+      });
+      select.innerHTML = opts;
+    }
+
+    function addFixedExpense() {
+      const concept = document.getElementById('fixed-concept').value.trim();
+      const amount = parseFloat(document.getElementById('fixed-amount').value);
+      const payday = parseInt(document.getElementById('fixed-payday').value) || 1;
+      const cardId = document.getElementById('fixed-card-select').value;
+
+      if (!concept || isNaN(amount) || amount <= 0) {
+        return showToast('Ingresa concepto y monto válidos', true);
+      }
+
+      appState.fixedExpenses.push({
+        id: Date.now(),
+        concept,
+        amount,
+        payday: Math.max(1, Math.min(31, payday)),
+        cardId,
+        paid: false
+      });
+
+      saveLocal();
+      closeModal('fixed-expense-modal');
+      document.getElementById('fixed-concept').value = '';
+      document.getElementById('fixed-amount').value = '';
+      renderFixedExpenses();
+      showToast('Gasto fijo agregado');
+    }
+
+    function toggleFixedExpensePaid(id) {
+      appState.fixedExpenses = appState.fixedExpenses.map(fe => 
+        fe.id === id ? { ...fe, paid: !fe.paid } : fe
+      );
+      saveLocal();
+      renderFixedExpenses();
+    }
+
+    function deleteFixedExpense(id) {
+      appState.fixedExpenses = appState.fixedExpenses.filter(fe => fe.id !== id);
+      saveLocal();
+      renderFixedExpenses();
+      showToast('Gasto fijo eliminado');
+    }
+
+    function resetFixedPaidStatus() {
+      if (confirm('¿Deseas reiniciar los pagos para el nuevo mes?')) {
+        appState.fixedExpenses = appState.fixedExpenses.map(fe => ({ ...fe, paid: false }));
+        saveLocal();
+        renderFixedExpenses();
+        showToast('Gastos fijos reiniciados para el nuevo mes');
+      }
+    }
+
+    function renderFixedExpenses() {
+      const container = document.getElementById('fixed-expenses-container');
+      if (!container) return;
+
+      let totalFixed = 0;
+      let pendingFixed = 0;
+
+      appState.fixedExpenses.forEach(fe => {
+        const amt = Number(fe.amount) || 0;
+        totalFixed += amt;
+        if (!fe.paid) pendingFixed += amt;
+      });
+
+      document.getElementById('total-fixed-metric').textContent = `$${totalFixed.toFixed(2)}`;
+      document.getElementById('pending-fixed-metric').textContent = `$${pendingFixed.toFixed(2)}`;
+
+      if (appState.fixedExpenses.length === 0) {
+        container.innerHTML = `<div class="card font-mono" style="text-align: center; color: #64748b; font-size: 11px;">NO HAY GASTOS FIJOS O SUSCRIPCIONES</div>`;
+        return;
+      }
+
+      container.innerHTML = appState.fixedExpenses.map(fe => {
+        let cardLabel = 'Efectivo';
+        if (fe.cardId !== 'efectivo') {
+          const c = appState.cards.find(x => x.id === parseInt(fe.cardId));
+          if (c) cardLabel = `${c.name} [${c.type}]`;
+        }
+
+        return `
+          <div class="card font-mono" style="border-left: 3px solid ${fe.paid ? 'var(--success)' : 'var(--blue)'}; margin-bottom: 8px; ${fe.paid ? 'opacity: 0.4;' : ''}">
+            <div style="display: flex; justify-content: space-between; align-items: center;">
+              <div style="display: flex; align-items: center; gap: 8px;">
+                <input type="checkbox" ${fe.paid ? 'checked' : ''} onchange="toggleFixedExpensePaid(${fe.id})" style="width: 18px; height: 18px; margin: 0; cursor: pointer;">
+                <div>
+                  <p style="font-size: 12px; font-weight: 700; ${fe.paid ? 'text-decoration: line-through; color: #64748b;' : 'color: #fff;'}">${fe.concept}</p>
+                  <span style="font-size: 10px; color: #94a3b8;">Día ${fe.payday} de cada mes • ${cardLabel}</span>
+                </div>
+              </div>
+              <div style="display: flex; align-items: center; gap: 8px;">
+                <span style="font-size: 12px; font-weight: 800; color: ${fe.paid ? 'var(--success)' : 'var(--blue)'};">$${Number(fe.amount).toFixed(2)}</span>
+                <button type="button" onclick="deleteFixedExpense(${fe.id})" style="background: none; color: #64748b; font-size: 11px;">X</button>
+              </div>
+            </div>
+          </div>
+        `;
+      }).join('');
     }
 
     function renderCards() {
@@ -1855,6 +2044,8 @@
         renderKeepNotes();
         renderCards();
         populateCardSelect();
+        populateFixedCardSelect();
+        renderFixedExpenses();
         renderExpenses();
       } catch(e) {}
     }
