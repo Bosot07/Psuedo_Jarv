@@ -174,6 +174,15 @@
       text-transform: uppercase;
       width: 100%;
     }
+    .btn-success {
+      background: var(--success);
+      color: #000;
+      padding: 10px 14px;
+      border-radius: 12px;
+      font-size: 11px;
+      text-transform: uppercase;
+      width: 100%;
+    }
 
     input, select, textarea {
       width: 100%;
@@ -311,7 +320,7 @@
     <div class="header-inner">
       <div style="display: flex; align-items: center; gap: 8px;">
         <div class="logo-box">
-          <img id="app-logo" src="logo.png?v=80" 
+          <img id="app-logo" src="logo.png?v=95" 
                onerror="this.onerror=null; this.src='https://assets.stickpng.com/images/628c85c2bbec114743bed4bd.png'" 
                alt="Toros Negros">
         </div>
@@ -447,7 +456,7 @@
       </div>
 
       <div class="card" style="border-left: 3px solid #a855f7;">
-        <span class="font-mono" style="font-size: 11px; font-weight: 700; color: #a855f7; display: block; margin-bottom: 4px;">04 • COLACIÓN VESPERTINA (SNACK 2)</span>
+        <span class="font-mono" style="font-size: 11px; font-weight: 700; color: var(--a855f7); display: block; margin-bottom: 4px;">04 • COLACIÓN VESPERTINA (SNACK 2)</span>
         <textarea id="diet-colacion2" placeholder="Snack 2..." oninput="autoResizeTextarea(this)"></textarea>
       </div>
 
@@ -510,7 +519,7 @@
       <div id="keep-notes-grid" class="grid-2"></div>
     </section>
 
-    <!-- 5. TARJETAS, FINANZAS, COBRANZAS, DEUDAS PERSONALES & GASTOS FIJOS -->
+    <!-- 5. TARJETAS, FINANZAS, INGRESOS & GASTOS -->
     <section id="tab-finances" style="display: none;">
       <!-- BALANCE GLOBAL COMPLETO -->
       <div class="card font-mono" style="padding: 10px;">
@@ -519,7 +528,7 @@
           <span id="total-debt-metric" style="color: var(--danger); font-weight: 800;">$0.00</span>
         </div>
         <div style="display: flex; justify-content: space-between; font-size: 11px; margin-bottom: 4px;">
-          <span style="color: #64748b;">DEUDAS PERSONALES (A QUIÉN LE DEBO):</span>
+          <span style="color: #64748b;">DEUDAS PERSONALES (POR PAGAR):</span>
           <span id="total-personal-debt-metric" style="color: var(--orange); font-weight: 800;">$0.00</span>
         </div>
         <div style="display: flex; justify-content: space-between; font-size: 11px; margin-bottom: 4px; border-top: 1px solid #1e293b; padding-top: 4px;">
@@ -540,31 +549,36 @@
         </div>
       </div>
 
-      <!-- SECCIÓN A: MIS TARJETAS -->
+      <!-- SECCIÓN A: MIS TARJETAS CON BOTÓN [+ AGREGAR] Y [AGRUPAR] -->
       <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;" class="font-mono">
-        <span style="font-size: 11px; font-weight: 700; color: var(--primary);">MIS TARJETAS (TDC Y TDD)</span>
-        <button type="button" onclick="openModal('card-modal')" style="background: none; color: var(--primary); font-size: 10px; text-decoration: underline;">
-          + AGREGAR TARJETA
-        </button>
+        <span style="font-size: 11px; font-weight: 700; color: var(--primary);">MIS TARJETAS</span>
+        <div style="display: flex; gap: 6px;">
+          <button type="button" id="btn-group-cards" onclick="toggleCardGrouping()" class="btn-secondary" style="padding: 4px 8px; font-size: 9px;">
+            [AGRUPAR]
+          </button>
+          <button type="button" onclick="openModal('card-modal')" class="btn-secondary" style="color: var(--primary); border-color: var(--primary); padding: 4px 8px; font-size: 9px;">
+            [+ AGREGAR]
+          </button>
+        </div>
       </div>
 
       <div id="cards-container"></div>
 
-      <!-- SECCIÓN B: DEUDAS PERSONALES (A QUIÉN LE DEBO DINERO) -->
+      <!-- SECCIÓN B: DEUDAS PERSONALES -->
       <div style="display: flex; justify-content: space-between; align-items: center; margin: 14px 0 8px 0;" class="font-mono">
         <span style="font-size: 11px; font-weight: 700; color: var(--orange);">DEUDAS PERSONALES (A QUIÉN LE DEBO)</span>
-        <button type="button" onclick="openModal('personal-debt-modal')" style="background: none; color: var(--orange); font-size: 10px; text-decoration: underline;">
-          + AGREGAR DEUDA
+        <button type="button" onclick="openModal('personal-debt-modal')" class="btn-secondary" style="color: var(--orange); border-color: var(--orange); padding: 4px 8px; font-size: 9px;">
+          [+ AGREGAR]
         </button>
       </div>
 
       <div id="personal-debts-container"></div>
 
-      <!-- SECCIÓN C: COBRANZAS (QUIÉN ME DEBE DINERO) -->
+      <!-- SECCIÓN C: COBRANZAS -->
       <div style="display: flex; justify-content: space-between; align-items: center; margin: 14px 0 8px 0;" class="font-mono">
         <span style="font-size: 11px; font-weight: 700; color: var(--success);">COBRANZAS (QUIÉN ME DEBE DINERO)</span>
-        <button type="button" onclick="openModal('receivable-modal')" style="background: none; color: var(--success); font-size: 10px; text-decoration: underline;">
-          + AGREGAR COBRO
+        <button type="button" onclick="openModal('receivable-modal')" class="btn-secondary" style="color: var(--success); border-color: var(--success); padding: 4px 8px; font-size: 9px;">
+          [+ AGREGAR]
         </button>
       </div>
 
@@ -573,32 +587,43 @@
       <!-- SECCIÓN D: GASTOS MENSUALES FIJOS & SUSCRIPCIONES -->
       <div style="display: flex; justify-content: space-between; align-items: center; margin: 14px 0 8px 0;" class="font-mono">
         <span style="font-size: 11px; font-weight: 700; color: var(--blue);">GASTOS MENSUALES FIJOS</span>
-        <div style="display: flex; gap: 8px;">
+        <div style="display: flex; gap: 6px;">
           <button type="button" onclick="resetFixedPaidStatus()" style="background: none; color: #64748b; font-size: 9px; text-decoration: underline;">
             Reiniciar Mes
           </button>
-          <button type="button" onclick="openModal('fixed-expense-modal')" style="background: none; color: var(--blue); font-size: 10px; text-decoration: underline;">
-            + AGREGAR FIJO
+          <button type="button" onclick="openModal('fixed-expense-modal')" class="btn-secondary" style="color: var(--blue); border-color: var(--blue); padding: 4px 8px; font-size: 9px;">
+            [+ AGREGAR]
           </button>
         </div>
       </div>
 
       <div id="fixed-expenses-container"></div>
 
-      <!-- SECCIÓN E: REGISTRAR GASTO DIARIO -->
+      <!-- SECCIÓN E: REGISTRAR MOVIMIENTO (GASTO O INGRESO) -->
       <form id="expense-form" class="card font-mono" style="margin-top: 14px;">
-        <span style="font-size: 11px; font-weight: 700; color: var(--danger); display: block; margin-bottom: 8px;">REGISTRAR GASTO DEL DÍA</span>
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+          <span style="font-size: 11px; font-weight: 700;">REGISTRAR MOVIMIENTO</span>
+          <div style="display: flex; gap: 4px;">
+            <button type="button" id="btn-type-expense" onclick="setMovementType('expense')" class="btn-danger" style="padding: 4px 8px; font-size: 9px;">
+              GASTO (-)
+            </button>
+            <button type="button" id="btn-type-income" onclick="setMovementType('income')" class="btn-secondary" style="padding: 4px 8px; font-size: 9px; border-color: var(--success); color: var(--success);">
+              INGRESO (+)
+            </button>
+          </div>
+        </div>
+
         <select id="expense-card" required></select>
         <div class="grid-2">
           <input type="text" id="expense-concept" placeholder="Concepto (ej: Súper)" required>
           <input type="number" step="0.01" id="expense-amount" placeholder="Monto $" required>
         </div>
-        <button type="submit" class="btn-danger">Aplicar Gasto</button>
+        <button type="submit" id="expense-submit-btn" class="btn-danger">Aplicar Gasto (-)</button>
       </form>
 
       <!-- SECCIÓN F: ÚLTIMOS MOVIMIENTOS -->
       <div class="font-mono">
-        <span style="font-size: 10px; color: #64748b; display: block; margin-bottom: 6px;">ÚLTIMOS MOVIMIENTOS (EDITAR / ELIMINAR)</span>
+        <span style="font-size: 10px; color: #64748b; display: block; margin-bottom: 6px;">ÚLTIMOS MOVIMIENTOS (GASTOS E INGRESOS)</span>
         <div id="expenses-list"></div>
       </div>
     </section>
@@ -616,9 +641,33 @@
     </div>
   </nav>
 
-  <!-- ========================================== -->
-  <!-- MODAL: AGREGAR DEUDA PERSONAL (A QUIÉN LE DEBO) -->
-  <!-- ========================================== -->
+  <!-- MODAL: DEPOSITAR DINERO A DÉBITO -->
+  <div id="deposit-modal" class="modal-overlay" style="display: none;" onclick="if(event.target === this) closeModal('deposit-modal')">
+    <div class="modal-content font-mono">
+      <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #1e293b; padding-bottom: 8px; margin-bottom: 12px;">
+        <span style="font-size: 12px; font-weight: 800; color: var(--success);">INGRESAR DINERO A DÉBITO</span>
+        <button type="button" onclick="closeModal('deposit-modal')" class="btn-secondary" style="padding: 2px 8px;">X</button>
+      </div>
+      <p id="deposit-card-title" style="font-size: 12px; font-weight: 700; margin-bottom: 4px;">Tarjeta</p>
+      <p style="font-size: 11px; color: #94a3b8; margin-bottom: 10px;">Saldo actual: <b id="deposit-card-balance" style="color: var(--success);">$0.00</b></p>
+      
+      <div class="grid-3" style="margin-bottom: 8px;">
+        <button type="button" onclick="setDepositAmount(500)" class="btn-secondary">+$500</button>
+        <button type="button" onclick="setDepositAmount(1000)" class="btn-secondary">+$1,000</button>
+        <button type="button" onclick="setDepositAmount(5000)" class="btn-secondary" style="color: var(--success);">+$5,000</button>
+      </div>
+
+      <input type="text" id="deposit-concept-input" placeholder="Concepto (ej: Nómina, Venta, Depósito)">
+      <input type="number" step="0.01" id="deposit-amount-input" placeholder="Monto a depositar $">
+      
+      <div class="grid-2">
+        <button type="button" onclick="closeModal('deposit-modal')" class="btn-secondary">Cancelar</button>
+        <button type="button" onclick="confirmCardDeposit()" class="btn-primary" style="background: var(--success); color: #000;">Confirmar Ingreso</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL: AGREGAR DEUDA PERSONAL -->
   <div id="personal-debt-modal" class="modal-overlay" style="display: none;" onclick="if(event.target === this) closeModal('personal-debt-modal')">
     <div class="modal-content font-mono">
       <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #1e293b; padding-bottom: 8px; margin-bottom: 12px;">
@@ -626,9 +675,9 @@
         <button type="button" onclick="closeModal('personal-debt-modal')" class="btn-secondary" style="padding: 2px 8px;">X</button>
       </div>
 
-      <input type="text" id="pdeb-name" placeholder="¿A quién le debes? (Nombre de la persona)" required>
-      <input type="text" id="pdeb-concept" placeholder="Concepto (ej: Me pagó la cena, Préstamo)">
-      <input type="number" step="0.01" id="pdeb-amount" placeholder="Monto total que le debes $" required>
+      <input type="text" id="pdeb-name" placeholder="¿A quién le debes? (Nombre)" required>
+      <input type="text" id="pdeb-concept" placeholder="Concepto (ej: Me pagó la cena)">
+      <input type="number" step="0.01" id="pdeb-amount" placeholder="Monto total que debes $" required>
       <label style="font-size: 9px; color: #64748b; display: block; margin-bottom: 2px;">FECHA COMPROMISO DE PAGO (OPCIONAL):</label>
       <input type="date" id="pdeb-duedate">
 
@@ -656,7 +705,7 @@
     </div>
   </div>
 
-  <!-- MODAL: AGREGAR COBRANZA (QUIÉN ME DEBE) -->
+  <!-- MODAL: AGREGAR COBRANZA -->
   <div id="receivable-modal" class="modal-overlay" style="display: none;" onclick="if(event.target === this) closeModal('receivable-modal')">
     <div class="modal-content font-mono">
       <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #1e293b; padding-bottom: 8px; margin-bottom: 12px;">
@@ -694,15 +743,20 @@
     </div>
   </div>
 
-  <!-- MODAL: EDITAR GASTO -->
+  <!-- MODAL: EDITAR GASTO O INGRESO -->
   <div id="edit-expense-modal" class="modal-overlay" style="display: none;" onclick="if(event.target === this) closeModal('edit-expense-modal')">
     <div class="modal-content font-mono">
       <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #1e293b; padding-bottom: 8px; margin-bottom: 12px;">
-        <span style="font-size: 12px; font-weight: 800; color: var(--primary);">EDITAR GASTO</span>
+        <span style="font-size: 12px; font-weight: 800; color: var(--primary);">EDITAR MOVIMIENTO</span>
         <button type="button" onclick="closeModal('edit-expense-modal')" class="btn-secondary" style="padding: 2px 8px;">X</button>
       </div>
       <input type="text" id="edit-exp-concept" placeholder="Concepto">
       <input type="number" step="0.01" id="edit-exp-amount" placeholder="Monto $">
+      <label style="font-size: 9px; color: #64748b; display: block; margin-bottom: 2px;">TIPO:</label>
+      <select id="edit-exp-type">
+        <option value="expense">Gasto (-)</option>
+        <option value="income">Ingreso (+)</option>
+      </select>
       <label style="font-size: 9px; color: #64748b; display: block; margin-bottom: 2px;">TARJETA:</label>
       <select id="edit-exp-card"></select>
       <div class="grid-2" style="margin-top: 8px;">
@@ -766,7 +820,7 @@
         </div>
       </div>
 
-      <!-- AVISOS Y NOTIFICACIONES -->
+      <!-- NOTIFICACIONES -->
       <div style="background: #090d16; padding: 10px; border-radius: 12px; border: 1px solid #1e293b; margin-bottom: 12px;">
         <span style="font-size: 10px; color: var(--primary); font-weight: 800; display: block; margin-bottom: 6px;">
           AVISOS Y NOTIFICACIONES
@@ -857,7 +911,6 @@
           <span id="auto-sync-status-text" style="font-size: 10px; font-weight: 800; color: var(--success);">CONECTADO 🟢</span>
         </div>
 
-        <!-- ACCIONES MANUALES DE EMERGENCIA -->
         <div class="grid-2" style="margin-bottom: 8px;">
           <button type="button" onclick="pushToCloudDirect(true)" class="btn-primary" style="padding: 8px; font-size: 10px;">
             ⬆ FORZAR SUBIR
@@ -867,7 +920,6 @@
           </button>
         </div>
 
-        <!-- DIAGNÓSTICO EN VIVO -->
         <button type="button" onclick="testFirebaseLiveConnection()" class="btn-secondary" style="width: 100%; font-size: 9px; margin-bottom: 10px; color: var(--blue); border-color: var(--blue);">
           [PROBAR CONEXIÓN CON GOOGLE]
         </button>
@@ -916,11 +968,11 @@
     </div>
   </div>
 
-  <!-- MODAL: ABONO TARJETA -->
+  <!-- MODAL: ABONO TARJETA TDC -->
   <div id="payment-modal" class="modal-overlay" style="display: none;" onclick="if(event.target === this) closeModal('payment-modal')">
     <div class="modal-content font-mono">
       <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #1e293b; padding-bottom: 8px; margin-bottom: 12px;">
-        <span style="font-size: 12px; font-weight: 800; color: var(--primary);">ABONAR A TARJETA</span>
+        <span style="font-size: 12px; font-weight: 800; color: var(--primary);">ABONAR A TARJETA DE CRÉDITO</span>
         <button type="button" onclick="closeModal('payment-modal')" class="btn-secondary" style="padding: 2px 8px;">X</button>
       </div>
       <p id="pay-card-title" style="font-size: 12px; font-weight: 700; margin-bottom: 4px;">Tarjeta</p>
@@ -1092,7 +1144,7 @@
       expenses: safeArray('cc_expenses'),
       fixedExpenses: safeArray('cc_fixed_expenses'),
       debtsReceivable: safeArray('cc_debts_receivable'),
-      personalDebts: safeArray('cc_personal_debts'), // A QUIÉN LE DEBO DINERO YO
+      personalDebts: safeArray('cc_personal_debts'),
       notifs: safeObject('cc_notifs')
     };
 
@@ -1111,6 +1163,9 @@
     let activeReceivableId = null;
     let activePersonalDebtId = null;
     let activeEditingExpenseId = null;
+    let activeDepositCardId = null;
+    let currentMovementType = 'expense';
+    let isCardsGrouped = localStorage.getItem('cc_cards_grouped') === 'true';
 
     let firebaseUrl = localStorage.getItem('cc_firebase_url') || 'https://ultron-force-default-rtdb.firebaseio.com';
     let autoSyncKey = localStorage.getItem('cc_auto_sync_key') || 'ULTRON';
@@ -1960,8 +2015,17 @@
     }
 
     // ==========================================
-    // 5. TARJETAS, DEUDAS PERSONALES Y COBRANZAS
+    // 5. TARJETAS (CON AGRUPAR Y + AGREGAR)
     // ==========================================
+    function toggleCardGrouping() {
+      isCardsGrouped = !isCardsGrouped;
+      localStorage.setItem('cc_cards_grouped', String(isCardsGrouped));
+      const btn = document.getElementById('btn-group-cards');
+      if (btn) btn.textContent = isCardsGrouped ? '[DESAGRUPAR]' : '[AGRUPAR]';
+      renderCards();
+      showToast(isCardsGrouped ? 'Tarjetas agrupadas por Crédito y Débito' : 'Tarjetas en lista continua');
+    }
+
     function toggleCardInputs() {
       const isTDC = document.getElementById('card-type').value === 'TDC';
       document.getElementById('tdc-fields').style.display = isTDC ? 'block' : 'none';
@@ -2045,10 +2109,122 @@
         return c;
       });
 
+      appState.expenses.unshift({
+        id: Date.now(),
+        cardId: activePayingCardId,
+        concept: 'Abono / Pago de Tarjeta',
+        amount: amount,
+        type: 'income',
+        dateFormatted: formatToDDMMAA(new Date())
+      });
+
       saveLocal();
       closeModal('payment-modal');
       renderCards();
+      renderExpenses();
       showToast(`Abono de $${amount.toFixed(2)} registrado`);
+    }
+
+    function openDepositModal(cardId) {
+      const card = appState.cards.find(c => c.id === cardId);
+      if (!card) return;
+      activeDepositCardId = cardId;
+      document.getElementById('deposit-card-title').textContent = `${card.name} (TDD Débito)`;
+      document.getElementById('deposit-card-balance').textContent = `$${(Number(card.balance) || 0).toFixed(2)}`;
+      document.getElementById('deposit-amount-input').value = '';
+      document.getElementById('deposit-concept-input').value = '';
+      openModal('deposit-modal');
+    }
+
+    function setDepositAmount(amount) {
+      document.getElementById('deposit-amount-input').value = amount;
+    }
+
+    function confirmCardDeposit() {
+      const amount = parseFloat(document.getElementById('deposit-amount-input').value);
+      const concept = document.getElementById('deposit-concept-input').value.trim() || 'Depósito / Ingreso';
+
+      if (!amount || isNaN(amount) || amount <= 0) return showToast('Ingresa un monto válido', true);
+
+      appState.cards = appState.cards.map(c => {
+        if (c.id === activeDepositCardId) {
+          c.balance = (Number(c.balance) || 0) + amount;
+        }
+        return c;
+      });
+
+      appState.expenses.unshift({
+        id: Date.now(),
+        cardId: activeDepositCardId,
+        concept: concept,
+        amount: amount,
+        type: 'income',
+        dateFormatted: formatToDDMMAA(new Date())
+      });
+
+      saveLocal();
+      closeModal('deposit-modal');
+      renderCards();
+      renderExpenses();
+      showToast(`Ingreso de $${amount.toFixed(2)} agregado con éxito`);
+    }
+
+    function renderSingleCard(c) {
+      const transferButtons = `
+        <div style="display: flex; gap: 6px; margin-top: 6px; flex-wrap: wrap;">
+          ${c.clabe ? `<button type="button" onclick="copyCardTransferDetails('${c.clabe}', 'CLABE')" class="btn-secondary" style="padding: 3px 6px; font-size: 9px; color: var(--primary);">[COPIAR CLABE]</button>` : ''}
+          ${c.account ? `<button type="button" onclick="copyCardTransferDetails('${c.account}', 'CUENTA')" class="btn-secondary" style="padding: 3px 6px; font-size: 9px; color: var(--blue);">[COPIAR NO. CUENTA]</button>` : ''}
+        </div>
+      `;
+
+      if (c.type === 'TDC') {
+        const limit = Number(c.limit) || 0;
+        const debt = Number(c.debt) || 0;
+        const available = Math.max(0, limit - debt);
+        const usedPct = limit > 0 ? Math.min(100, Math.round((debt / limit) * 100)) : 0;
+
+        return `
+          <div class="card font-mono" style="border-color: rgba(245,158,11,0.5);">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px;">
+              <span style="font-size: 9px; color: var(--primary); font-weight: 800;">[TDC CRÉDITO]</span>
+              <button type="button" onclick="deleteCard(${c.id})" style="background: none; color: #64748b; font-size: 11px;">X</button>
+            </div>
+            <p style="font-size: 13px; font-weight: 800; color: #fff;">${c.name}</p>
+            <div style="display: flex; justify-content: space-between; font-size: 10px; margin: 6px 0;">
+              <span style="color: var(--danger);">Deuda: $${debt.toFixed(2)}</span>
+              <span style="color: var(--success);">Disp: $${available.toFixed(2)}</span>
+            </div>
+            <div style="width: 100%; height: 6px; background: #090d16; border-radius: 3px; overflow: hidden; margin-bottom: 6px;">
+              <div style="width: ${usedPct}%; height: 100%; background: var(--danger);"></div>
+            </div>
+            ${transferButtons}
+            <div style="display: flex; justify-content: space-between; align-items: center; font-size: 10px; color: #64748b; border-top: 1px solid #1e293b; padding-top: 6px; margin-top: 6px;">
+              <span>Corte: día ${c.cutoff} • Pago: día ${c.payday}</span>
+              <button type="button" onclick="openPaymentModal(${c.id})" style="background: none; color: var(--primary); font-weight: 800;">[+ ABONAR]</button>
+            </div>
+          </div>
+        `;
+      } else {
+        const balance = Number(c.balance) || 0;
+        return `
+          <div class="card font-mono" style="border-color: rgba(16,185,129,0.5);">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px;">
+              <span style="font-size: 9px; color: var(--success); font-weight: 800;">[TDD DÉBITO]</span>
+              <button type="button" onclick="deleteCard(${c.id})" style="background: none; color: #64748b; font-size: 11px;">X</button>
+            </div>
+            <p style="font-size: 13px; font-weight: 800; color: #fff;">${c.name}</p>
+            <div style="margin: 6px 0;">
+              <span style="font-size: 9px; color: #64748b;">SALDO DISPONIBLE:</span>
+              <p style="font-size: 15px; font-weight: 800; color: var(--success);">$${balance.toFixed(2)}</p>
+            </div>
+            ${transferButtons}
+            <div style="display: flex; justify-content: space-between; align-items: center; font-size: 10px; color: #64748b; border-top: 1px solid #1e293b; padding-top: 6px; margin-top: 6px;">
+              <span>Cuenta de nómina / débito</span>
+              <button type="button" onclick="openDepositModal(${c.id})" style="background: none; color: var(--success); font-weight: 800;">[+ INGRESAR DINERO]</button>
+            </div>
+          </div>
+        `;
+      }
     }
 
     function renderCards() {
@@ -2065,68 +2241,235 @@
       document.getElementById('total-debt-metric').textContent = `$${totalDebt.toFixed(2)}`;
       document.getElementById('total-liquidity-metric').textContent = `$${totalLiquidity.toFixed(2)}`;
 
+      const btnGroup = document.getElementById('btn-group-cards');
+      if (btnGroup) btnGroup.textContent = isCardsGrouped ? '[DESAGRUPAR]' : '[AGRUPAR]';
+
       if (appState.cards.length === 0) {
         container.innerHTML = `<div class="card font-mono" style="text-align: center; color: #64748b; font-size: 11px;">NO HAY TARJETAS REGISTRADAS</div>`;
         return;
       }
 
-      container.innerHTML = appState.cards.map(c => {
-        const transferButtons = `
-          <div style="display: flex; gap: 6px; margin-top: 6px; flex-wrap: wrap;">
-            ${c.clabe ? `<button type="button" onclick="copyCardTransferDetails('${c.clabe}', 'CLABE')" class="btn-secondary" style="padding: 3px 6px; font-size: 9px; color: var(--primary);">[COPIAR CLABE]</button>` : ''}
-            ${c.account ? `<button type="button" onclick="copyCardTransferDetails('${c.account}', 'CUENTA')" class="btn-secondary" style="padding: 3px 6px; font-size: 9px; color: var(--blue);">[COPIAR NO. CUENTA]</button>` : ''}
+      if (isCardsGrouped) {
+        const tdcCards = appState.cards.filter(c => c.type === 'TDC');
+        const tddCards = appState.cards.filter(c => c.type === 'TDD');
+
+        let html = '';
+        if (tdcCards.length > 0) {
+          html += `<p class="font-mono" style="font-size: 10px; font-weight: 800; color: var(--primary); margin: 6px 0 4px 2px;">-- CRÉDITO (TDC) --</p>`;
+          html += tdcCards.map(renderSingleCard).join('');
+        }
+        if (tddCards.length > 0) {
+          html += `<p class="font-mono" style="font-size: 10px; font-weight: 800; color: var(--success); margin: 10px 0 4px 2px;">-- DÉBITO (TDD) --</p>`;
+          html += tddCards.map(renderSingleCard).join('');
+        }
+        container.innerHTML = html;
+      } else {
+        container.innerHTML = appState.cards.map(renderSingleCard).join('');
+      }
+    }
+
+    function setMovementType(type) {
+      currentMovementType = type;
+      const btnExp = document.getElementById('btn-type-expense');
+      const btnInc = document.getElementById('btn-type-income');
+      const btnSubmit = document.getElementById('expense-submit-btn');
+
+      if (type === 'expense') {
+        btnExp.className = 'btn-danger';
+        btnInc.className = 'btn-secondary';
+        btnInc.style.borderColor = 'var(--success)';
+        btnInc.style.color = 'var(--success)';
+        btnSubmit.className = 'btn-danger';
+        btnSubmit.textContent = 'Aplicar Gasto (-)';
+      } else {
+        btnExp.className = 'btn-secondary';
+        btnExp.style.borderColor = 'var(--danger)';
+        btnExp.style.color = 'var(--danger)';
+        btnInc.className = 'btn-success';
+        btnSubmit.className = 'btn-success';
+        btnSubmit.textContent = 'Registrar Ingreso (+)';
+      }
+    }
+
+    function populateCardSelect() {
+      const select = document.getElementById('expense-card');
+      if (!select) return;
+      if (appState.cards.length === 0) {
+        select.innerHTML = '<option value="">Primero agrega una tarjeta</option>';
+        return;
+      }
+      select.innerHTML = appState.cards.map(c => `
+        <option value="${c.id}">${c.name} (${c.type})</option>
+      `).join('');
+    }
+
+    document.getElementById('expense-form').addEventListener('submit', (e) => {
+      e.preventDefault();
+      const cardId = parseInt(document.getElementById('expense-card').value);
+      const concept = document.getElementById('expense-concept').value.trim();
+      const amount = parseFloat(document.getElementById('expense-amount').value);
+
+      if (!cardId || isNaN(amount) || amount <= 0) return;
+
+      const card = appState.cards.find(c => c.id === cardId);
+      if (!card) return;
+
+      if (currentMovementType === 'income') {
+        if (card.type === 'TDD') {
+          card.balance = (Number(card.balance) || 0) + amount;
+        } else {
+          card.debt = Math.max(0, (Number(card.debt) || 0) - amount);
+        }
+      } else {
+        if (card.type === 'TDC') {
+          card.debt = (Number(card.debt) || 0) + amount;
+        } else {
+          card.balance = (Number(card.balance) || 0) - amount;
+        }
+      }
+
+      appState.expenses.unshift({
+        id: Date.now(),
+        cardId,
+        concept,
+        amount,
+        type: currentMovementType,
+        dateFormatted: formatToDDMMAA(new Date())
+      });
+
+      saveLocal();
+      e.target.reset();
+      setMovementType('expense');
+      renderCards();
+      populateCardSelect();
+      renderExpenses();
+      showToast(currentMovementType === 'income' ? 'Ingreso registrado (+)' : 'Gasto registrado (-)');
+    });
+
+    function deleteExpenseItem(id) {
+      const exp = appState.expenses.find(x => x.id === id);
+      if (!exp) return;
+
+      appState.cards = appState.cards.map(c => {
+        if (c.id === exp.cardId) {
+          if (exp.type === 'income') {
+            if (c.type === 'TDD') c.balance = (Number(c.balance) || 0) - exp.amount;
+            if (c.type === 'TDC') c.debt = (Number(c.debt) || 0) + exp.amount;
+          } else {
+            if (c.type === 'TDC') c.debt = Math.max(0, (Number(c.debt) || 0) - exp.amount);
+            if (c.type === 'TDD') c.balance = (Number(c.balance) || 0) + exp.amount;
+          }
+        }
+        return c;
+      });
+
+      appState.expenses = appState.expenses.filter(x => x.id !== id);
+      saveLocal();
+      renderCards();
+      renderExpenses();
+      showToast('Movimiento eliminado y saldo restaurado');
+    }
+
+    function openEditExpenseModal(id) {
+      const exp = appState.expenses.find(x => x.id === id);
+      if (!exp) return;
+      activeEditingExpenseId = id;
+      document.getElementById('edit-exp-concept').value = exp.concept;
+      document.getElementById('edit-exp-amount').value = exp.amount;
+      document.getElementById('edit-exp-type').value = exp.type || 'expense';
+
+      const select = document.getElementById('edit-exp-card');
+      select.innerHTML = appState.cards.map(c => `
+        <option value="${c.id}" ${c.id === exp.cardId ? 'selected' : ''}>${c.name} (${c.type})</option>
+      `).join('');
+
+      openModal('edit-expense-modal');
+    }
+
+    function saveEditedExpense() {
+      const exp = appState.expenses.find(x => x.id === activeEditingExpenseId);
+      if (!exp) return;
+
+      const newConcept = document.getElementById('edit-exp-concept').value.trim();
+      const newAmount = parseFloat(document.getElementById('edit-exp-amount').value);
+      const newCardId = parseInt(document.getElementById('edit-exp-card').value);
+      const newType = document.getElementById('edit-exp-type').value;
+
+      if (!newConcept || isNaN(newAmount) || newAmount <= 0) {
+        return showToast('Ingresa concepto y monto válidos', true);
+      }
+
+      appState.cards = appState.cards.map(c => {
+        if (c.id === exp.cardId) {
+          if (exp.type === 'income') {
+            if (c.type === 'TDD') c.balance = (Number(c.balance) || 0) - exp.amount;
+            if (c.type === 'TDC') c.debt = (Number(c.debt) || 0) + exp.amount;
+          } else {
+            if (c.type === 'TDC') c.debt = Math.max(0, (Number(c.debt) || 0) - exp.amount);
+            if (c.type === 'TDD') c.balance = (Number(c.balance) || 0) + exp.amount;
+          }
+        }
+        return c;
+      });
+
+      appState.cards = appState.cards.map(c => {
+        if (c.id === newCardId) {
+          if (newType === 'income') {
+            if (c.type === 'TDD') c.balance = (Number(c.balance) || 0) + newAmount;
+            if (c.type === 'TDC') c.debt = Math.max(0, (Number(c.debt) || 0) - newAmount);
+          } else {
+            if (c.type === 'TDC') c.debt = (Number(c.debt) || 0) + newAmount;
+            if (c.type === 'TDD') c.balance = (Number(c.balance) || 0) - newAmount;
+          }
+        }
+        return c;
+      });
+
+      exp.concept = newConcept;
+      exp.amount = newAmount;
+      exp.cardId = newCardId;
+      exp.type = newType;
+
+      saveLocal();
+      closeModal('edit-expense-modal');
+      renderCards();
+      renderExpenses();
+      showToast('Movimiento modificado');
+    }
+
+    function renderExpenses() {
+      const list = document.getElementById('expenses-list');
+      if (!list) return;
+      if (appState.expenses.length === 0) {
+        list.innerHTML = `<p class="font-mono" style="text-align: center; color: #64748b; font-size: 10px; padding: 12px 0;">SIN MOVIMIENTOS</p>`;
+        return;
+      }
+      list.innerHTML = appState.expenses.slice(0, 15).map(exp => {
+        const card = appState.cards.find(c => c.id === exp.cardId);
+        const cardLabel = card ? `${card.name} [${card.type}]` : 'Tarjeta';
+        const amount = Number(exp.amount) || 0;
+        const isIncome = exp.type === 'income';
+
+        return `
+          <div class="card font-mono" style="display: flex; justify-content: space-between; align-items: center; padding: 8px 12px; margin-bottom: 6px; border-left: 3px solid ${isIncome ? 'var(--success)' : 'var(--danger)'};">
+            <div>
+              <p style="font-size: 11px; font-weight: 700; color: #fff;">${exp.concept}</p>
+              <span style="font-size: 9px; color: #64748b;">${cardLabel} • ${exp.dateFormatted}</span>
+            </div>
+            <div style="display: flex; align-items: center; gap: 8px;">
+              <span style="font-size: 11px; font-weight: 800; color: ${isIncome ? 'var(--success)' : 'var(--danger)'};">
+                ${isIncome ? '+' : '-'}$${amount.toFixed(2)}
+              </span>
+              <button type="button" onclick="openEditExpenseModal(${exp.id})" class="btn-secondary" style="padding: 2px 6px; font-size: 9px;">EDITAR</button>
+              <button type="button" onclick="deleteExpenseItem(${exp.id})" style="background: none; color: #64748b; font-size: 11px;">X</button>
+            </div>
           </div>
         `;
-
-        if (c.type === 'TDC') {
-          const limit = Number(c.limit) || 0;
-          const debt = Number(c.debt) || 0;
-          const available = Math.max(0, limit - debt);
-          const usedPct = limit > 0 ? Math.min(100, Math.round((debt / limit) * 100)) : 0;
-
-          return `
-            <div class="card font-mono" style="border-color: rgba(245,158,11,0.5);">
-              <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px;">
-                <span style="font-size: 9px; color: var(--primary); font-weight: 800;">[TDC CRÉDITO]</span>
-                <button type="button" onclick="deleteCard(${c.id})" style="background: none; color: #64748b; font-size: 11px;">X</button>
-              </div>
-              <p style="font-size: 13px; font-weight: 800; color: #fff;">${c.name}</p>
-              <div style="display: flex; justify-content: space-between; font-size: 10px; margin: 6px 0;">
-                <span style="color: var(--danger);">Deuda: $${debt.toFixed(2)}</span>
-                <span style="color: var(--success);">Disp: $${available.toFixed(2)}</span>
-              </div>
-              <div style="width: 100%; height: 6px; background: #090d16; border-radius: 3px; overflow: hidden; margin-bottom: 6px;">
-                <div style="width: ${usedPct}%; height: 100%; background: var(--danger);"></div>
-              </div>
-              ${transferButtons}
-              <div style="display: flex; justify-content: space-between; align-items: center; font-size: 10px; color: #64748b; border-top: 1px solid #1e293b; padding-top: 6px; margin-top: 6px;">
-                <span>Corte: día ${c.cutoff} • Pago: día ${c.payday}</span>
-                <button type="button" onclick="openPaymentModal(${c.id})" style="background: none; color: var(--primary); font-weight: 800;">[+ ABONAR]</button>
-              </div>
-            </div>
-          `;
-        } else {
-          const balance = Number(c.balance) || 0;
-          return `
-            <div class="card font-mono" style="border-color: rgba(16,185,129,0.5);">
-              <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px;">
-                <span style="font-size: 9px; color: var(--success); font-weight: 800;">[TDD DÉBITO]</span>
-                <button type="button" onclick="deleteCard(${c.id})" style="background: none; color: #64748b; font-size: 11px;">X</button>
-              </div>
-              <p style="font-size: 13px; font-weight: 800; color: #fff;">${c.name}</p>
-              <div style="margin: 6px 0;">
-                <span style="font-size: 9px; color: #64748b;">SALDO DISPONIBLE:</span>
-                <p style="font-size: 15px; font-weight: 800; color: var(--success);">$${balance.toFixed(2)}</p>
-              </div>
-              ${transferButtons}
-            </div>
-          `;
-        }
       }).join('');
     }
 
     // ==========================================
-    // DEUDAS PERSONALES (A QUIÉN LE DEBO DINERO YO)
+    // DEUDAS PERSONALES
     // ==========================================
     function addPersonalDebt() {
       const name = document.getElementById('pdeb-name').value.trim();
@@ -2236,7 +2579,7 @@
     }
 
     // ==========================================
-    // COBRANZAS (QUIÉN ME DEBE DINERO A MÍ)
+    // COBRANZAS
     // ==========================================
     function addReceivable() {
       const name = document.getElementById('rec-name').value.trim();
@@ -2450,151 +2793,6 @@
                 <span style="font-size: 12px; font-weight: 800; color: ${fe.paid ? 'var(--success)' : 'var(--blue)'};">$${Number(fe.amount).toFixed(2)}</span>
                 <button type="button" onclick="deleteFixedExpense(${fe.id})" style="background: none; color: #64748b; font-size: 11px;">X</button>
               </div>
-            </div>
-          </div>
-        `;
-      }).join('');
-    }
-
-    // GASTOS DEL DÍA, EDICIÓN Y ELIMINACIÓN
-    function populateCardSelect() {
-      const select = document.getElementById('expense-card');
-      if (!select) return;
-      if (appState.cards.length === 0) {
-        select.innerHTML = '<option value="">Primero agrega una tarjeta</option>';
-        return;
-      }
-      select.innerHTML = appState.cards.map(c => `
-        <option value="${c.id}">${c.name} (${c.type})</option>
-      `).join('');
-    }
-
-    document.getElementById('expense-form').addEventListener('submit', (e) => {
-      e.preventDefault();
-      const cardId = parseInt(document.getElementById('expense-card').value);
-      const concept = document.getElementById('expense-concept').value.trim();
-      const amount = parseFloat(document.getElementById('expense-amount').value);
-
-      if (!cardId || isNaN(amount)) return;
-
-      appState.cards = appState.cards.map(c => {
-        if (c.id === cardId) {
-          if (c.type === 'TDC') c.debt = (Number(c.debt) || 0) + amount;
-          if (c.type === 'TDD') c.balance = (Number(c.balance) || 0) - amount;
-        }
-        return c;
-      });
-
-      appState.expenses.unshift({
-        id: Date.now(),
-        cardId,
-        concept,
-        amount,
-        dateFormatted: formatToDDMMAA(new Date())
-      });
-
-      saveLocal();
-      e.target.reset();
-      renderCards();
-      populateCardSelect();
-      renderExpenses();
-      showToast('Gasto registrado');
-    });
-
-    function deleteExpenseItem(id) {
-      const exp = appState.expenses.find(x => x.id === id);
-      if (!exp) return;
-
-      appState.cards = appState.cards.map(c => {
-        if (c.id === exp.cardId) {
-          if (c.type === 'TDC') c.debt = Math.max(0, (Number(c.debt) || 0) - exp.amount);
-          if (c.type === 'TDD') c.balance = (Number(c.balance) || 0) + exp.amount;
-        }
-        return c;
-      });
-
-      appState.expenses = appState.expenses.filter(x => x.id !== id);
-      saveLocal();
-      renderCards();
-      renderExpenses();
-      showToast('Gasto eliminado y balance restaurado');
-    }
-
-    function openEditExpenseModal(id) {
-      const exp = appState.expenses.find(x => x.id === id);
-      if (!exp) return;
-      activeEditingExpenseId = id;
-      document.getElementById('edit-exp-concept').value = exp.concept;
-      document.getElementById('edit-exp-amount').value = exp.amount;
-
-      const select = document.getElementById('edit-exp-card');
-      select.innerHTML = appState.cards.map(c => `
-        <option value="${c.id}" ${c.id === exp.cardId ? 'selected' : ''}>${c.name} (${c.type})</option>
-      `).join('');
-
-      openModal('edit-expense-modal');
-    }
-
-    function saveEditedExpense() {
-      const exp = appState.expenses.find(x => x.id === activeEditingExpenseId);
-      if (!exp) return;
-
-      const newConcept = document.getElementById('edit-exp-concept').value.trim();
-      const newAmount = parseFloat(document.getElementById('edit-exp-amount').value);
-      const newCardId = parseInt(document.getElementById('edit-exp-card').value);
-
-      if (!newConcept || isNaN(newAmount) || newAmount <= 0) {
-        return showToast('Ingresa concepto y monto válidos', true);
-      }
-
-      appState.cards = appState.cards.map(c => {
-        if (c.id === exp.cardId) {
-          if (c.type === 'TDC') c.debt = Math.max(0, (Number(c.debt) || 0) - exp.amount);
-          if (c.type === 'TDD') c.balance = (Number(c.balance) || 0) + exp.amount;
-        }
-        return c;
-      });
-
-      appState.cards = appState.cards.map(c => {
-        if (c.id === newCardId) {
-          if (c.type === 'TDC') c.debt = (Number(c.debt) || 0) + newAmount;
-          if (c.type === 'TDD') c.balance = (Number(c.balance) || 0) - newAmount;
-        }
-        return c;
-      });
-
-      exp.concept = newConcept;
-      exp.amount = newAmount;
-      exp.cardId = newCardId;
-
-      saveLocal();
-      closeModal('edit-expense-modal');
-      renderCards();
-      renderExpenses();
-      showToast('Gasto modificado y balance recalculado');
-    }
-
-    function renderExpenses() {
-      const list = document.getElementById('expenses-list');
-      if (!list) return;
-      if (appState.expenses.length === 0) {
-        list.innerHTML = `<p class="font-mono" style="text-align: center; color: #64748b; font-size: 10px; padding: 12px 0;">SIN GASTOS</p>`;
-        return;
-      }
-      list.innerHTML = appState.expenses.slice(0, 15).map(exp => {
-        const card = appState.cards.find(c => c.id === exp.cardId);
-        const cardLabel = card ? `${card.name} [${card.type}]` : 'Tarjeta';
-        const amount = Number(exp.amount) || 0;
-        return `
-          <div class="card font-mono" style="display: flex; justify-content: space-between; align-items: center; padding: 8px 12px; margin-bottom: 6px;">
-            <div>
-              <p style="font-size: 11px; font-weight: 700; color: #fff;">${exp.concept}</p>
-              <span style="font-size: 9px; color: #64748b;">${cardLabel} • ${exp.dateFormatted}</span>
-            </div>
-            <div style="display: flex; align-items: center; gap: 8px;">
-              <span style="font-size: 11px; font-weight: 800; color: var(--danger);">-$${amount.toFixed(2)}</span>
-              <button type="button" onclick="openEditExpenseModal(${exp.id})" class="btn-secondary" style="padding: 2px 6px; font-size: 9px;">EDITAR</button>
-              <button type="button" onclick="deleteExpenseItem(${exp.id})" style="background: none; color: #64748b; font-size: 11px;">X</button>
             </div>
           </div>
         `;
