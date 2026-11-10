@@ -306,7 +306,7 @@
     <div class="header-inner">
       <div style="display: flex; align-items: center; gap: 8px;">
         <div class="logo-box">
-          <img id="app-logo" src="logo.png?v=60" 
+          <img id="app-logo" src="logo.png?v=70" 
                onerror="this.onerror=null; this.src='https://assets.stickpng.com/images/628c85c2bbec114743bed4bd.png'" 
                alt="Toros Negros">
         </div>
@@ -454,7 +454,7 @@
       <button type="button" onclick="saveDiet()" class="btn-primary" style="margin-bottom: 12px;">Guardar Menú del Día</button>
     </section>
 
-    <!-- 3. RUTINAS DEL GYM (REPARADO Y BLINDADO) -->
+    <!-- 3. RUTINAS DEL GYM -->
     <section id="tab-gym" style="display: none;">
       <div class="capsules-bar font-mono" id="gym-day-capsules"></div>
 
@@ -541,7 +541,7 @@
 
       <div id="cards-container"></div>
 
-      <!-- SECCIÓN B: COBRANZAS / QUIÉN ME DEBE DINERO (NUEVO) -->
+      <!-- SECCIÓN B: COBRANZAS -->
       <div style="display: flex; justify-content: space-between; align-items: center; margin: 14px 0 8px 0;" class="font-mono">
         <span style="font-size: 11px; font-weight: 700; color: var(--success);">COBRANZAS (QUIÉN ME DEBE DINERO)</span>
         <button type="button" onclick="openModal('receivable-modal')" style="background: none; color: var(--success); font-size: 10px; text-decoration: underline;">
@@ -551,7 +551,7 @@
 
       <div id="receivables-container"></div>
 
-      <!-- SECCIÓN C: GASTOS MENSUALES FIJOS & SUSCRIPCIONES -->
+      <!-- SECCIÓN C: GASTOS MENSUALES FIJOS -->
       <div style="display: flex; justify-content: space-between; align-items: center; margin: 14px 0 8px 0;" class="font-mono">
         <span style="font-size: 11px; font-weight: 700; color: var(--blue);">GASTOS MENSUALES FIJOS</span>
         <div style="display: flex; gap: 8px;">
@@ -577,7 +577,7 @@
         <button type="submit" class="btn-danger">Aplicar Gasto</button>
       </form>
 
-      <!-- SECCIÓN E: ÚLTIMOS MOVIMIENTOS CON EDICIÓN Y ELIMINACIÓN -->
+      <!-- SECCIÓN E: ÚLTIMOS MOVIMIENTOS -->
       <div class="font-mono">
         <span style="font-size: 10px; color: #64748b; display: block; margin-bottom: 6px;">ÚLTIMOS MOVIMIENTOS (EDITAR / ELIMINAR)</span>
         <div id="expenses-list"></div>
@@ -597,9 +597,7 @@
     </div>
   </nav>
 
-  <!-- ========================================== -->
-  <!-- MODAL: AGREGAR DEUDA A FAVOR (COBRANZA)    -->
-  <!-- ========================================== -->
+  <!-- MODAL: AGREGAR DEUDA A FAVOR -->
   <div id="receivable-modal" class="modal-overlay" style="display: none;" onclick="if(event.target === this) closeModal('receivable-modal')">
     <div class="modal-content font-mono">
       <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #1e293b; padding-bottom: 8px; margin-bottom: 12px;">
@@ -607,8 +605,8 @@
         <button type="button" onclick="closeModal('receivable-modal')" class="btn-secondary" style="padding: 2px 8px;">X</button>
       </div>
 
-      <input type="text" id="rec-name" placeholder="¿Quién te debe? (Nombre de la persona)" required>
-      <input type="text" id="rec-concept" placeholder="Concepto (ej: Boleto, Comida, Préstamo)">
+      <input type="text" id="rec-name" placeholder="¿Quién te debe? (Nombre)" required>
+      <input type="text" id="rec-concept" placeholder="Concepto (ej: Boleto, Comida)">
       <input type="number" step="0.01" id="rec-amount" placeholder="Monto total prestado $" required>
       <label style="font-size: 9px; color: #64748b; display: block; margin-bottom: 2px;">FECHA PROMESA DE PAGO (OPCIONAL):</label>
       <input type="date" id="rec-duedate">
@@ -637,7 +635,7 @@
     </div>
   </div>
 
-  <!-- MODAL: EDITAR GASTO EXISTENTE -->
+  <!-- MODAL: EDITAR GASTO -->
   <div id="edit-expense-modal" class="modal-overlay" style="display: none;" onclick="if(event.target === this) closeModal('edit-expense-modal')">
     <div class="modal-content font-mono">
       <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #1e293b; padding-bottom: 8px; margin-bottom: 12px;">
@@ -688,7 +686,7 @@
         <button type="button" onclick="closeModal('config-modal')" class="btn-secondary" style="padding: 2px 8px;">X</button>
       </div>
 
-      <!-- SECCIÓN 1: TEMAS VISUALES -->
+      <!-- TEMAS VISUALES -->
       <div style="background: #090d16; padding: 10px; border-radius: 12px; border: 1px solid #1e293b; margin-bottom: 12px;">
         <span style="font-size: 10px; color: var(--primary); font-weight: 800; display: block; margin-bottom: 8px;">
           TEMAS VISUALES
@@ -709,7 +707,7 @@
         </div>
       </div>
 
-      <!-- SECCIÓN 2: AVISOS Y NOTIFICACIONES -->
+      <!-- NOTIFICACIONES -->
       <div style="background: #090d16; padding: 10px; border-radius: 12px; border: 1px solid #1e293b; margin-bottom: 12px;">
         <span style="font-size: 10px; color: var(--primary); font-weight: 800; display: block; margin-bottom: 6px;">
           AVISOS Y NOTIFICACIONES
@@ -776,7 +774,7 @@
         </button>
       </div>
 
-      <!-- SECCIÓN 3: MANTENIMIENTO -->
+      <!-- MANTENIMIENTO -->
       <div style="background: #090d16; padding: 10px; border-radius: 12px; border: 1px solid #1e293b;">
         <span style="font-size: 9px; color: #64748b; font-weight: 700; display: block; margin-bottom: 4px;">MANTENIMIENTO DEL SISTEMA</span>
         <button type="button" onclick="hardResetApp()" class="btn-secondary" style="width: 100%; color: var(--danger);">
@@ -786,7 +784,7 @@
     </div>
   </div>
 
-  <!-- MODAL: SINCRONIZACIÓN FIREBASE -->
+  <!-- MODAL: SINCRONIZACIÓN FIREBASE CON BOTÓN DE RESCATE -->
   <div id="sync-modal" class="modal-overlay" style="display: none;" onclick="if(event.target === this) closeModal('sync-modal')">
     <div class="modal-content font-mono">
       <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #1e293b; padding-bottom: 8px; margin-bottom: 12px;">
@@ -800,12 +798,8 @@
           <span id="auto-sync-status-text" style="font-size: 10px; font-weight: 800; color: var(--success);">CONECTADO 🟢</span>
         </div>
 
-        <p style="font-size: 10px; color: #94a3b8; margin-bottom: 8px; font-family: sans-serif; line-height: 1.4;">
-          Tu app está vinculada con tu proyecto <b>Ultron Force</b> de Google. Todo lo que hagas se sincroniza solo.
-        </p>
-
-        <!-- ACCIONES MANUALES -->
-        <div class="grid-2" style="margin-bottom: 12px;">
+        <!-- ACCIONES MANUALES DE EMERGENCIA -->
+        <div class="grid-2" style="margin-bottom: 8px;">
           <button type="button" onclick="pushToCloudDirect(true)" class="btn-primary" style="padding: 8px; font-size: 10px;">
             ⬆ FORZAR SUBIR
           </button>
@@ -814,13 +808,23 @@
           </button>
         </div>
 
+        <!-- DIAGNÓSTICO EN VIVO -->
+        <button type="button" onclick="testFirebaseLiveConnection()" class="btn-secondary" style="width: 100%; font-size: 9px; margin-bottom: 10px; color: var(--blue); border-color: var(--blue);">
+          [PROBAR CONEXIÓN CON GOOGLE]
+        </button>
+
         <label style="font-size: 9px; color: var(--primary); display: block; margin-bottom: 4px;">URL DE TU FIREBASE:</label>
         <input type="text" id="firebase-url-input" class="font-mono" style="font-size: 10px; margin-bottom: 8px;">
 
         <label style="font-size: 9px; color: #64748b; display: block; margin-bottom: 4px;">CLAVE COMPARTIDA:</label>
         <input type="text" id="sync-key-input" class="font-mono" style="margin-bottom: 10px;">
 
-        <button type="button" onclick="saveAndEnableAutoSync()" class="btn-primary" style="padding: 9px;">Actualizar Parámetros</button>
+        <button type="button" onclick="saveAndEnableAutoSync()" class="btn-primary" style="padding: 9px; margin-bottom: 8px;">Actualizar Parámetros</button>
+
+        <!-- BOTÓN DE RESCATE SI SE PERDIERON TUS TAREAS ANTERIORES -->
+        <button type="button" onclick="rescueInitialTasks()" class="btn-secondary" style="width: 100%; font-size: 9px; color: var(--primary);">
+          [RESTAURAR MIS 3 TAREAS DE ELECTRÓNICA]
+        </button>
       </div>
 
       <div style="background: #090d16; padding: 10px; border-radius: 12px; border: 1px solid #1e293b;">
@@ -878,7 +882,7 @@
     </div>
   </div>
 
-  <!-- MODAL: AGREGAR TARJETA (CON DATOS DE TRANSFERENCIA) -->
+  <!-- MODAL: AGREGAR TARJETA -->
   <div id="card-modal" class="modal-overlay" style="display: none;" onclick="if(event.target === this) closeModal('card-modal')">
     <div class="modal-content font-mono">
       <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #1e293b; padding-bottom: 8px; margin-bottom: 12px;">
@@ -904,7 +908,6 @@
         <input type="number" step="0.01" id="card-balance" placeholder="Saldo actual disponible $">
       </div>
 
-      <!-- DATOS DE TRANSFERENCIA OPCIONALES -->
       <label style="font-size: 9px; color: var(--primary); display: block; margin-top: 4px; margin-bottom: 2px;">DATOS DE TRANSFERENCIA (OPCIONAL):</label>
       <input type="text" id="card-clabe" placeholder="CLABE Interbancaria (18 dígitos)">
       <input type="text" id="card-account" placeholder="No. Tarjeta / Cuenta para depósitos">
@@ -916,7 +919,7 @@
     </div>
   </div>
 
-  <!-- JAVASCRIPT SEGURO -->
+  <!-- JAVASCRIPT SEGURO Y PROTEGIDO -->
   <script>
     function showToast(msg, isError = false) {
       const toast = document.getElementById('app-toast');
@@ -925,7 +928,7 @@
       toast.style.background = isError ? 'var(--danger)' : 'var(--primary)';
       toast.style.color = isError ? '#fff' : '#000';
       toast.style.opacity = '1';
-      setTimeout(() => { toast.style.opacity = '0'; }, 2200);
+      setTimeout(() => { toast.style.opacity = '0'; }, 2400);
     }
 
     function autoResizeTextarea(el) {
@@ -1020,7 +1023,6 @@
       } catch(e) { return {}; }
     }
 
-    // ESTADO PRINCIPAL
     let appState = {
       updatedAt: Number(localStorage.getItem('cc_updated_at')) || 0,
       tasks: safeArray('cc_tasks'),
@@ -1030,7 +1032,7 @@
       cards: safeArray('cc_cards'),
       expenses: safeArray('cc_expenses'),
       fixedExpenses: safeArray('cc_fixed_expenses'),
-      debtsReceivable: safeArray('cc_debts_receivable'), // COBRANZAS
+      debtsReceivable: safeArray('cc_debts_receivable'),
       notifs: safeObject('cc_notifs')
     };
 
@@ -1072,6 +1074,43 @@
           triggerAutoPush();
         }
       } catch(e) {}
+    }
+
+    // BOTÓN DE RESCATE SI SE BORRARON TAREAS
+    function rescueInitialTasks() {
+      const initial = [
+        { id: 1, title: 'Comprar Material', subject: 'Electrónica', date: '2026-11-09', priority: 'normal', completed: false },
+        { id: 2, title: 'Modulo 7 y 8', subject: 'PG XXI', date: '2026-11-06', priority: 'normal', completed: false },
+        { id: 3, title: 'Práctica 9', subject: 'Programación', date: '2026-11-09', priority: 'normal', completed: false }
+      ];
+
+      initial.forEach(t => {
+        if (!appState.tasks.some(x => x.title === t.title)) {
+          appState.tasks.push(t);
+        }
+      });
+
+      saveLocal(true);
+      refreshAllUI();
+      closeModal('sync-modal');
+      showToast('¡Tareas restauradas y enviadas a Firebase!');
+    }
+
+    // DIAGNÓSTICO EN VIVO CON FIREBASE
+    async function testFirebaseLiveConnection() {
+      showToast('Probando conexión con Google...');
+      try {
+        const res = await fetch(`${firebaseUrl}/sync/${autoSyncKey}.json`);
+        if (res.ok) {
+          showToast('¡Conexión Exitosa con Firebase (Lectura y Escritura Activas)!');
+        } else if (res.status === 401) {
+          showToast('Error 401: Reglas de Firebase bloqueadas. Pon ".read": true y ".write": true en la consola.', true);
+        } else {
+          showToast(`Respuesta de Firebase: HTTP ${res.status}`, true);
+        }
+      } catch(e) {
+        showToast('Error de red al conectar con Firebase. Revisa tu internet.', true);
+      }
     }
 
     // ==========================================
@@ -1220,7 +1259,7 @@
     setInterval(checkScheduledAlerts, 60000);
 
     // ==========================================
-    // AUTO-SYNC FIREBASE
+    // AUTO-SYNC FIREBASE CON ESCUDO ANTI-BORRADO
     // ==========================================
     function updateSyncIndicator(label, color = null) {
       const ind = document.getElementById('sync-status-indicator');
@@ -1297,32 +1336,63 @@
       }
     }
 
+    // PULL PROTEGIDO: NUNCA BORRA DATOS LOCALES CON NUBE VACÍA
     async function pullFromCloudDirect(silent = true, force = false) {
       if (!firebaseUrl || !autoSyncKey) return;
       try {
         const res = await fetch(`${firebaseUrl}/sync/${autoSyncKey}.json`);
-        if (!res.ok) return;
+        if (!res.ok) {
+          updateSyncIndicator(`SYNC [ERR ${res.status}]`, 'var(--danger)');
+          return;
+        }
 
         const remoteState = await res.json();
+        
+        // Comprobar si la nube tiene datos reales
+        const cloudHasData = remoteState && typeof remoteState === 'object' && (
+          (Array.isArray(remoteState.tasks) && remoteState.tasks.length > 0) ||
+          (Array.isArray(remoteState.cards) && remoteState.cards.length > 0) ||
+          (Array.isArray(remoteState.fixedExpenses) && remoteState.fixedExpenses.length > 0) ||
+          (remoteState.diet && Object.keys(remoteState.diet).length > 0) ||
+          (remoteState.gym && Object.keys(remoteState.gym).length > 0)
+        );
+
+        const localHasData = (
+          appState.tasks.length > 0 ||
+          appState.cards.length > 0 ||
+          appState.fixedExpenses.length > 0 ||
+          Object.keys(appState.diet).length > 0 ||
+          Object.keys(appState.gym).length > 0
+        );
+
+        // Si la nube está vacía pero local tiene datos, SUBIR local a la nube (NO borrar local)
+        if (!cloudHasData && localHasData) {
+          pushToCloudDirect(false);
+          updateSyncIndicator('SYNC [AUTO 🟢]', 'var(--success)');
+          return;
+        }
+
         if (remoteState && typeof remoteState === 'object') {
           const remoteTime = Number(remoteState.updatedAt) || 0;
           const localTime = Number(appState.updatedAt) || 0;
 
-          if (force || remoteTime !== localTime) {
-            appState.updatedAt = remoteTime;
-            appState.tasks = Array.isArray(remoteState.tasks) ? remoteState.tasks : [];
-            appState.diet = remoteState.diet || {};
-            appState.gym = remoteState.gym || {};
-            appState.keepNotes = Array.isArray(remoteState.keepNotes) ? remoteState.keepNotes : [];
-            appState.cards = Array.isArray(remoteState.cards) ? remoteState.cards : [];
-            appState.expenses = Array.isArray(remoteState.expenses) ? remoteState.expenses : [];
-            appState.fixedExpenses = Array.isArray(remoteState.fixedExpenses) ? remoteState.fixedExpenses : [];
-            appState.debtsReceivable = Array.isArray(remoteState.debtsReceivable) ? remoteState.debtsReceivable : [];
+          if (force || !localHasData || remoteTime > localTime) {
+            appState.updatedAt = remoteTime || Date.now();
+            if (Array.isArray(remoteState.tasks)) appState.tasks = remoteState.tasks;
+            if (remoteState.diet) appState.diet = remoteState.diet;
+            if (remoteState.gym) appState.gym = remoteState.gym;
+            if (Array.isArray(remoteState.keepNotes)) appState.keepNotes = remoteState.keepNotes;
+            if (Array.isArray(remoteState.cards)) appState.cards = remoteState.cards;
+            if (Array.isArray(remoteState.expenses)) appState.expenses = remoteState.expenses;
+            if (Array.isArray(remoteState.fixedExpenses)) appState.fixedExpenses = remoteState.fixedExpenses;
+            if (Array.isArray(remoteState.debtsReceivable)) appState.debtsReceivable = remoteState.debtsReceivable;
             if (remoteState.notifs) appState.notifs = remoteState.notifs;
 
             saveLocal(false);
             refreshAllUI();
             if (!silent || force) showToast('¡Datos sincronizados desde Firebase!');
+          } else if (localTime > remoteTime) {
+            pushToCloudDirect(false);
           }
         }
         updateSyncIndicator('SYNC [AUTO 🟢]', 'var(--success)');
@@ -1616,9 +1686,7 @@
       if (wBar) wBar.style.width = `${pct}%`;
     }
 
-    // ==========================================
-    // 3. GYM (BLINDADO Y CON CASILLAS)
-    // ==========================================
+    // 3. GYM (BLINDADO)
     function renderGymDayCapsules() {
       const container = document.getElementById('gym-day-capsules');
       if (!container) return;
@@ -1692,4 +1760,693 @@
 
     function toggleGymExercise(id) {
       if (!appState.gym?.[currentGymDay]?.exercises) return;
-      appState.gym[currentGymDay].exercises = appState.gym
+      appState.gym[currentGymDay].exercises = appState.gym[currentGymDay].exercises.map(ex => 
+        ex.id === id ? { ...ex, completed: !ex.completed } : ex
+      );
+      saveLocal();
+      renderGymExercises();
+    }
+
+    function deleteGymExercise(id) {
+      if (!appState.gym?.[currentGymDay]?.exercises) return;
+      appState.gym[currentGymDay].exercises = appState.gym[currentGymDay].exercises.filter(ex => ex.id !== id);
+      saveLocal();
+      renderGymExercises();
+      showToast('Ejercicio eliminado');
+    }
+
+    function resetGymChecks() {
+      if (!appState.gym?.[currentGymDay]?.exercises) return;
+      appState.gym[currentGymDay].exercises = appState.gym[currentGymDay].exercises.map(ex => ({ ...ex, completed: false }));
+      saveLocal();
+      renderGymExercises();
+      showToast('Casillas reiniciadas');
+    }
+
+    function renderGymExercises() {
+      const list = document.getElementById('gym-exercises-list');
+      if (!list) return;
+
+      if (!appState.gym || typeof appState.gym !== 'object') appState.gym = {};
+      if (!appState.gym[currentGymDay] || typeof appState.gym[currentGymDay] !== 'object') {
+        appState.gym[currentGymDay] = { focus: '', exercises: [] };
+      }
+      if (!Array.isArray(appState.gym[currentGymDay].exercises)) {
+        appState.gym[currentGymDay].exercises = [];
+      }
+
+      const exercises = appState.gym[currentGymDay].exercises;
+
+      if (exercises.length === 0) {
+        list.innerHTML = `<p class="font-mono" style="text-align: center; color: #64748b; font-size: 11px; padding: 20px 0;">NO HAY EJERCICIOS PARA EL ${currentGymDay.toUpperCase()}</p>`;
+        return;
+      }
+
+      list.innerHTML = exercises.map(ex => `
+        <div class="card font-mono" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; ${ex.completed ? 'opacity: 0.35;' : ''}">
+          <div style="display: flex; align-items: center; gap: 10px;">
+            <input type="checkbox" ${ex.completed ? 'checked' : ''} onchange="toggleGymExercise(${ex.id})" style="width: 18px; height: 18px; margin: 0; cursor: pointer;">
+            <div>
+              <p style="font-size: 12px; font-weight: 700; ${ex.completed ? 'text-decoration: line-through; color: #64748b;' : 'color: #fff;'}">${ex.name}</p>
+              <span style="font-size: 10px; color: var(--primary);">${ex.sets} series x ${ex.reps} reps • ${ex.weight}</span>
+            </div>
+          </div>
+          <button type="button" onclick="deleteGymExercise(${ex.id})" style="background: none; color: #64748b; font-size: 11px;">X</button>
+        </div>
+      `).join('');
+    }
+
+    // 4. KEEP
+    function selectNoteColor(color) {
+      selectedNoteColor = color;
+      document.querySelectorAll('.color-btn').forEach(dot => {
+        dot.style.transform = dot.dataset.color === color ? 'scale(1.2)' : 'scale(1)';
+      });
+    }
+
+    function createKeepNote() {
+      const title = document.getElementById('note-title').value.trim();
+      const body = document.getElementById('note-body').value.trim();
+      const alertTime = document.getElementById('note-alert').value;
+
+      if (!title && !body) return;
+
+      appState.keepNotes.unshift({
+        id: Date.now(),
+        title,
+        body,
+        alertTime,
+        color: selectedNoteColor,
+        pinned: false
+      });
+
+      saveLocal();
+      document.getElementById('note-title').value = '';
+      document.getElementById('note-body').value = '';
+      document.getElementById('note-alert').value = '';
+      renderKeepNotes();
+      showToast('Nota guardada');
+    }
+
+    function togglePinNote(id) {
+      appState.keepNotes = appState.keepNotes.map(n => n.id === id ? { ...n, pinned: !n.pinned } : n);
+      appState.keepNotes.sort((a,b) => (b.pinned === a.pinned) ? 0 : b.pinned ? 1 : -1);
+      saveLocal();
+      renderKeepNotes();
+    }
+
+    function deleteKeepNote(id) {
+      appState.keepNotes = appState.keepNotes.filter(n => n.id !== id);
+      saveLocal();
+      renderKeepNotes();
+      showToast('Nota eliminada');
+    }
+
+    function renderKeepNotes() {
+      const grid = document.getElementById('keep-notes-grid');
+      if (!grid) return;
+      if (appState.keepNotes.length === 0) {
+        grid.innerHTML = `<div class="font-mono" style="grid-column: span 2; text-align: center; color: #64748b; font-size: 11px; padding: 24px 0;">SIN NOTAS</div>`;
+        return;
+      }
+
+      const colorThemes = {
+        dark: 'background: #090d16; border-color: #1e293b;',
+        gold: 'background: #451a03; border-color: #d97706;',
+        emerald: 'background: #064e3b; border-color: #059669;',
+        blue: 'background: #082f49; border-color: #0284c7;',
+        rose: 'background: #4c0519; border-color: #e11d48;'
+      };
+
+      grid.innerHTML = appState.keepNotes.map(n => `
+        <div class="card" style="${colorThemes[n.color] || colorThemes.dark} margin-bottom: 0;">
+          <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 4px;">
+            <p class="font-mono" style="font-size: 11px; font-weight: 800; color: #fff;">${n.title || ''}</p>
+            <button type="button" onclick="togglePinNote(${n.id})" style="background: none; font-size: 9px; color: ${n.pinned ? 'var(--primary)' : '#64748b'};">
+              ${n.pinned ? '[FIJO]' : 'FIJAR'}
+            </button>
+          </div>
+          <p style="font-size: 11px; color: #cbd5e1; margin-bottom: 8px; font-family: sans-serif;">${n.body || ''}</p>
+          <div style="display: flex; justify-content: space-between; font-size: 9px; color: #64748b;" class="font-mono">
+            <span>${n.alertTime ? formatToDDMMAA(n.alertTime) : ''}</span>
+            <button type="button" onclick="deleteKeepNote(${n.id})" style="background: none; color: var(--danger);">X</button>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    // 5. TARJETAS
+    function toggleCardInputs() {
+      const isTDC = document.getElementById('card-type').value === 'TDC';
+      document.getElementById('tdc-fields').style.display = isTDC ? 'block' : 'none';
+      document.getElementById('tdd-fields').style.display = isTDC ? 'none' : 'block';
+    }
+
+    function addCard() {
+      const name = document.getElementById('card-name').value.trim();
+      const type = document.getElementById('card-type').value;
+      const clabe = document.getElementById('card-clabe').value.trim();
+      const account = document.getElementById('card-account').value.trim();
+
+      if (!name) return showToast('Ingresa el nombre de la tarjeta', true);
+
+      if (type === 'TDC') {
+        const limit = parseFloat(document.getElementById('card-limit').value) || 0;
+        const cutoff = document.getElementById('card-cutoff').value || '1';
+        const payday = document.getElementById('card-payday').value || '20';
+        appState.cards.push({ id: Date.now(), name, type, limit, debt: 0, cutoff, payday, clabe, account });
+      } else {
+        const balance = parseFloat(document.getElementById('card-balance').value) || 0;
+        appState.cards.push({ id: Date.now(), name, type, balance, clabe, account });
+      }
+
+      saveLocal();
+      closeModal('card-modal');
+      document.getElementById('card-name').value = '';
+      document.getElementById('card-clabe').value = '';
+      document.getElementById('card-account').value = '';
+      renderCards();
+      populateCardSelect();
+      populateFixedCardSelect();
+      showToast('Tarjeta agregada');
+    }
+
+    function deleteCard(id) {
+      appState.cards = appState.cards.filter(c => c.id !== id);
+      saveLocal();
+      renderCards();
+      populateCardSelect();
+      populateFixedCardSelect();
+      showToast('Tarjeta eliminada');
+    }
+
+    function copyCardTransferDetails(clabeOrAccount, label) {
+      if (!clabeOrAccount) return showToast('No hay datos registrados', true);
+      navigator.clipboard.writeText(clabeOrAccount).then(() => {
+        showToast(`${label} copiada: ${clabeOrAccount}`);
+      }).catch(() => {
+        showToast('Error al copiar', true);
+      });
+    }
+
+    function openPaymentModal(cardId) {
+      const card = appState.cards.find(c => c.id === cardId);
+      if (!card) return;
+      activePayingCardId = cardId;
+      document.getElementById('pay-card-title').textContent = `${card.name} (TDC)`;
+      document.getElementById('pay-card-debt').textContent = `$${(Number(card.debt) || 0).toFixed(2)}`;
+      document.getElementById('pay-amount-input').value = '';
+      openModal('payment-modal');
+    }
+
+    function setPaymentAmount(amount) {
+      document.getElementById('pay-amount-input').value = amount;
+    }
+
+    function setPaymentFullDebt() {
+      const card = appState.cards.find(c => c.id === activePayingCardId);
+      if (card) document.getElementById('pay-amount-input').value = Number(card.debt) || 0;
+    }
+
+    function confirmCardPayment() {
+      const amount = parseFloat(document.getElementById('pay-amount-input').value);
+      if (!amount || isNaN(amount) || amount <= 0) return showToast('Ingresa un monto válido', true);
+
+      appState.cards = appState.cards.map(c => {
+        if (c.id === activePayingCardId) {
+          c.debt = Math.max(0, (Number(c.debt) || 0) - amount);
+        }
+        return c;
+      });
+
+      saveLocal();
+      closeModal('payment-modal');
+      renderCards();
+      showToast(`Abono de $${amount.toFixed(2)} registrado`);
+    }
+
+    function renderCards() {
+      const container = document.getElementById('cards-container');
+      if (!container) return;
+      let totalDebt = 0;
+      let totalLiquidity = 0;
+
+      appState.cards.forEach(c => {
+        if (c.type === 'TDC') totalDebt += (Number(c.debt) || 0);
+        if (c.type === 'TDD') totalLiquidity += (Number(c.balance) || 0);
+      });
+
+      document.getElementById('total-debt-metric').textContent = `$${totalDebt.toFixed(2)}`;
+      document.getElementById('total-liquidity-metric').textContent = `$${totalLiquidity.toFixed(2)}`;
+
+      if (appState.cards.length === 0) {
+        container.innerHTML = `<div class="card font-mono" style="text-align: center; color: #64748b; font-size: 11px;">NO HAY TARJETAS REGISTRADAS</div>`;
+        return;
+      }
+
+      container.innerHTML = appState.cards.map(c => {
+        const transferButtons = `
+          <div style="display: flex; gap: 6px; margin-top: 6px; flex-wrap: wrap;">
+            ${c.clabe ? `<button type="button" onclick="copyCardTransferDetails('${c.clabe}', 'CLABE')" class="btn-secondary" style="padding: 3px 6px; font-size: 9px; color: var(--primary);">[COPIAR CLABE]</button>` : ''}
+            ${c.account ? `<button type="button" onclick="copyCardTransferDetails('${c.account}', 'CUENTA')" class="btn-secondary" style="padding: 3px 6px; font-size: 9px; color: var(--blue);">[COPIAR NO. CUENTA]</button>` : ''}
+          </div>
+        `;
+
+        if (c.type === 'TDC') {
+          const limit = Number(c.limit) || 0;
+          const debt = Number(c.debt) || 0;
+          const available = Math.max(0, limit - debt);
+          const usedPct = limit > 0 ? Math.min(100, Math.round((debt / limit) * 100)) : 0;
+
+          return `
+            <div class="card font-mono" style="border-color: rgba(245,158,11,0.5);">
+              <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px;">
+                <span style="font-size: 9px; color: var(--primary); font-weight: 800;">[TDC CRÉDITO]</span>
+                <button type="button" onclick="deleteCard(${c.id})" style="background: none; color: #64748b; font-size: 11px;">X</button>
+              </div>
+              <p style="font-size: 13px; font-weight: 800; color: #fff;">${c.name}</p>
+              <div style="display: flex; justify-content: space-between; font-size: 10px; margin: 6px 0;">
+                <span style="color: var(--danger);">Deuda: $${debt.toFixed(2)}</span>
+                <span style="color: var(--success);">Disp: $${available.toFixed(2)}</span>
+              </div>
+              <div style="width: 100%; height: 6px; background: #090d16; border-radius: 3px; overflow: hidden; margin-bottom: 6px;">
+                <div style="width: ${usedPct}%; height: 100%; background: var(--danger);"></div>
+              </div>
+              ${transferButtons}
+              <div style="display: flex; justify-content: space-between; align-items: center; font-size: 10px; color: #64748b; border-top: 1px solid #1e293b; padding-top: 6px; margin-top: 6px;">
+                <span>Corte: día ${c.cutoff} • Pago: día ${c.payday}</span>
+                <button type="button" onclick="openPaymentModal(${c.id})" style="background: none; color: var(--primary); font-weight: 800;">[+ ABONAR]</button>
+              </div>
+            </div>
+          `;
+        } else {
+          const balance = Number(c.balance) || 0;
+          return `
+            <div class="card font-mono" style="border-color: rgba(16,185,129,0.5);">
+              <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px;">
+                <span style="font-size: 9px; color: var(--success); font-weight: 800;">[TDD DÉBITO]</span>
+                <button type="button" onclick="deleteCard(${c.id})" style="background: none; color: #64748b; font-size: 11px;">X</button>
+              </div>
+              <p style="font-size: 13px; font-weight: 800; color: #fff;">${c.name}</p>
+              <div style="margin: 6px 0;">
+                <span style="font-size: 9px; color: #64748b;">SALDO DISPONIBLE:</span>
+                <p style="font-size: 15px; font-weight: 800; color: var(--success);">$${balance.toFixed(2)}</p>
+              </div>
+              ${transferButtons}
+            </div>
+          `;
+        }
+      }).join('');
+    }
+
+    // COBRANZAS
+    function addReceivable() {
+      const name = document.getElementById('rec-name').value.trim();
+      const concept = document.getElementById('rec-concept').value.trim();
+      const amount = parseFloat(document.getElementById('rec-amount').value);
+      const duedate = document.getElementById('rec-duedate').value;
+
+      if (!name || isNaN(amount) || amount <= 0) {
+        return showToast('Ingresa nombre y monto válidos', true);
+      }
+
+      appState.debtsReceivable.push({
+        id: Date.now(),
+        name,
+        concept: concept || 'Préstamo',
+        amount,
+        abonos: 0,
+        duedate,
+        settled: false
+      });
+
+      saveLocal();
+      closeModal('receivable-modal');
+      document.getElementById('rec-name').value = '';
+      document.getElementById('rec-concept').value = '';
+      document.getElementById('rec-amount').value = '';
+      document.getElementById('rec-duedate').value = '';
+      renderReceivables();
+      showToast('Deuda por cobrar agregada');
+    }
+
+    function openReceivablePaymentModal(id) {
+      const item = appState.debtsReceivable.find(x => x.id === id);
+      if (!item) return;
+      activeReceivableId = id;
+      const remaining = Math.max(0, item.amount - (item.abonos || 0));
+      document.getElementById('rec-pay-name').textContent = `${item.name} (${item.concept})`;
+      document.getElementById('rec-pay-remaining').textContent = `$${remaining.toFixed(2)}`;
+      document.getElementById('rec-pay-amount-input').value = remaining;
+      openModal('rec-pay-modal');
+    }
+
+    function confirmReceivablePayment() {
+      const amount = parseFloat(document.getElementById('rec-pay-amount-input').value);
+      if (!amount || isNaN(amount) || amount <= 0) return showToast('Ingresa un monto válido', true);
+
+      appState.debtsReceivable = appState.debtsReceivable.map(item => {
+        if (item.id === activeReceivableId) {
+          item.abonos = (item.abonos || 0) + amount;
+          if (item.abonos >= item.amount) item.settled = true;
+        }
+        return item;
+      });
+
+      saveLocal();
+      closeModal('rec-pay-modal');
+      renderReceivables();
+      showToast(`Abono de $${amount.toFixed(2)} registrado`);
+    }
+
+    function deleteReceivable(id) {
+      appState.debtsReceivable = appState.debtsReceivable.filter(x => x.id !== id);
+      saveLocal();
+      renderReceivables();
+      showToast('Cobranza eliminada');
+    }
+
+    function renderReceivables() {
+      const container = document.getElementById('receivables-container');
+      if (!container) return;
+
+      let totalReceivable = 0;
+      appState.debtsReceivable.forEach(r => {
+        if (!r.settled) {
+          totalReceivable += Math.max(0, r.amount - (r.abonos || 0));
+        }
+      });
+
+      document.getElementById('total-receivable-metric').textContent = `$${totalReceivable.toFixed(2)}`;
+
+      if (appState.debtsReceivable.length === 0) {
+        container.innerHTML = `<div class="card font-mono" style="text-align: center; color: #64748b; font-size: 11px;">NADIE TE DEBE DINERO ACTUALMENTE</div>`;
+        return;
+      }
+
+      container.innerHTML = appState.debtsReceivable.map(r => {
+        const remaining = Math.max(0, r.amount - (r.abonos || 0));
+        return `
+          <div class="card font-mono" style="border-left: 3px solid ${r.settled ? 'var(--muted)' : 'var(--success)'}; margin-bottom: 8px; ${r.settled ? 'opacity: 0.4;' : ''}">
+            <div style="display: flex; justify-content: space-between; align-items: flex-start;">
+              <div>
+                <p style="font-size: 12px; font-weight: 700; color: #fff;">${r.name}</p>
+                <p style="font-size: 10px; color: #94a3b8;">${r.concept} ${r.duedate ? '• Promesa: ' + formatToDDMMAA(r.duedate) : ''}</p>
+                <p style="font-size: 10px; color: ${r.settled ? 'var(--muted)' : 'var(--success)'}; margin-top: 2px;">
+                  ${r.settled ? '[LIQUIDADO]' : `Resta: $${remaining.toFixed(2)} (Total: $${r.amount.toFixed(2)})`}
+                </p>
+              </div>
+              <div style="display: flex; align-items: center; gap: 6px;">
+                ${!r.settled ? `<button type="button" onclick="openReceivablePaymentModal(${r.id})" class="btn-secondary" style="font-size: 9px; color: var(--success); padding: 4px 8px;">[COBRAR]</button>` : ''}
+                <button type="button" onclick="deleteReceivable(${r.id})" style="background: none; color: #64748b; font-size: 11px;">X</button>
+              </div>
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    // GASTOS FIJOS
+    function populateFixedCardSelect() {
+      const select = document.getElementById('fixed-card-select');
+      if (!select) return;
+      let opts = '<option value="efectivo">Efectivo / Cuenta Externa</option>';
+      appState.cards.forEach(c => {
+        opts += `<option value="${c.id}">${c.name} [${c.type}]</option>`;
+      });
+      select.innerHTML = opts;
+    }
+
+    function addFixedExpense() {
+      const concept = document.getElementById('fixed-concept').value.trim();
+      const amount = parseFloat(document.getElementById('fixed-amount').value);
+      const payday = parseInt(document.getElementById('fixed-payday').value) || 1;
+      const cardId = document.getElementById('fixed-card-select').value;
+
+      if (!concept || isNaN(amount) || amount <= 0) {
+        return showToast('Ingresa concepto y monto válidos', true);
+      }
+
+      appState.fixedExpenses.push({
+        id: Date.now(),
+        concept,
+        amount,
+        payday: Math.max(1, Math.min(31, payday)),
+        cardId,
+        paid: false
+      });
+
+      saveLocal();
+      closeModal('fixed-expense-modal');
+      document.getElementById('fixed-concept').value = '';
+      document.getElementById('fixed-amount').value = '';
+      renderFixedExpenses();
+      showToast('Gasto fijo agregado');
+    }
+
+    function toggleFixedExpensePaid(id) {
+      appState.fixedExpenses = appState.fixedExpenses.map(fe => 
+        fe.id === id ? { ...fe, paid: !fe.paid } : fe
+      );
+      saveLocal();
+      renderFixedExpenses();
+    }
+
+    function deleteFixedExpense(id) {
+      appState.fixedExpenses = appState.fixedExpenses.filter(fe => fe.id !== id);
+      saveLocal();
+      renderFixedExpenses();
+      showToast('Gasto fijo eliminado');
+    }
+
+    function resetFixedPaidStatus() {
+      if (confirm('¿Deseas reiniciar los pagos para el nuevo mes?')) {
+        appState.fixedExpenses = appState.fixedExpenses.map(fe => ({ ...fe, paid: false }));
+        saveLocal();
+        renderFixedExpenses();
+        showToast('Gastos fijos reiniciados');
+      }
+    }
+
+    function renderFixedExpenses() {
+      const container = document.getElementById('fixed-expenses-container');
+      if (!container) return;
+
+      let totalFixed = 0;
+      let pendingFixed = 0;
+
+      appState.fixedExpenses.forEach(fe => {
+        const amt = Number(fe.amount) || 0;
+        totalFixed += amt;
+        if (!fe.paid) pendingFixed += amt;
+      });
+
+      document.getElementById('total-fixed-metric').textContent = `$${totalFixed.toFixed(2)}`;
+      document.getElementById('pending-fixed-metric').textContent = `$${pendingFixed.toFixed(2)}`;
+
+      if (appState.fixedExpenses.length === 0) {
+        container.innerHTML = `<div class="card font-mono" style="text-align: center; color: #64748b; font-size: 11px;">NO HAY GASTOS FIJOS O SUSCRIPCIONES</div>`;
+        return;
+      }
+
+      container.innerHTML = appState.fixedExpenses.map(fe => {
+        let cardLabel = 'Efectivo';
+        if (fe.cardId !== 'efectivo') {
+          const c = appState.cards.find(x => x.id === parseInt(fe.cardId));
+          if (c) cardLabel = `${c.name} [${c.type}]`;
+        }
+
+        return `
+          <div class="card font-mono" style="border-left: 3px solid ${fe.paid ? 'var(--success)' : 'var(--blue)'}; margin-bottom: 8px; ${fe.paid ? 'opacity: 0.4;' : ''}">
+            <div style="display: flex; justify-content: space-between; align-items: center;">
+              <div style="display: flex; align-items: center; gap: 8px;">
+                <input type="checkbox" ${fe.paid ? 'checked' : ''} onchange="toggleFixedExpensePaid(${fe.id})" style="width: 18px; height: 18px; margin: 0; cursor: pointer;">
+                <div>
+                  <p style="font-size: 12px; font-weight: 700; ${fe.paid ? 'text-decoration: line-through; color: #64748b;' : 'color: #fff;'}">${fe.concept}</p>
+                  <span style="font-size: 10px; color: #94a3b8;">Día ${fe.payday} de cada mes • ${cardLabel}</span>
+                </div>
+              </div>
+              <div style="display: flex; align-items: center; gap: 8px;">
+                <span style="font-size: 12px; font-weight: 800; color: ${fe.paid ? 'var(--success)' : 'var(--blue)'};">$${Number(fe.amount).toFixed(2)}</span>
+                <button type="button" onclick="deleteFixedExpense(${fe.id})" style="background: none; color: #64748b; font-size: 11px;">X</button>
+              </div>
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    // GASTOS DEL DÍA, EDICIÓN Y ELIMINACIÓN
+    function populateCardSelect() {
+      const select = document.getElementById('expense-card');
+      if (!select) return;
+      if (appState.cards.length === 0) {
+        select.innerHTML = '<option value="">Primero agrega una tarjeta</option>';
+        return;
+      }
+      select.innerHTML = appState.cards.map(c => `
+        <option value="${c.id}">${c.name} (${c.type})</option>
+      `).join('');
+    }
+
+    document.getElementById('expense-form').addEventListener('submit', (e) => {
+      e.preventDefault();
+      const cardId = parseInt(document.getElementById('expense-card').value);
+      const concept = document.getElementById('expense-concept').value.trim();
+      const amount = parseFloat(document.getElementById('expense-amount').value);
+
+      if (!cardId || isNaN(amount)) return;
+
+      appState.cards = appState.cards.map(c => {
+        if (c.id === cardId) {
+          if (c.type === 'TDC') c.debt = (Number(c.debt) || 0) + amount;
+          if (c.type === 'TDD') c.balance = (Number(c.balance) || 0) - amount;
+        }
+        return c;
+      });
+
+      appState.expenses.unshift({
+        id: Date.now(),
+        cardId,
+        concept,
+        amount,
+        dateFormatted: formatToDDMMAA(new Date())
+      });
+
+      saveLocal();
+      e.target.reset();
+      renderCards();
+      populateCardSelect();
+      renderExpenses();
+      showToast('Gasto registrado');
+    });
+
+    function deleteExpenseItem(id) {
+      const exp = appState.expenses.find(x => x.id === id);
+      if (!exp) return;
+
+      appState.cards = appState.cards.map(c => {
+        if (c.id === exp.cardId) {
+          if (c.type === 'TDC') c.debt = Math.max(0, (Number(c.debt) || 0) - exp.amount);
+          if (c.type === 'TDD') c.balance = (Number(c.balance) || 0) + exp.amount;
+        }
+        return c;
+      });
+
+      appState.expenses = appState.expenses.filter(x => x.id !== id);
+      saveLocal();
+      renderCards();
+      renderExpenses();
+      showToast('Gasto eliminado y balance restaurado');
+    }
+
+    function openEditExpenseModal(id) {
+      const exp = appState.expenses.find(x => x.id === id);
+      if (!exp) return;
+      activeEditingExpenseId = id;
+      document.getElementById('edit-exp-concept').value = exp.concept;
+      document.getElementById('edit-exp-amount').value = exp.amount;
+
+      const select = document.getElementById('edit-exp-card');
+      select.innerHTML = appState.cards.map(c => `
+        <option value="${c.id}" ${c.id === exp.cardId ? 'selected' : ''}>${c.name} (${c.type})</option>
+      `).join('');
+
+      openModal('edit-expense-modal');
+    }
+
+    function saveEditedExpense() {
+      const exp = appState.expenses.find(x => x.id === activeEditingExpenseId);
+      if (!exp) return;
+
+      const newConcept = document.getElementById('edit-exp-concept').value.trim();
+      const newAmount = parseFloat(document.getElementById('edit-exp-amount').value);
+      const newCardId = parseInt(document.getElementById('edit-exp-card').value);
+
+      if (!newConcept || isNaN(newAmount) || newAmount <= 0) {
+        return showToast('Ingresa concepto y monto válidos', true);
+      }
+
+      appState.cards = appState.cards.map(c => {
+        if (c.id === exp.cardId) {
+          if (c.type === 'TDC') c.debt = Math.max(0, (Number(c.debt) || 0) - exp.amount);
+          if (c.type === 'TDD') c.balance = (Number(c.balance) || 0) + exp.amount;
+        }
+        return c;
+      });
+
+      appState.cards = appState.cards.map(c => {
+        if (c.id === newCardId) {
+          if (c.type === 'TDC') c.debt = (Number(c.debt) || 0) + newAmount;
+          if (c.type === 'TDD') c.balance = (Number(c.balance) || 0) - newAmount;
+        }
+        return c;
+      });
+
+      exp.concept = newConcept;
+      exp.amount = newAmount;
+      exp.cardId = newCardId;
+
+      saveLocal();
+      closeModal('edit-expense-modal');
+      renderCards();
+      renderExpenses();
+      showToast('Gasto modificado y balance recalculado');
+    }
+
+    function renderExpenses() {
+      const list = document.getElementById('expenses-list');
+      if (!list) return;
+      if (appState.expenses.length === 0) {
+        list.innerHTML = `<p class="font-mono" style="text-align: center; color: #64748b; font-size: 10px; padding: 12px 0;">SIN GASTOS</p>`;
+        return;
+      }
+      list.innerHTML = appState.expenses.slice(0, 15).map(exp => {
+        const card = appState.cards.find(c => c.id === exp.cardId);
+        const cardLabel = card ? `${card.name} [${card.type}]` : 'Tarjeta';
+        const amount = Number(exp.amount) || 0;
+        return `
+          <div class="card font-mono" style="display: flex; justify-content: space-between; align-items: center; padding: 8px 12px; margin-bottom: 6px;">
+            <div>
+              <p style="font-size: 11px; font-weight: 700; color: #fff;">${exp.concept}</p>
+              <span style="font-size: 9px; color: #64748b;">${cardLabel} • ${exp.dateFormatted}</span>
+            </div>
+            <div style="display: flex; align-items: center; gap: 8px;">
+              <span style="font-size: 11px; font-weight: 800; color: var(--danger);">-$${amount.toFixed(2)}</span>
+              <button type="button" onclick="openEditExpenseModal(${exp.id})" class="btn-secondary" style="padding: 2px 6px; font-size: 9px;">EDITAR</button>
+              <button type="button" onclick="deleteExpenseItem(${exp.id})" style="background: none; color: #64748b; font-size: 11px;">X</button>
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    function refreshAllUI() {
+      try {
+        renderTasks();
+        renderDayCapsules();
+        loadDietData();
+        renderGymDayCapsules();
+        loadGymData();
+        renderKeepNotes();
+        renderCards();
+        populateCardSelect();
+        populateFixedCardSelect();
+        renderReceivables();
+        renderFixedExpenses();
+        renderExpenses();
+      } catch(e) {}
+    }
+
+    // ARRANQUE SEGURO
+    refreshAllUI();
+    updateSyncModalUI();
+    pullFromCloudDirect(true);
+
+    // REGISTRO DE SERVICE WORKER PARA INSTALAR LA APP (PWA)
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.register('sw.js');
+    }
+  </script>
+</body>
+</html>
