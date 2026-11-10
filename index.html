@@ -320,7 +320,7 @@
     <div class="header-inner">
       <div style="display: flex; align-items: center; gap: 8px;">
         <div class="logo-box">
-          <img id="app-logo" src="logo.png?v=95" 
+          <img id="app-logo" src="logo.png?v=105" 
                onerror="this.onerror=null; this.src='https://assets.stickpng.com/images/628c85c2bbec114743bed4bd.png'" 
                alt="Toros Negros">
         </div>
@@ -549,14 +549,20 @@
         </div>
       </div>
 
-      <!-- SECCIÓN A: MIS TARJETAS CON BOTÓN [+ AGREGAR] Y [AGRUPAR] -->
+      <!-- SECCIÓN A: MIS TARJETAS CON BOTÓN [MINIMIZAR], [AGRUPAR] Y [+ AGREGAR] -->
       <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;" class="font-mono">
         <span style="font-size: 11px; font-weight: 700; color: var(--primary);">MIS TARJETAS</span>
-        <div style="display: flex; gap: 6px;">
-          <button type="button" id="btn-group-cards" onclick="toggleCardGrouping()" class="btn-secondary" style="padding: 4px 8px; font-size: 9px;">
+        <div style="display: flex; gap: 4px; flex-wrap: wrap;">
+          <!-- BOTÓN MINIMIZAR / EXPANDIR -->
+          <button type="button" id="btn-min-cards" onclick="toggleCardMinimize()" class="btn-secondary" style="padding: 4px 6px; font-size: 9px;">
+            [MINIMIZAR]
+          </button>
+          <!-- BOTÓN AGRUPAR / DESAGRUPAR -->
+          <button type="button" id="btn-group-cards" onclick="toggleCardGrouping()" class="btn-secondary" style="padding: 4px 6px; font-size: 9px;">
             [AGRUPAR]
           </button>
-          <button type="button" onclick="openModal('card-modal')" class="btn-secondary" style="color: var(--primary); border-color: var(--primary); padding: 4px 8px; font-size: 9px;">
+          <!-- BOTÓN AGREGAR -->
+          <button type="button" onclick="openModal('card-modal')" class="btn-secondary" style="color: var(--primary); border-color: var(--primary); padding: 4px 6px; font-size: 9px;">
             [+ AGREGAR]
           </button>
         </div>
@@ -587,7 +593,7 @@
       <!-- SECCIÓN D: GASTOS MENSUALES FIJOS & SUSCRIPCIONES -->
       <div style="display: flex; justify-content: space-between; align-items: center; margin: 14px 0 8px 0;" class="font-mono">
         <span style="font-size: 11px; font-weight: 700; color: var(--blue);">GASTOS MENSUALES FIJOS</span>
-        <div style="display: flex; gap: 6px;">
+        <div style="display: flex; gap: 8px;">
           <button type="button" onclick="resetFixedPaidStatus()" style="background: none; color: #64748b; font-size: 9px; text-decoration: underline;">
             Reiniciar Mes
           </button>
@@ -1166,6 +1172,7 @@
     let activeDepositCardId = null;
     let currentMovementType = 'expense';
     let isCardsGrouped = localStorage.getItem('cc_cards_grouped') === 'true';
+    let isCardsMinimized = localStorage.getItem('cc_cards_minimized') === 'true';
 
     let firebaseUrl = localStorage.getItem('cc_firebase_url') || 'https://ultron-force-default-rtdb.firebaseio.com';
     let autoSyncKey = localStorage.getItem('cc_auto_sync_key') || 'ULTRON';
@@ -2015,15 +2022,20 @@
     }
 
     // ==========================================
-    // 5. TARJETAS (CON AGRUPAR Y + AGREGAR)
+    // 5. TARJETAS, FINANZAS, INGRESOS & GASTOS
     // ==========================================
     function toggleCardGrouping() {
       isCardsGrouped = !isCardsGrouped;
       localStorage.setItem('cc_cards_grouped', String(isCardsGrouped));
-      const btn = document.getElementById('btn-group-cards');
-      if (btn) btn.textContent = isCardsGrouped ? '[DESAGRUPAR]' : '[AGRUPAR]';
       renderCards();
-      showToast(isCardsGrouped ? 'Tarjetas agrupadas por Crédito y Débito' : 'Tarjetas en lista continua');
+      showToast(isCardsGrouped ? 'Tarjetas agrupadas por tipo' : 'Tarjetas en lista continua');
+    }
+
+    function toggleCardMinimize() {
+      isCardsMinimized = !isCardsMinimized;
+      localStorage.setItem('cc_cards_minimized', String(isCardsMinimized));
+      renderCards();
+      showToast(isCardsMinimized ? 'Tarjetas en vista compacta' : 'Tarjetas expandidas');
     }
 
     function toggleCardInputs() {
@@ -2166,7 +2178,7 @@
       closeModal('deposit-modal');
       renderCards();
       renderExpenses();
-      showToast(`Ingreso de $${amount.toFixed(2)} agregado con éxito`);
+      showToast(`Ingreso de $${amount.toFixed(2)} agregado`);
     }
 
     function renderSingleCard(c) {
@@ -2183,6 +2195,25 @@
         const available = Math.max(0, limit - debt);
         const usedPct = limit > 0 ? Math.min(100, Math.round((debt / limit) * 100)) : 0;
 
+        // VISTA MINIMIZADA (COMPACTA)
+        if (isCardsMinimized) {
+          return `
+            <div class="card font-mono" style="border-color: rgba(245,158,11,0.5); padding: 8px 12px; margin-bottom: 6px; display: flex; justify-content: space-between; align-items: center;">
+              <div>
+                <span style="font-size: 9px; color: var(--primary); font-weight: 800;">[TDC]</span>
+                <b style="font-size: 11px; color: #fff; margin-left: 4px;">${c.name}</b>
+              </div>
+              <div style="display: flex; align-items: center; gap: 8px;">
+                <span style="font-size: 10px; color: var(--danger); font-weight: 700;">Deuda: $${debt.toFixed(2)}</span>
+                <span style="font-size: 10px; color: var(--success); font-weight: 700;">Disp: $${available.toFixed(2)}</span>
+                <button type="button" onclick="openPaymentModal(${c.id})" style="background: none; color: var(--primary); font-size: 9px; font-weight: 800;">[+ ABONAR]</button>
+                <button type="button" onclick="deleteCard(${c.id})" style="background: none; color: #64748b; font-size: 10px;">X</button>
+              </div>
+            </div>
+          `;
+        }
+
+        // VISTA EXPANDIDA (COMPLETA)
         return `
           <div class="card font-mono" style="border-color: rgba(245,158,11,0.5);">
             <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px;">
@@ -2206,6 +2237,25 @@
         `;
       } else {
         const balance = Number(c.balance) || 0;
+
+        // VISTA MINIMIZADA (COMPACTA)
+        if (isCardsMinimized) {
+          return `
+            <div class="card font-mono" style="border-color: rgba(16,185,129,0.5); padding: 8px 12px; margin-bottom: 6px; display: flex; justify-content: space-between; align-items: center;">
+              <div>
+                <span style="font-size: 9px; color: var(--success); font-weight: 800;">[TDD]</span>
+                <b style="font-size: 11px; color: #fff; margin-left: 4px;">${c.name}</b>
+              </div>
+              <div style="display: flex; align-items: center; gap: 8px;">
+                <span style="font-size: 11px; color: var(--success); font-weight: 800;">$${balance.toFixed(2)}</span>
+                <button type="button" onclick="openDepositModal(${c.id})" style="background: none; color: var(--success); font-size: 9px; font-weight: 800;">[+ INGRESO]</button>
+                <button type="button" onclick="deleteCard(${c.id})" style="background: none; color: #64748b; font-size: 10px;">X</button>
+              </div>
+            </div>
+          `;
+        }
+
+        // VISTA EXPANDIDA (COMPLETA)
         return `
           <div class="card font-mono" style="border-color: rgba(16,185,129,0.5);">
             <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px;">
@@ -2243,6 +2293,9 @@
 
       const btnGroup = document.getElementById('btn-group-cards');
       if (btnGroup) btnGroup.textContent = isCardsGrouped ? '[DESAGRUPAR]' : '[AGRUPAR]';
+
+      const btnMin = document.getElementById('btn-min-cards');
+      if (btnMin) btnMin.textContent = isCardsMinimized ? '[EXPANDIR]' : '[MINIMIZAR]';
 
       if (appState.cards.length === 0) {
         container.innerHTML = `<div class="card font-mono" style="text-align: center; color: #64748b; font-size: 11px;">NO HAY TARJETAS REGISTRADAS</div>`;
