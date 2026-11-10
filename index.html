@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -34,6 +35,7 @@
       --danger: #ef4444;
       --success: #10b981;
       --blue: #0ea5e9;
+      --orange: #f97316;
     }
 
     body[data-theme="saiyan"] {
@@ -44,6 +46,7 @@
       --danger: #f43f5e;
       --success: #10b981;
       --blue: #38bdf8;
+      --orange: #fbbf24;
     }
 
     body[data-theme="cyber"] {
@@ -54,6 +57,7 @@
       --danger: #f43f5e;
       --success: #34d399;
       --blue: #06b6d4;
+      --orange: #fb923c;
     }
 
     body[data-theme="stealth"] {
@@ -64,6 +68,7 @@
       --danger: #ef4444;
       --success: #10b981;
       --blue: #a1a1aa;
+      --orange: #d4d4d8;
     }
 
     * { 
@@ -306,7 +311,7 @@
     <div class="header-inner">
       <div style="display: flex; align-items: center; gap: 8px;">
         <div class="logo-box">
-          <img id="app-logo" src="logo.png?v=70" 
+          <img id="app-logo" src="logo.png?v=80" 
                onerror="this.onerror=null; this.src='https://assets.stickpng.com/images/628c85c2bbec114743bed4bd.png'" 
                alt="Toros Negros">
         </div>
@@ -505,23 +510,27 @@
       <div id="keep-notes-grid" class="grid-2"></div>
     </section>
 
-    <!-- 5. TARJETAS, FINANZAS, COBRANZAS & GASTOS FIJOS -->
+    <!-- 5. TARJETAS, FINANZAS, COBRANZAS, DEUDAS PERSONALES & GASTOS FIJOS -->
     <section id="tab-finances" style="display: none;">
-      <!-- BALANCE GLOBAL -->
+      <!-- BALANCE GLOBAL COMPLETO -->
       <div class="card font-mono" style="padding: 10px;">
         <div style="display: flex; justify-content: space-between; font-size: 11px; margin-bottom: 4px;">
-          <span style="color: #64748b;">DEUDA TOTAL (TDC):</span>
+          <span style="color: #64748b;">DEUDA BANCOS (TDC):</span>
           <span id="total-debt-metric" style="color: var(--danger); font-weight: 800;">$0.00</span>
         </div>
         <div style="display: flex; justify-content: space-between; font-size: 11px; margin-bottom: 4px;">
-          <span style="color: #64748b;">DISPONIBLE DÉBITO (TDD):</span>
-          <span id="total-liquidity-metric" style="color: var(--success); font-weight: 800;">$0.00</span>
+          <span style="color: #64748b;">DEUDAS PERSONALES (A QUIÉN LE DEBO):</span>
+          <span id="total-personal-debt-metric" style="color: var(--orange); font-weight: 800;">$0.00</span>
         </div>
         <div style="display: flex; justify-content: space-between; font-size: 11px; margin-bottom: 4px; border-top: 1px solid #1e293b; padding-top: 4px;">
           <span style="color: #64748b;">TOTAL POR COBRAR (A FAVOR):</span>
           <span id="total-receivable-metric" style="color: var(--success); font-weight: 800;">$0.00</span>
         </div>
-        <div style="display: flex; justify-content: space-between; font-size: 11px;">
+        <div style="display: flex; justify-content: space-between; font-size: 11px; margin-bottom: 4px;">
+          <span style="color: #64748b;">DISPONIBLE DÉBITO (TDD):</span>
+          <span id="total-liquidity-metric" style="color: var(--success); font-weight: 800;">$0.00</span>
+        </div>
+        <div style="display: flex; justify-content: space-between; font-size: 11px; border-top: 1px solid #1e293b; padding-top: 4px;">
           <span style="color: #64748b;">TOTAL FIJO MENSUAL:</span>
           <span id="total-fixed-metric" style="color: var(--blue); font-weight: 800;">$0.00</span>
         </div>
@@ -541,17 +550,27 @@
 
       <div id="cards-container"></div>
 
-      <!-- SECCIÓN B: COBRANZAS -->
+      <!-- SECCIÓN B: DEUDAS PERSONALES (A QUIÉN LE DEBO DINERO) -->
+      <div style="display: flex; justify-content: space-between; align-items: center; margin: 14px 0 8px 0;" class="font-mono">
+        <span style="font-size: 11px; font-weight: 700; color: var(--orange);">DEUDAS PERSONALES (A QUIÉN LE DEBO)</span>
+        <button type="button" onclick="openModal('personal-debt-modal')" style="background: none; color: var(--orange); font-size: 10px; text-decoration: underline;">
+          + AGREGAR DEUDA
+        </button>
+      </div>
+
+      <div id="personal-debts-container"></div>
+
+      <!-- SECCIÓN C: COBRANZAS (QUIÉN ME DEBE DINERO) -->
       <div style="display: flex; justify-content: space-between; align-items: center; margin: 14px 0 8px 0;" class="font-mono">
         <span style="font-size: 11px; font-weight: 700; color: var(--success);">COBRANZAS (QUIÉN ME DEBE DINERO)</span>
         <button type="button" onclick="openModal('receivable-modal')" style="background: none; color: var(--success); font-size: 10px; text-decoration: underline;">
-          + AGREGAR DEUDA
+          + AGREGAR COBRO
         </button>
       </div>
 
       <div id="receivables-container"></div>
 
-      <!-- SECCIÓN C: GASTOS MENSUALES FIJOS -->
+      <!-- SECCIÓN D: GASTOS MENSUALES FIJOS & SUSCRIPCIONES -->
       <div style="display: flex; justify-content: space-between; align-items: center; margin: 14px 0 8px 0;" class="font-mono">
         <span style="font-size: 11px; font-weight: 700; color: var(--blue);">GASTOS MENSUALES FIJOS</span>
         <div style="display: flex; gap: 8px;">
@@ -566,7 +585,7 @@
 
       <div id="fixed-expenses-container"></div>
 
-      <!-- SECCIÓN D: REGISTRAR GASTO DIARIO -->
+      <!-- SECCIÓN E: REGISTRAR GASTO DIARIO -->
       <form id="expense-form" class="card font-mono" style="margin-top: 14px;">
         <span style="font-size: 11px; font-weight: 700; color: var(--danger); display: block; margin-bottom: 8px;">REGISTRAR GASTO DEL DÍA</span>
         <select id="expense-card" required></select>
@@ -577,7 +596,7 @@
         <button type="submit" class="btn-danger">Aplicar Gasto</button>
       </form>
 
-      <!-- SECCIÓN E: ÚLTIMOS MOVIMIENTOS -->
+      <!-- SECCIÓN F: ÚLTIMOS MOVIMIENTOS -->
       <div class="font-mono">
         <span style="font-size: 10px; color: #64748b; display: block; margin-bottom: 6px;">ÚLTIMOS MOVIMIENTOS (EDITAR / ELIMINAR)</span>
         <div id="expenses-list"></div>
@@ -597,11 +616,51 @@
     </div>
   </nav>
 
-  <!-- MODAL: AGREGAR DEUDA A FAVOR -->
+  <!-- ========================================== -->
+  <!-- MODAL: AGREGAR DEUDA PERSONAL (A QUIÉN LE DEBO) -->
+  <!-- ========================================== -->
+  <div id="personal-debt-modal" class="modal-overlay" style="display: none;" onclick="if(event.target === this) closeModal('personal-debt-modal')">
+    <div class="modal-content font-mono">
+      <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #1e293b; padding-bottom: 8px; margin-bottom: 12px;">
+        <span style="font-size: 12px; font-weight: 800; color: var(--orange);">NUEVA DEUDA PERSONAL (POR PAGAR)</span>
+        <button type="button" onclick="closeModal('personal-debt-modal')" class="btn-secondary" style="padding: 2px 8px;">X</button>
+      </div>
+
+      <input type="text" id="pdeb-name" placeholder="¿A quién le debes? (Nombre de la persona)" required>
+      <input type="text" id="pdeb-concept" placeholder="Concepto (ej: Me pagó la cena, Préstamo)">
+      <input type="number" step="0.01" id="pdeb-amount" placeholder="Monto total que le debes $" required>
+      <label style="font-size: 9px; color: #64748b; display: block; margin-bottom: 2px;">FECHA COMPROMISO DE PAGO (OPCIONAL):</label>
+      <input type="date" id="pdeb-duedate">
+
+      <div class="grid-2" style="margin-top: 8px;">
+        <button type="button" onclick="closeModal('personal-debt-modal')" class="btn-secondary">Cancelar</button>
+        <button type="button" onclick="addPersonalDebt()" class="btn-primary" style="background: var(--orange); color: #000;">Guardar Deuda</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL: ABONAR A DEUDA PERSONAL -->
+  <div id="pdeb-pay-modal" class="modal-overlay" style="display: none;" onclick="if(event.target === this) closeModal('pdeb-pay-modal')">
+    <div class="modal-content font-mono">
+      <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #1e293b; padding-bottom: 8px; margin-bottom: 12px;">
+        <span style="font-size: 12px; font-weight: 800; color: var(--orange);">PAGAR / ABONAR A DEUDA</span>
+        <button type="button" onclick="closeModal('pdeb-pay-modal')" class="btn-secondary" style="padding: 2px 8px;">X</button>
+      </div>
+      <p id="pdeb-pay-name" style="font-size: 12px; font-weight: 700; margin-bottom: 2px;">Acreedor</p>
+      <p style="font-size: 11px; color: #94a3b8; margin-bottom: 10px;">Resta por pagar: <b id="pdeb-pay-remaining" style="color: var(--orange);">$0.00</b></p>
+      <input type="number" step="0.01" id="pdeb-pay-amount-input" placeholder="Monto a pagar $">
+      <div class="grid-2">
+        <button type="button" onclick="closeModal('pdeb-pay-modal')" class="btn-secondary">Cancelar</button>
+        <button type="button" onclick="confirmPersonalDebtPayment()" class="btn-primary" style="background: var(--orange); color: #000;">Registrar Pago</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL: AGREGAR COBRANZA (QUIÉN ME DEBE) -->
   <div id="receivable-modal" class="modal-overlay" style="display: none;" onclick="if(event.target === this) closeModal('receivable-modal')">
     <div class="modal-content font-mono">
       <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #1e293b; padding-bottom: 8px; margin-bottom: 12px;">
-        <span style="font-size: 12px; font-weight: 800; color: var(--success);">NUEVA COBRANZA / PRÉSTAMO</span>
+        <span style="font-size: 12px; font-weight: 800; color: var(--success);">NUEVA COBRANZA (A MI FAVOR)</span>
         <button type="button" onclick="closeModal('receivable-modal')" class="btn-secondary" style="padding: 2px 8px;">X</button>
       </div>
 
@@ -613,7 +672,7 @@
 
       <div class="grid-2" style="margin-top: 8px;">
         <button type="button" onclick="closeModal('receivable-modal')" class="btn-secondary">Cancelar</button>
-        <button type="button" onclick="addReceivable()" class="btn-primary" style="background: var(--success); color: #fff;">Guardar Deuda</button>
+        <button type="button" onclick="addReceivable()" class="btn-primary" style="background: var(--success); color: #fff;">Guardar</button>
       </div>
     </div>
   </div>
@@ -707,7 +766,7 @@
         </div>
       </div>
 
-      <!-- NOTIFICACIONES -->
+      <!-- AVISOS Y NOTIFICACIONES -->
       <div style="background: #090d16; padding: 10px; border-radius: 12px; border: 1px solid #1e293b; margin-bottom: 12px;">
         <span style="font-size: 10px; color: var(--primary); font-weight: 800; display: block; margin-bottom: 6px;">
           AVISOS Y NOTIFICACIONES
@@ -784,7 +843,7 @@
     </div>
   </div>
 
-  <!-- MODAL: SINCRONIZACIÓN FIREBASE CON BOTÓN DE RESCATE -->
+  <!-- MODAL: SINCRONIZACIÓN FIREBASE -->
   <div id="sync-modal" class="modal-overlay" style="display: none;" onclick="if(event.target === this) closeModal('sync-modal')">
     <div class="modal-content font-mono">
       <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #1e293b; padding-bottom: 8px; margin-bottom: 12px;">
@@ -821,7 +880,6 @@
 
         <button type="button" onclick="saveAndEnableAutoSync()" class="btn-primary" style="padding: 9px; margin-bottom: 8px;">Actualizar Parámetros</button>
 
-        <!-- BOTÓN DE RESCATE SI SE PERDIERON TUS TAREAS ANTERIORES -->
         <button type="button" onclick="rescueInitialTasks()" class="btn-secondary" style="width: 100%; font-size: 9px; color: var(--primary);">
           [RESTAURAR MIS 3 TAREAS DE ELECTRÓNICA]
         </button>
@@ -919,7 +977,7 @@
     </div>
   </div>
 
-  <!-- JAVASCRIPT SEGURO Y PROTEGIDO -->
+  <!-- JAVASCRIPT SEGURO -->
   <script>
     function showToast(msg, isError = false) {
       const toast = document.getElementById('app-toast');
@@ -1023,6 +1081,7 @@
       } catch(e) { return {}; }
     }
 
+    // ESTADO PRINCIPAL
     let appState = {
       updatedAt: Number(localStorage.getItem('cc_updated_at')) || 0,
       tasks: safeArray('cc_tasks'),
@@ -1033,6 +1092,7 @@
       expenses: safeArray('cc_expenses'),
       fixedExpenses: safeArray('cc_fixed_expenses'),
       debtsReceivable: safeArray('cc_debts_receivable'),
+      personalDebts: safeArray('cc_personal_debts'), // A QUIÉN LE DEBO DINERO YO
       notifs: safeObject('cc_notifs')
     };
 
@@ -1049,6 +1109,7 @@
     let currentGymDay = 'Lunes';
     let activePayingCardId = null;
     let activeReceivableId = null;
+    let activePersonalDebtId = null;
     let activeEditingExpenseId = null;
 
     let firebaseUrl = localStorage.getItem('cc_firebase_url') || 'https://ultron-force-default-rtdb.firebaseio.com';
@@ -1068,6 +1129,7 @@
         localStorage.setItem('cc_expenses', JSON.stringify(appState.expenses));
         localStorage.setItem('cc_fixed_expenses', JSON.stringify(appState.fixedExpenses));
         localStorage.setItem('cc_debts_receivable', JSON.stringify(appState.debtsReceivable));
+        localStorage.setItem('cc_personal_debts', JSON.stringify(appState.personalDebts));
         localStorage.setItem('cc_notifs', JSON.stringify(appState.notifs));
 
         if (shouldPush && autoSyncActive) {
@@ -1076,7 +1138,6 @@
       } catch(e) {}
     }
 
-    // BOTÓN DE RESCATE SI SE BORRARON TAREAS
     function rescueInitialTasks() {
       const initial = [
         { id: 1, title: 'Comprar Material', subject: 'Electrónica', date: '2026-11-09', priority: 'normal', completed: false },
@@ -1096,7 +1157,6 @@
       showToast('¡Tareas restauradas y enviadas a Firebase!');
     }
 
-    // DIAGNÓSTICO EN VIVO CON FIREBASE
     async function testFirebaseLiveConnection() {
       showToast('Probando conexión con Google...');
       try {
@@ -1314,6 +1374,7 @@
           expenses: appState.expenses,
           fixedExpenses: appState.fixedExpenses,
           debtsReceivable: appState.debtsReceivable,
+          personalDebts: appState.personalDebts,
           notifs: appState.notifs
         };
 
@@ -1336,7 +1397,6 @@
       }
     }
 
-    // PULL PROTEGIDO: NUNCA BORRA DATOS LOCALES CON NUBE VACÍA
     async function pullFromCloudDirect(silent = true, force = false) {
       if (!firebaseUrl || !autoSyncKey) return;
       try {
@@ -1348,11 +1408,12 @@
 
         const remoteState = await res.json();
         
-        // Comprobar si la nube tiene datos reales
         const cloudHasData = remoteState && typeof remoteState === 'object' && (
           (Array.isArray(remoteState.tasks) && remoteState.tasks.length > 0) ||
           (Array.isArray(remoteState.cards) && remoteState.cards.length > 0) ||
           (Array.isArray(remoteState.fixedExpenses) && remoteState.fixedExpenses.length > 0) ||
+          (Array.isArray(remoteState.personalDebts) && remoteState.personalDebts.length > 0) ||
+          (Array.isArray(remoteState.debtsReceivable) && remoteState.debtsReceivable.length > 0) ||
           (remoteState.diet && Object.keys(remoteState.diet).length > 0) ||
           (remoteState.gym && Object.keys(remoteState.gym).length > 0)
         );
@@ -1361,11 +1422,12 @@
           appState.tasks.length > 0 ||
           appState.cards.length > 0 ||
           appState.fixedExpenses.length > 0 ||
+          appState.personalDebts.length > 0 ||
+          appState.debtsReceivable.length > 0 ||
           Object.keys(appState.diet).length > 0 ||
           Object.keys(appState.gym).length > 0
         );
 
-        // Si la nube está vacía pero local tiene datos, SUBIR local a la nube (NO borrar local)
         if (!cloudHasData && localHasData) {
           pushToCloudDirect(false);
           updateSyncIndicator('SYNC [AUTO 🟢]', 'var(--success)');
@@ -1386,6 +1448,7 @@
             if (Array.isArray(remoteState.expenses)) appState.expenses = remoteState.expenses;
             if (Array.isArray(remoteState.fixedExpenses)) appState.fixedExpenses = remoteState.fixedExpenses;
             if (Array.isArray(remoteState.debtsReceivable)) appState.debtsReceivable = remoteState.debtsReceivable;
+            if (Array.isArray(remoteState.personalDebts)) appState.personalDebts = remoteState.personalDebts;
             if (remoteState.notifs) appState.notifs = remoteState.notifs;
 
             saveLocal(false);
@@ -1456,6 +1519,7 @@
             appState.expenses = Array.isArray(parsed.expenses) ? parsed.expenses : [];
             appState.fixedExpenses = Array.isArray(parsed.fixedExpenses) ? parsed.fixedExpenses : [];
             appState.debtsReceivable = Array.isArray(parsed.debtsReceivable) ? parsed.debtsReceivable : [];
+            appState.personalDebts = Array.isArray(parsed.personalDebts) ? parsed.personalDebts : [];
             if (parsed.notifs) appState.notifs = parsed.notifs;
             saveLocal(true);
             refreshAllUI();
@@ -1686,7 +1750,7 @@
       if (wBar) wBar.style.width = `${pct}%`;
     }
 
-    // 3. GYM (BLINDADO)
+    // 3. GYM
     function renderGymDayCapsules() {
       const container = document.getElementById('gym-day-capsules');
       if (!container) return;
@@ -1895,7 +1959,9 @@
       `).join('');
     }
 
-    // 5. TARJETAS
+    // ==========================================
+    // 5. TARJETAS, DEUDAS PERSONALES Y COBRANZAS
+    // ==========================================
     function toggleCardInputs() {
       const isTDC = document.getElementById('card-type').value === 'TDC';
       document.getElementById('tdc-fields').style.display = isTDC ? 'block' : 'none';
@@ -2059,7 +2125,119 @@
       }).join('');
     }
 
-    // COBRANZAS
+    // ==========================================
+    // DEUDAS PERSONALES (A QUIÉN LE DEBO DINERO YO)
+    // ==========================================
+    function addPersonalDebt() {
+      const name = document.getElementById('pdeb-name').value.trim();
+      const concept = document.getElementById('pdeb-concept').value.trim();
+      const amount = parseFloat(document.getElementById('pdeb-amount').value);
+      const duedate = document.getElementById('pdeb-duedate').value;
+
+      if (!name || isNaN(amount) || amount <= 0) {
+        return showToast('Ingresa nombre y monto válidos', true);
+      }
+
+      appState.personalDebts.push({
+        id: Date.now(),
+        name,
+        concept: concept || 'Préstamo',
+        amount,
+        abonos: 0,
+        duedate,
+        settled: false
+      });
+
+      saveLocal();
+      closeModal('personal-debt-modal');
+      document.getElementById('pdeb-name').value = '';
+      document.getElementById('pdeb-concept').value = '';
+      document.getElementById('pdeb-amount').value = '';
+      document.getElementById('pdeb-duedate').value = '';
+      renderPersonalDebts();
+      showToast('Deuda personal registrada');
+    }
+
+    function openPersonalDebtPaymentModal(id) {
+      const item = appState.personalDebts.find(x => x.id === id);
+      if (!item) return;
+      activePersonalDebtId = id;
+      const remaining = Math.max(0, item.amount - (item.abonos || 0));
+      document.getElementById('pdeb-pay-name').textContent = `${item.name} (${item.concept})`;
+      document.getElementById('pdeb-pay-remaining').textContent = `$${remaining.toFixed(2)}`;
+      document.getElementById('pdeb-pay-amount-input').value = remaining;
+      openModal('pdeb-pay-modal');
+    }
+
+    function confirmPersonalDebtPayment() {
+      const amount = parseFloat(document.getElementById('pdeb-pay-amount-input').value);
+      if (!amount || isNaN(amount) || amount <= 0) return showToast('Ingresa un monto válido', true);
+
+      appState.personalDebts = appState.personalDebts.map(item => {
+        if (item.id === activePersonalDebtId) {
+          item.abonos = (item.abonos || 0) + amount;
+          if (item.abonos >= item.amount) item.settled = true;
+        }
+        return item;
+      });
+
+      saveLocal();
+      closeModal('pdeb-pay-modal');
+      renderPersonalDebts();
+      showToast(`Pago de $${amount.toFixed(2)} registrado`);
+    }
+
+    function deletePersonalDebt(id) {
+      appState.personalDebts = appState.personalDebts.filter(x => x.id !== id);
+      saveLocal();
+      renderPersonalDebts();
+      showToast('Deuda eliminada');
+    }
+
+    function renderPersonalDebts() {
+      const container = document.getElementById('personal-debts-container');
+      if (!container) return;
+
+      let totalPersonalDebt = 0;
+      appState.personalDebts.forEach(d => {
+        if (!d.settled) {
+          totalPersonalDebt += Math.max(0, d.amount - (d.abonos || 0));
+        }
+      });
+
+      const metricEl = document.getElementById('total-personal-debt-metric');
+      if (metricEl) metricEl.textContent = `$${totalPersonalDebt.toFixed(2)}`;
+
+      if (appState.personalDebts.length === 0) {
+        container.innerHTML = `<div class="card font-mono" style="text-align: center; color: #64748b; font-size: 11px;">NO LE DEBES DINERO A NADIE</div>`;
+        return;
+      }
+
+      container.innerHTML = appState.personalDebts.map(d => {
+        const remaining = Math.max(0, d.amount - (d.abonos || 0));
+        return `
+          <div class="card font-mono" style="border-left: 3px solid ${d.settled ? 'var(--muted)' : 'var(--orange)'}; margin-bottom: 8px; ${d.settled ? 'opacity: 0.4;' : ''}">
+            <div style="display: flex; justify-content: space-between; align-items: flex-start;">
+              <div>
+                <p style="font-size: 12px; font-weight: 700; color: #fff;">${d.name}</p>
+                <p style="font-size: 10px; color: #94a3b8;">${d.concept} ${d.duedate ? '• Compromiso: ' + formatToDDMMAA(d.duedate) : ''}</p>
+                <p style="font-size: 10px; color: ${d.settled ? 'var(--muted)' : 'var(--orange)'}; margin-top: 2px;">
+                  ${d.settled ? '[LIQUIDADO]' : `Debes: $${remaining.toFixed(2)} (Total: $${d.amount.toFixed(2)})`}
+                </p>
+              </div>
+              <div style="display: flex; align-items: center; gap: 6px;">
+                ${!d.settled ? `<button type="button" onclick="openPersonalDebtPaymentModal(${d.id})" class="btn-secondary" style="font-size: 9px; color: var(--orange); padding: 4px 8px;">[PAGAR]</button>` : ''}
+                <button type="button" onclick="deletePersonalDebt(${d.id})" style="background: none; color: #64748b; font-size: 11px;">X</button>
+              </div>
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    // ==========================================
+    // COBRANZAS (QUIÉN ME DEBE DINERO A MÍ)
+    // ==========================================
     function addReceivable() {
       const name = document.getElementById('rec-name').value.trim();
       const concept = document.getElementById('rec-concept').value.trim();
@@ -2087,7 +2265,7 @@
       document.getElementById('rec-amount').value = '';
       document.getElementById('rec-duedate').value = '';
       renderReceivables();
-      showToast('Deuda por cobrar agregada');
+      showToast('Cobro registrado');
     }
 
     function openReceivablePaymentModal(id) {
@@ -2116,7 +2294,7 @@
       saveLocal();
       closeModal('rec-pay-modal');
       renderReceivables();
-      showToast(`Abono de $${amount.toFixed(2)} registrado`);
+      showToast(`Abono de $${amount.toFixed(2)} cobrado`);
     }
 
     function deleteReceivable(id) {
@@ -2166,7 +2344,9 @@
       }).join('');
     }
 
+    // ==========================================
     // GASTOS FIJOS
+    // ==========================================
     function populateFixedCardSelect() {
       const select = document.getElementById('fixed-card-select');
       if (!select) return;
@@ -2432,6 +2612,7 @@
         renderCards();
         populateCardSelect();
         populateFixedCardSelect();
+        renderPersonalDebts();
         renderReceivables();
         renderFixedExpenses();
         renderExpenses();
